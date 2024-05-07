@@ -11,6 +11,10 @@
 		788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788AED6A2BE8DD2700D03FCC /* ContentView.swift */; };
 		788AED6D2BE8DD2B00D03FCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */; };
 		788AED712BE8DD2B00D03FCC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */; };
+		B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284852BE98C9A0046DBD2 /* CameraView.swift */; };
+		B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284872BE98CF90046DBD2 /* TextRecognition.swift */; };
+		B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284892BE98FE80046DBD2 /* TakePhotoView.swift */; };
+		B302848C2BE996B40046DBD2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B302848B2BE996B40046DBD2 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,10 @@
 		788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Macro.entitlements; sourceTree = "<group>"; };
 		788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B30284852BE98C9A0046DBD2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		B30284872BE98CF90046DBD2 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
+		B30284892BE98FE80046DBD2 /* TakePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoView.swift; sourceTree = "<group>"; };
+		B302848B2BE996B40046DBD2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +62,13 @@
 			children = (
 				788AED682BE8DD2700D03FCC /* MacroApp.swift */,
 				788AED6A2BE8DD2700D03FCC /* ContentView.swift */,
+				B30284892BE98FE80046DBD2 /* TakePhotoView.swift */,
+				B30284852BE98C9A0046DBD2 /* CameraView.swift */,
+				B30284872BE98CF90046DBD2 /* TextRecognition.swift */,
 				788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */,
 				788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */,
 				788AED6F2BE8DD2B00D03FCC /* Preview Content */,
+				B302848B2BE996B40046DBD2 /* File.swift */,
 			);
 			path = Macro;
 			sourceTree = "<group>";
@@ -139,7 +151,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */,
+				B302848C2BE996B40046DBD2 /* File.swift in Sources */,
+				B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */,
 				788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */,
+				B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */,
 				788AED692BE8DD2700D03FCC /* MacroApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,10 +286,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 84TTD6VG5A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -308,10 +325,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 84TTD6VG5A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
