@@ -6,59 +6,59 @@
 //
 
 import SwiftUI
-import AVFoundation
 import Vision
 
-/// Realizamos el reconocimiento de texto en imágenes usando el framework Vision de Apple, manejamos errores potenciales y convertimos coordenadas de rectángulos normalizados a coordenadas de imagen. Esta función es crucial para interpretar texto directamente desde imágenes capturadas o seleccionadas.
-func processImage(_ image: UIImage) {
-    /* Nos aseguramos de que la imagen tenga una representación CGImage y si no, salimos de la función. */
-    guard let cgImage = image.cgImage else { return }
+/// We perform text recognition in images by making an image analysis request to Vision, handle potential errors, and convert normalized rectangle coordinates to image coordinates and pass the results through a completion closure.
+func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) -> Void) {
+    /* We ensure the image has a CGImage representation and if not, we exit the function. */
+    guard let cgImage = image.cgImage else {
+        completion(nil)
+        return
+    }
 
-    /* Creamos una solicitud de reconocimiento de texto utilizando Vision. */
+    /* We create a text recognition request using Vision. */
     let request = VNRecognizeTextRequest { request, error in
-        /* Verificamos que no haya errores y que el resultado pueda ser interpretado como una colección de observaciones de texto. */
+        /* We check that there are no errors and that the result can be interpreted as a collection of text observations. */
         guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
-            // Imprimimos un mensaje de error si la petición falla.
+            // We print an error message if the request fails.
             print("Recognition failed: \(error?.localizedDescription ?? "Unknown error")")
+            completion(nil)
             return
         }
-
-        /* Mapeamos las observaciones a un arreglo de tuplas que contienen el texto reconocido y sus rectángulos delimitadores. */
+        
+        /* We map the observations to an array of tuples containing the recognized text and their bounding rectangles. */
         let recognizedStrings: [(String, CGRect)] = observations.compactMap { observation in
-            /* Extraemos el texto más probable de ser correcto y su caja delimitadora. */
+            /* We extract the most likely correct text and its bounding box. */
             guard let topCandidate = observation.topCandidates(1).first else { return nil }
             let boundingBox = observation.boundingBox
-            // Convertimos las coordenadas normalizadas de la caja delimitadora a coordenadas de la imagen.
+            // We convert the normalized coordinates of the bounding box to image coordinates.
             let imageRect = VNImageRectForNormalizedRect(boundingBox, Int(cgImage.width), Int(cgImage.height))
-            // Retornamos una tupla con el texto y su caja.
+            // We return a tuple with the text and its box.
             return (topCandidate.string, imageRect)
         }
-
-        /* Iteramos sobre los textos reconocidos y sus cajas para imprimirlos. */
-        for (text, rect) in recognizedStrings {
-            print("Recognized text: \(text) in box: \(rect)")
-        }
+        // We send the obtained observations through the completion.
+        completion(recognizedStrings)
     }
     
-    // Configuramos y ejecutamos la petición de reconocimiento de texto con Vision.
+    // We configure and execute the text recognition request with Vision.
     let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-    
     do {
-        // Intentamos realizar la petición.
+        // We attempt to perform the request.
         try requestHandler.perform([request])
     } catch {
-        // Imprimimos un mensaje si la ejecución falla.
+        // We print a message if the execution fails.
         print("Unable to perform the request: \(error)")
+        completion(nil)
     }
 }
 
-/// Convierte rectángulos con coordenadas normalizadas a coordenadas de imagen reales.
+/// Converts rectangles with normalized coordinates to image coordinates.
 func VNImageRectForNormalizedRect(_ normalizedRect: CGRect, _ imageWidth: Int, _ imageHeight: Int) -> CGRect {
-    /* Calculamos las coordenadas (x, y), así como el ancho y el alto en números reales */
+    /* We calculate the coordinates (x, y), as well as the width and height in real numbers */
     let x = normalizedRect.minX * CGFloat(imageWidth)
     let y = normalizedRect.minY * CGFloat(imageHeight)
     let width = normalizedRect.width * CGFloat(imageWidth)
     let height = normalizedRect.height * CGFloat(imageHeight)
-    // Regresamos el rectángulo con dimensiones reales.
+    // We return the rectangle with real dimensions.
     return CGRect(x: x, y: y, width: width, height: height)
 }

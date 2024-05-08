@@ -7,32 +7,57 @@
 
 import SwiftUI
 
-/// Vista sencilla para capturar una fotografía desde el dispositivo físico.
+/// UI with a button to capture an image with the camera.
 struct TakePhotoView: View {
 
-    // Controla la visibilidad de la interfaz de la cámara.
+    // Controls the visibility of the camera interface.
     @State private var showCamera = false
-    // Almacena la imagen capturada por la cámara.
+    // Stores the image captured by the camera.
     @State private var image: UIImage?
+    // Receives information about the text recognized in the image.
+    @State private var recognizedData: [(String, CGRect)] = []
     
     var body: some View {
         VStack {
             Button("Open Camera") {
-                // Al pulsar el botón, se activa la cámara
                 self.showCamera = true
             }
+            /* If recognizedData contains data, we display it. */
+            if !recognizedData.isEmpty {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(recognizedData.indices, id: \.self) { index in
+                            let data = recognizedData[index]
+                            Text("Text: \(data.0)")
+                            Text("Position: \(data.1.debugDescription)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding()
+                }
+            }
         }
-        // Vista modal que se muestra cuando showCamera es true.
+        // Modal view that appears when showCamera is true.
         .sheet(isPresented: $showCamera) {
-            // Mostramos la vista de la cámara.
             CameraView(image: $image, isShown: $showCamera)
         }
-        // Si se realizan cambios en la variable de la imagen...
+        // Activates as soon as the user taps "use photo"
         .onChange(of: image) { oldValue, newValue in
-            // Verificamos si hay una nueva imagen válida.
+            // If there is a new value for the image, we define it as "validImage"
             if let validImage = newValue {
-                // Llamamos a una función para procesar la imagen si es válida.
-                processImage(validImage)
+                // We call a function to process the image
+                processImage(validImage) { recognizedData in
+                    // Here we could use Async/Await to ensure linear programming.
+                    DispatchQueue.main.async {
+                        if let data = recognizedData {
+                            /* We update the State variable to get the recognition data */
+                            self.recognizedData = data
+                        } else {
+                            print("No text was recognized.")
+                        }
+                    }
+                }
             }
         }
     }

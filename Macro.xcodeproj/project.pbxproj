@@ -14,7 +14,6 @@
 		B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284852BE98C9A0046DBD2 /* CameraView.swift */; };
 		B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284872BE98CF90046DBD2 /* TextRecognition.swift */; };
 		B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284892BE98FE80046DBD2 /* TakePhotoView.swift */; };
-		B302848C2BE996B40046DBD2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B302848B2BE996B40046DBD2 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +26,6 @@
 		B30284852BE98C9A0046DBD2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B30284872BE98CF90046DBD2 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
 		B30284892BE98FE80046DBD2 /* TakePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoView.swift; sourceTree = "<group>"; };
-		B302848B2BE996B40046DBD2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,6 @@
 				788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */,
 				788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */,
 				788AED6F2BE8DD2B00D03FCC /* Preview Content */,
-				B302848B2BE996B40046DBD2 /* File.swift */,
 			);
 			path = Macro;
 			sourceTree = "<group>";
@@ -152,7 +149,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */,
-				B302848C2BE996B40046DBD2 /* File.swift in Sources */,
 				B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */,
 				788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */,
 				B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */,

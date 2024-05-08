@@ -8,53 +8,52 @@
 import SwiftUI
 import AVFoundation
 
-/// Vista que maneja la cámara.
+/// View that handles the camera.
 struct CameraView: UIViewControllerRepresentable {
-    // Binding para una imagen que permitirá actualizar la imagen en la vista que muestra esta cámara.
+    // Will allow updating the image in the view displaying this camera.
     @Binding var image: UIImage?
-    // Binding para controlar la visibilidad de esta vista de cámara desde otra vista.
+    // Controls the visibility of this camera view from another view.
     @Binding var isShown: Bool
 
-    /// Configuramos un UIImagePickerController (un ViewController) para obtener una imagen desde la cámara.
+    /// We configure a UIImagePickerController (a ViewController) to obtain an image from the camera. This is necessary for the CameraView structure to adopt the UIViewControllerRepresentable protocol.
     func makeUIViewController(context: Context) -> UIImagePickerController {
-        // Creamos un controlador de selección de imagen.
+        // We create an image picker controller.
         let picker = UIImagePickerController()
-        // Establecemos el delegado del picker al coordinador que gestionará los eventos del UIImagePickerController.
+        // We assign the delegate of the picker as the coordinator who will manage the events of the UIImagePickerController.
         picker.delegate = context.coordinator
-        // Especificamos que la fuente de imágenes debe ser la cámara del dispositivo.
+        // We specify that the image source should be the camera of the device.
         picker.sourceType = .camera
-        // Regresamos la imagen obtenida en un picker.
+        // We return the image picker controller.
         return picker
     }
 
-    /// Actualizamos el UIViewController con nueva información. En este caso, no necesitamos hacer nada aquí.
+    /// Here we can update the UIViewController with new information. This function is required to adopt the UIViewControllerRepresentable protocol but in this case, we do not need to do anything here.
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 
-    /// Creamos un coordinador que ayudará a manejar la comunicación entre este representable de UIKit y SwiftUI.
+    /// We create a coordinator that will help manage communication between this UIKit representable and SwiftUI.
     func makeCoordinator() -> Coordinator {
-        // Instanciamos un nuevo Coordinador, pasando una referencia a esta instancia de CameraView.
+        // We instantiate a new Coordinator, passing a reference to this instance of CameraView.
         Coordinator(self)
     }
 
-    /// Definimos una clase interna Coordinator que hereda de NSObject y cumple con los protocolos necesarios para actuar como delegado de UINavigationController y UIImagePickerController.
+    /// We define an inner class Coordinator that inherits from NSObject and meets the necessary protocols to act as delegate for UINavigationController and UIImagePickerController.
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        // Mantenemos una referencia a la vista de cámara para poder actualizarla.
+        // We maintain a reference to the camera view so we can update it.
         var parent: CameraView
-
-        /* Inicializamos el coordinador con la vista de cámara. */
+        /* We initialize objects of this class with the reference to the camera view. */
         init(_ parent: CameraView) {
             self.parent = parent
         }
-
-        /// Maneja el evento de finalización de selección de imagen.
+        /// Handles the event of image selection completion.
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            // Extraemos la imagen original seleccionada.
+            // We extract the selected original image.
             if let image = info[.originalImage] as? UIImage {
-                // Asignamos la imagen al binding de la vista de cámara para que se pueda usar en otras vistas.
+                // We assign the image to the camera view's binding so it can be used in other views.
                 parent.image = image
             }
-            // Cerramos la vista de la cámara estableciendo isShown en falso.
+            // We close the camera view by setting isShown to false.
             parent.isShown = false
         }
     }
+    
 }
