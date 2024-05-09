@@ -51,7 +51,7 @@ struct CameraView: UIViewControllerRepresentable {
                 // We assign the image to the camera view's binding so it can be used in other views.
                 parent.image = image
             }
-            // We close the camera view by setting isShown to false.
+            // We close the camera view.
             parent.isShown = false
         }
     }

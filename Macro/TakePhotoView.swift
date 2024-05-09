@@ -17,10 +17,32 @@ struct TakePhotoView: View {
     // Receives information about the text recognized in the image.
     @State private var recognizedData: [(String, CGRect)] = []
     
+    /* Variables to move the image inside the scrollview */
+    @State private var offset = CGSize.zero
+    @GestureState private var dragState = CGSize.zero
+    
     var body: some View {
         VStack {
             Button("Open Camera") {
                 self.showCamera = true
+            }
+            // We show the image to be able to add the rectangles
+            if let image = image {
+                GeometryReader { geometry in
+                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
+                        Image(uiImage: image) // Scale 1.0 image (biiiiig)
+                            .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
+                            .overlay(RectanglesOverlay(rectangles: recognizedData))
+                            .gesture(
+                                DragGesture()
+                                    .updating($dragState) { value, state, _ in
+                                        state = value.translation
+                                    }
+                            )
+                    }
+                    .frame(width: geometry.size.width - 20, height: geometry.size.height)
+                }
+                Text("Scale: \(image.scale)")
             }
             /* If recognizedData contains data, we display it. */
             if !recognizedData.isEmpty {
@@ -36,6 +58,7 @@ struct TakePhotoView: View {
                     }
                     .padding()
                 }
+                .frame(height: 300)
             }
         }
         // Modal view that appears when showCamera is true.

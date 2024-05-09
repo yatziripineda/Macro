@@ -59,6 +59,6 @@ func VNImageRectForNormalizedRect(_ normalizedRect: CGRect, _ imageWidth: Int, _
     let y = normalizedRect.minY * CGFloat(imageHeight)
     let width = normalizedRect.width * CGFloat(imageWidth)
     let height = normalizedRect.height * CGFloat(imageHeight)
-    // We return the rectangle with real dimensions.
-    return CGRect(x: x, y: y, width: width, height: height)
+    // We return the rectangle with real dimensions ***THEY ARE INVERTED!!***
+    return CGRect(x: y, y: x, width: height, height: width)
 }
