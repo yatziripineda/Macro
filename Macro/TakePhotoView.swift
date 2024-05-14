@@ -16,7 +16,7 @@ struct TakePhotoView: View {
     @State private var image: UIImage?
     // Receives information about the text recognized in the image.
     @State private var recognizedData: [(String, CGRect)] = []
-    
+    @State private var showQuizz = false
     /* Variables to move the image inside the scrollview */
     @State private var offset = CGSize.zero
     @GestureState private var dragState = CGSize.zero
@@ -29,6 +29,7 @@ struct TakePhotoView: View {
                 } label: {
                     Text("Open camera with nav")
                 }
+                NavigationLink("aaaaa"){ BugSolveView(rectangles: $recognizedData)}
                 // We show the image to be able to add the rectangles
                 if let image = image {
                     GeometryReader { geometry in
@@ -61,7 +62,21 @@ struct TakePhotoView: View {
                         }
                         .padding()
                     }
+                    .frame(height: 300)
+                   
+                    Button("Quizz") {
+                        self.showQuizz = true
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .buttonStyle(PlainButtonStyle())
                 }
+                
+            }
+            .sheet(isPresented: $showQuizz) {
+                QuizzView(rectangles: recognizedData, currentIndex: $currentIndex)
             }
         }
         // Activates as soon as the user taps "use photo"
