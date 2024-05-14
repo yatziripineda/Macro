@@ -9,12 +9,9 @@ import SwiftUI
 
 /// UI with a button to capture an image with the camera.
 struct TakePhotoView: View {
-
     @State private var currentIndex: Int = 0
     // Controls the visibility of the camera interface.
     @State private var showCamera = false
-    
-    @State private var showQuizz = false
     // Stores the image captured by the camera.
     @State private var image: UIImage?
     // Receives information about the text recognized in the image.
@@ -25,67 +22,47 @@ struct TakePhotoView: View {
     @GestureState private var dragState = CGSize.zero
     
     var body: some View {
-        
-        VStack {
-            Button("Open Camera") {
-                self.showCamera = true
-            }
-            NavigationStack{
-                NavigationLink("aaaaa"){ BugSolveView(rectangles: $recognizedData)}
-            }
-
-            // We show the image to be able to add the rectangles
-            if let image = image {
-                GeometryReader { geometry in
-                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        Image(uiImage: image) // Scale 1.0 image (biiiiig)
-                            .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-                            .overlay(RectanglesOverlay(rectangles: recognizedData, currentIndex: $currentIndex))
-                            .gesture(
-                                DragGesture()
-                                    .updating($dragState) { value, state, _ in
-                                        state = value.translation
-                                    }
-                            )
-                    }
-                    .frame(width: geometry.size.width - 20, height: geometry.size.height)
+        NavigationStack {
+            VStack {
+                NavigationLink {
+                    CameraView(image: $image, isShown: $showCamera)
+                } label: {
+                    Text("Open camera with nav")
                 }
-                Text("Scale: \(image.scale)")
-            }
-            /* If recognizedData contains data, we display it. */
-            if !recognizedData.isEmpty {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(recognizedData.indices, id: \.self) { index in
-                            let data = recognizedData[index]
-                            Text("Text: \(data.0)")
-                            Text("Position: \(data.1.debugDescription)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                // We show the image to be able to add the rectangles
+                if let image = image {
+                    GeometryReader { geometry in
+                        ScrollView([.horizontal, .vertical], showsIndicators: true) {
+                            Image(uiImage: image) // Scale 1.0 image (biiiiig)
+                                .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
+                                .overlay(RectanglesOverlay(rectangles: recognizedData, currentIndex: $currentIndex))
+                                .gesture(
+                                    DragGesture()
+                                        .updating($dragState) { value, state, _ in
+                                            state = value.translation
+                                        }
+                                )
                         }
+                        .frame(width: geometry.size.width - 20, height: geometry.size.height)
                     }
-                    .padding()
+                    Text("Scale: \(image.scale)")
                 }
-                .frame(height: 300)
-                Button("Quizz") {
-                    self.showQuizz = true
+                /* If recognizedData contains data, we display it. */
+                if !recognizedData.isEmpty {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(recognizedData.indices, id: \.self) { index in
+                                let data = recognizedData[index]
+                                Text("Text: \(data.0)")
+                                Text("Position: \(data.1.debugDescription)")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding()
+                    }
                 }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .buttonStyle(PlainButtonStyle())
             }
-            
-            
-        }
-        // Modal view that appears when showCamera is true.
-        .sheet(isPresented: $showCamera) {
-            CameraView(image: $image, isShown: $showCamera)
-            
-        }
-        .sheet(isPresented: $showQuizz) {
-            QuizzView(rectangles: recognizedData, currentIndex: $currentIndex)
         }
         // Activates as soon as the user taps "use photo"
         .onChange(of: image) { oldValue, newValue in
@@ -112,3 +89,5 @@ struct TakePhotoView: View {
 #Preview {
     TakePhotoView()
 }
+
+
