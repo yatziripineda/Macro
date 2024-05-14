@@ -9,7 +9,7 @@ import SwiftUI
 
 /// UI with a button to capture an image with the camera.
 struct TakePhotoView: View {
-
+    @State private var currentIndex: Int = 0
     // Controls the visibility of the camera interface.
     @State private var showCamera = false
     // Stores the image captured by the camera.
@@ -35,7 +35,7 @@ struct TakePhotoView: View {
                         ScrollView([.horizontal, .vertical], showsIndicators: true) {
                             Image(uiImage: image) // Scale 1.0 image (biiiiig)
                                 .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-                                .overlay(RectanglesOverlay(rectangles: recognizedData))
+                                .overlay(RectanglesOverlay(rectangles: recognizedData, currentIndex: $currentIndex))
                                 .gesture(
                                     DragGesture()
                                         .updating($dragState) { value, state, _ in
@@ -89,3 +89,5 @@ struct TakePhotoView: View {
 #Preview {
     TakePhotoView()
 }
+
+
