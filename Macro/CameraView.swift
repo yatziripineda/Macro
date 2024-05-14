@@ -14,6 +14,8 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var image: UIImage?
     // Controls the visibility of this camera view from another view.
     @Binding var isShown: Bool
+    // Variable para cerrar la vista en una jerarquía de navegación
+    @Environment(\.dismiss) var dismiss
 
     /// We configure a UIImagePickerController (a ViewController) to obtain an image from the camera. This is necessary for the CameraView structure to adopt the UIViewControllerRepresentable protocol.
     func makeUIViewController(context: Context) -> UIImagePickerController {
@@ -53,7 +55,7 @@ struct CameraView: UIViewControllerRepresentable {
             }
             // We close the camera view.
             parent.isShown = false
+            parent.dismiss()
         }
     }
-    
 }

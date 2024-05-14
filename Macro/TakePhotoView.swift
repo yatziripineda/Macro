@@ -22,48 +22,47 @@ struct TakePhotoView: View {
     @GestureState private var dragState = CGSize.zero
     
     var body: some View {
-        VStack {
-            Button("Open Camera") {
-                self.showCamera = true
-            }
-            // We show the image to be able to add the rectangles
-            if let image = image {
-                GeometryReader { geometry in
-                    ScrollView([.horizontal, .vertical], showsIndicators: true) {
-                        Image(uiImage: image) // Scale 1.0 image (biiiiig)
-                            .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-                            .overlay(RectanglesOverlay(rectangles: recognizedData))
-                            .gesture(
-                                DragGesture()
-                                    .updating($dragState) { value, state, _ in
-                                        state = value.translation
-                                    }
-                            )
-                    }
-                    .frame(width: geometry.size.width - 20, height: geometry.size.height)
+        NavigationStack {
+            VStack {
+                NavigationLink {
+                    CameraView(image: $image, isShown: $showCamera)
+                } label: {
+                    Text("Open camera with nav")
                 }
-                Text("Scale: \(image.scale)")
-            }
-            /* If recognizedData contains data, we display it. */
-            if !recognizedData.isEmpty {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(recognizedData.indices, id: \.self) { index in
-                            let data = recognizedData[index]
-                            Text("Text: \(data.0)")
-                            Text("Position: \(data.1.debugDescription)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                // We show the image to be able to add the rectangles
+                if let image = image {
+                    GeometryReader { geometry in
+                        ScrollView([.horizontal, .vertical], showsIndicators: true) {
+                            Image(uiImage: image) // Scale 1.0 image (biiiiig)
+                                .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
+                                .overlay(RectanglesOverlay(rectangles: recognizedData))
+                                .gesture(
+                                    DragGesture()
+                                        .updating($dragState) { value, state, _ in
+                                            state = value.translation
+                                        }
+                                )
                         }
+                        .frame(width: geometry.size.width - 20, height: geometry.size.height)
                     }
-                    .padding()
+                    Text("Scale: \(image.scale)")
                 }
-                .frame(height: 300)
+                /* If recognizedData contains data, we display it. */
+                if !recognizedData.isEmpty {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(recognizedData.indices, id: \.self) { index in
+                                let data = recognizedData[index]
+                                Text("Text: \(data.0)")
+                                Text("Position: \(data.1.debugDescription)")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding()
+                    }
+                }
             }
-        }
-        // Modal view that appears when showCamera is true.
-        .sheet(isPresented: $showCamera) {
-            CameraView(image: $image, isShown: $showCamera)
         }
         // Activates as soon as the user taps "use photo"
         .onChange(of: image) { oldValue, newValue in
