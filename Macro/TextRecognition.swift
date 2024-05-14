@@ -32,7 +32,7 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
             guard let topCandidate = observation.topCandidates(1).first else { return nil }
             let boundingBox = observation.boundingBox
             // We convert the normalized coordinates of the bounding box to image coordinates.
-            let imageRect = VNImageRectForNormalizedRect(boundingBox, Int(cgImage.width), Int(cgImage.height))
+            let imageRect = VNImageRectForNormalizedRect(boundingBox, Int(cgImage.width), Int(cgImage.height), image)
             // We return a tuple with the text and its box.
             return (topCandidate.string, imageRect)
         }
@@ -53,12 +53,45 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
 }
 
 /// Converts rectangles with normalized coordinates to image coordinates.
-func VNImageRectForNormalizedRect(_ normalizedRect: CGRect, _ imageWidth: Int, _ imageHeight: Int) -> CGRect {
+func VNImageRectForNormalizedRect(_ normalizedRect: CGRect, _ imageWidth: Int, _ imageHeight: Int, _ uiimage:UIImage) -> CGRect {
     /* We calculate the coordinates (x, y), as well as the width and height in real numbers */
-    let x = normalizedRect.minX * CGFloat(imageWidth)
-    let y = normalizedRect.minY * CGFloat(imageHeight)
-    let width = normalizedRect.width * CGFloat(imageWidth)
-    let height = normalizedRect.height * CGFloat(imageHeight)
+    print("minX: \(normalizedRect.minX)","\n","minY: \(normalizedRect.minY)","maxX: \(normalizedRect.maxX)","\n","maxY: \(normalizedRect.maxY)")
+    var x = CGFloat(0)
+    var y = CGFloat(0)
+    var height = CGFloat(0)
+    var width = CGFloat(0)
+   switch uiimage.imageOrientation {
+    case .up:
+       y = (1 - normalizedRect.maxY) * CGFloat(imageHeight)
+       x = normalizedRect.minX * CGFloat(imageWidth)
+       width = normalizedRect.width * CGFloat(imageWidth)
+       height = normalizedRect.height * CGFloat(imageHeight)
+    case .down:
+       y = normalizedRect.minY * CGFloat(imageHeight)
+       x = (1 - normalizedRect.maxX) * CGFloat(imageWidth)
+       width = normalizedRect.width * CGFloat(imageWidth)
+       height = normalizedRect.height * CGFloat(imageHeight)
+    case .left:
+       x = (1 - normalizedRect.maxY) * CGFloat(imageHeight)
+       y = (1 - normalizedRect.maxX) * CGFloat(imageWidth)
+       height = normalizedRect.width * CGFloat(imageWidth)
+       width = normalizedRect.height * CGFloat(imageHeight)
+    case .right:
+       x = normalizedRect.minY * CGFloat(imageHeight)
+       y = normalizedRect.minX * CGFloat(imageWidth)
+       height = normalizedRect.width * CGFloat(imageWidth)
+       width = normalizedRect.height * CGFloat(imageHeight)
+    case .upMirrored:
+        break
+    case .downMirrored:
+        break
+    case .leftMirrored:
+        break
+    case .rightMirrored:
+        break
+    @unknown default:
+         break
+    }
     // We return the rectangle with real dimensions ***THEY ARE INVERTED!!***
-    return CGRect(x: y, y: x, width: height, height: width)
+    return CGRect(x: x, y: y, width: width, height: height)
 }
