@@ -7,19 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780915BD2BECD91800654352 /* QuizzView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915BC2BECD91800654352 /* QuizzView.swift */; };
+		780915BF2BEE26C800654352 /* BugSolveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915BE2BEE26C800654352 /* BugSolveView.swift */; };
+		780915C12BF21BF300654352 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C02BF21BF300654352 /* HomeView.swift */; };
+		780915C32BF268E300654352 /* TopicDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C22BF268E300654352 /* TopicDetail.swift */; };
+		780915C52BF3557B00654352 /* DiagramModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C42BF3557B00654352 /* DiagramModel.swift */; };
 		788AED692BE8DD2700D03FCC /* MacroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788AED682BE8DD2700D03FCC /* MacroApp.swift */; };
 		788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788AED6A2BE8DD2700D03FCC /* ContentView.swift */; };
 		788AED6D2BE8DD2B00D03FCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */; };
 		788AED712BE8DD2B00D03FCC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */; };
+		B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284852BE98C9A0046DBD2 /* CameraView.swift */; };
+		B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284872BE98CF90046DBD2 /* TextRecognition.swift */; };
+		B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284892BE98FE80046DBD2 /* TakePhotoView.swift */; };
+		B30284922BEC26C90046DBD2 /* RectanglesOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284912BEC26C90046DBD2 /* RectanglesOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		780915BC2BECD91800654352 /* QuizzView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizzView.swift; sourceTree = "<group>"; };
+		780915BE2BEE26C800654352 /* BugSolveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugSolveView.swift; sourceTree = "<group>"; };
+		780915C02BF21BF300654352 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		780915C22BF268E300654352 /* TopicDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetail.swift; sourceTree = "<group>"; };
+		780915C42BF3557B00654352 /* DiagramModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramModel.swift; sourceTree = "<group>"; };
 		788AED652BE8DD2700D03FCC /* Macro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Macro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788AED682BE8DD2700D03FCC /* MacroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroApp.swift; sourceTree = "<group>"; };
 		788AED6A2BE8DD2700D03FCC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Macro.entitlements; sourceTree = "<group>"; };
 		788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B30284852BE98C9A0046DBD2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		B30284872BE98CF90046DBD2 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
+		B30284892BE98FE80046DBD2 /* TakePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakePhotoView.swift; sourceTree = "<group>"; };
+		B30284912BEC26C90046DBD2 /* RectanglesOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectanglesOverlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +72,18 @@
 			children = (
 				788AED682BE8DD2700D03FCC /* MacroApp.swift */,
 				788AED6A2BE8DD2700D03FCC /* ContentView.swift */,
+				B30284852BE98C9A0046DBD2 /* CameraView.swift */,
+				B30284872BE98CF90046DBD2 /* TextRecognition.swift */,
+				B30284892BE98FE80046DBD2 /* TakePhotoView.swift */,
+				B30284912BEC26C90046DBD2 /* RectanglesOverlay.swift */,
 				788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */,
 				788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */,
 				788AED6F2BE8DD2B00D03FCC /* Preview Content */,
+				780915BC2BECD91800654352 /* QuizzView.swift */,
+				780915BE2BEE26C800654352 /* BugSolveView.swift */,
+				780915C02BF21BF300654352 /* HomeView.swift */,
+				780915C22BF268E300654352 /* TopicDetail.swift */,
+				780915C42BF3557B00654352 /* DiagramModel.swift */,
 			);
 			path = Macro;
 			sourceTree = "<group>";
@@ -139,8 +166,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				780915C12BF21BF300654352 /* HomeView.swift in Sources */,
+				B30284922BEC26C90046DBD2 /* RectanglesOverlay.swift in Sources */,
+				B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */,
+				780915C52BF3557B00654352 /* DiagramModel.swift in Sources */,
+				B302848A2BE98FE80046DBD2 /* TakePhotoView.swift in Sources */,
+				780915C32BF268E300654352 /* TopicDetail.swift in Sources */,
+				780915BD2BECD91800654352 /* QuizzView.swift in Sources */,
 				788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */,
+				B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */,
 				788AED692BE8DD2700D03FCC /* MacroApp.swift in Sources */,
+				780915BF2BEE26C800654352 /* BugSolveView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +310,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -312,6 +349,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
