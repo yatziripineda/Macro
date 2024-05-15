@@ -9,18 +9,18 @@ import SwiftUI
 
 struct ImageDiagramView: View {
     @State private var showQuizz = false
-    var diagram: DiagramInfo
+    var diagram: Diagram
     
     var body: some View {
         NavigationStack {
             VStack{
-                ProgressView(value: diagram.statistics)
+                ProgressView(value: 100)
                     .tint(.orange)
                     .padding()
                     .scaleEffect(x: 1, y: 10)
                     .cornerRadius(4.0)
                     .frame(width: 600)
-                Image(diagram.image)
+                Image("ImagenPrueba")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(20)
@@ -64,6 +64,7 @@ struct ImageDiagramView: View {
     }
 }
 
-#Preview {
-    ImageDiagramView(diagram: DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.5))
-}
+
+//#Preview {
+//    ImageDiagramView(diagram: DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.5))
+//}

@@ -5,55 +5,38 @@
 //  Created by yatziri on 13/05/24.
 //
 import SwiftUI
+import SwiftData
 
 enum Activities {
-    case diagrams
-    case diagrams1
+    case Option_Diagram1
+    case Option_Diagram2
     var ActivitiesText: String{
         switch self {
-        case .diagrams:
+        case .Option_Diagram1:
             return "Diagrams"
-        case .diagrams1:
+        case .Option_Diagram2:
             return "Diagrams1"
         }
     }
 }
-struct DiagramInfo: Hashable {
-    let id = UUID()
-    let image: String
-    let label: String
-    let statistics: Float
-    
-    // Implementación de Hashable
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(image)
-        hasher.combine(label)
-        hasher.combine(statistics)
-    }
-    
-    static func ==(lhs: DiagramInfo, rhs: DiagramInfo) -> Bool {
-            return lhs.id == rhs.id &&
-                lhs.image == rhs.image &&
-                lhs.label == rhs.label &&
-                lhs.statistics == rhs.statistics
-        }
-}
+
 
 
 struct TopicDetail: View {
-    @State private var activity: Activities = .diagrams
+    @Query (sort: \Diagram.date)var diagram: [Diagram]
+    @State private var activity: Activities = .Option_Diagram1
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
     @State private var searchText = ""
     
-    var filteredDiagram: [DiagramInfo] {
+    var filteredDiagram: [Diagram] {
         if searchText.isEmpty {
-            return diagrams
+            return diagram
         } else {
-            return diagrams.filter { $0.label.localizedCaseInsensitiveContains(searchText) }
+            return diagram.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
+    
     var topic: Topic?
     @State private var currentIndex: Int = 0
     // Controls the visibility of the camera interface.
@@ -68,105 +51,120 @@ struct TopicDetail: View {
     @GestureState private var dragState = CGSize.zero
     
     
-    let diagrams: [DiagramInfo] = [
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.75),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.60),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.90),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.55),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 5", statistics: 0.260),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 6", statistics: 0.190),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 7", statistics: 0.75),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 8", statistics: 0.060),
-        DiagramInfo(image: "ImagenPrueba", label: "Diagram 9", statistics: 0.890)
-            
-        ]
-
     var body: some View {
         NavigationStack {
-            VStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: {
-                            activity = .diagrams
-                            textPosition = 10
-                        }) {
-                            Text("Diagrams")
-                                .font(.title3)
-                                .foregroundColor(activity == .diagrams ? .black : .gray)
-                        } .padding()
-                        Button(action: {
-                            activity = .diagrams1
-                            textPosition = 130
-                        }) {
-                            Text("Diagrams1")
-                                .font(.title3)
-                                .foregroundColor(activity == .diagrams1 ? .black : .gray)
+            if !recognizedData.isEmpty{
+                BugSolveView(rectangles: $recognizedData, image: $image)
+            }else{
+                VStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Button(action: {
+                                activity = .Option_Diagram1
+                                textPosition = 10
+                            }) {
+                                Text("Diagrams")
+                                    .font(.title3)
+                                    .foregroundColor(activity == .Option_Diagram1 ? .black : .gray)
+                            } .padding()
+                            Button(action: {
+                                activity = .Option_Diagram2
+                                textPosition = 130
+                            }) {
+                                Text("Diagrams1")
+                                    .font(.title3)
+                                    .foregroundColor(activity == .Option_Diagram2 ? .black : .gray)
+                            }
+                            .padding()
+                            Spacer()
+                        }
+                        
+                        Rectangle()
+                            .frame(width: 110, height: 5)
+                            .foregroundColor(.black)
+                            .padding(.horizontal, textPosition)
+                            .padding(.bottom, -30.0)
+                        Divider()
+                    }
+                    if diagram.isEmpty{
+                        ContentUnavailableView("No Diagrams", image: "pencil.slash", description: Text("No views"))
+                    }else{
+                        ScrollView{
+                            
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
+                                ForEach(filteredDiagram, id: \.self) { diagram in
+                                    NavigationLink {
+                                        ImageDiagramView(diagram: diagram)
+                                    } label: {
+                                        DiagramButton(diagram: diagram)
+                                            .id(diagram.id)
+                                            .padding()
+                                    }
+                                    
+                                }
+                            }
+                            .padding()
                         }
                         .padding()
-                        Spacer()
                     }
-                    
-                    Rectangle()
-                        .frame(width: 110, height: 5)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, textPosition)
-                        .padding(.bottom, -30.0)
-                    Divider()
-                }
-                ScrollView{
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                        ForEach(filteredDiagram, id: \.self) { diagram in
-                            NavigationLink {
-                                ImageDiagramView(diagram: diagram)
-                            } label: {
-                                DiagramButton(diagram: diagram)
-                                    .id(diagram.id)
+                    Spacer()
+                        .navigationTitle(topic?.localizednavigationTitle ?? "")
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                NavigationLink {
+                                    CameraView(image: $image, isShown: $showCamera)
+                                    
+                                    //                                .navigationBarBackButtonHidden(true)
+                                } label: {
+                                    Image(systemName: "doc.viewfinder")
+                                        .foregroundColor(.blue)
+                                }
+                                //
+                            }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: {
+                                    
+                                }) {
+                                    Image(systemName: "square.and.pencil")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: {
+                                    
+                                }) {
+                                    Text("Select")
+                                        .foregroundColor(.blue)
+                                    
+                                    
+                                    
+                                }
+                            }
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                SearchBar(text: $searchText)
                                     .padding()
                             }
                             
                         }
-                    }
-                    .padding()
+                    // Activates as soon as the user taps "use photo"
+                        .onChange(of: image) { oldValue, newValue in
+                            // If there is a new value for the image, we define it as "validImage"
+                            if let validImage = newValue {
+                                // We call a function to process the image
+                                processImage(validImage) { recognizedData in
+                                    // Here we could use Async/Await to ensure linear programming.
+                                    DispatchQueue.main.async {
+                                        if let data = recognizedData {
+                                            /* We update the State variable to get the recognition data */
+                                            self.recognizedData = data
+                                        } else {
+                                            print("No text was recognized.")
+                                        }
+                                    }
+                                }
+                            }
+                        }
                 }
-                .padding()
-                Spacer()
-                    .navigationTitle(topic?.localizednavigationTitle ?? "")
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink {
-                                CameraView(image: $image, isShown: $showCamera)
-                                //                                .navigationBarBackButtonHidden(true)
-                            } label: {
-                                Image(systemName: "doc.viewfinder")
-                                    .foregroundColor(.blue)
-                            }
-                            //
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "square.and.pencil")
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                
-                            }) {
-                                Text("Select")
-                                    .foregroundColor(.blue)
-                                
-                                
-                                
-                            }
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            SearchBar(text: $searchText)
-                                .padding()
-                        }
-                        
-                    }
             }
         }
     }
@@ -197,12 +195,15 @@ struct BottomRoundedRectangle: Shape {
 }
 
 
+
+
+
 struct DiagramButton: View {
-    var diagram: DiagramInfo
+    var diagram: Diagram
     
     var body: some View {
         ZStack {
-            Image(diagram.image)
+            Image("ImagenPrueba")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 190, height: 163)
@@ -211,7 +212,7 @@ struct DiagramButton: View {
             ZStack {
                 VStack {
                     HStack {
-                        Text(diagram.label)
+                        Text(diagram.name)
                             .foregroundColor(.black)
                             .font(.footnote)
                             .bold()
@@ -219,7 +220,7 @@ struct DiagramButton: View {
                     }
                     HStack {
                         Spacer()
-                        Text("\(diagram.statistics)%")
+                        Text("100%")
                             .font(.footnote)
                             .foregroundColor(Color(hex: "3C3C43").opacity(0.60))
                     }
@@ -237,10 +238,10 @@ struct DiagramButton: View {
     }
 }
 
-
+/*
 #Preview {
-    DiagramButton(diagram: DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 75))
-}
+    DiagramButton(diagram: Diagram(name: "Diagram", date: Date.now, labels: [("Hola",CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(1)))]))
+}*/
 
 
 

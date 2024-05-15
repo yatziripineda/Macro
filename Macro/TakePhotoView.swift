@@ -31,7 +31,7 @@ struct TakePhotoView: View {
                 } label: {
                     Text("Open camera with nav")
                 }
-                NavigationLink("aaaaa"){ BugSolveView(rectangles: $recognizedData)}
+                NavigationLink("aaaaa"){ BugSolveView(rectangles: $recognizedData, image: $image)}
                 // We show the image to be able to add the rectangles
                 if let image = image {
                     GeometryReader { geometry in
