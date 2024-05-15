@@ -22,7 +22,7 @@ struct DiagramInfo: Hashable {
     let id = UUID()
     let image: String
     let label: String
-    let statistics: Int
+    let statistics: Float
     
     // Implementación de Hashable
     func hash(into hasher: inout Hasher) {
@@ -45,66 +45,129 @@ struct TopicDetail: View {
     @State private var activity: Activities = .diagrams
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
+    @State private var searchText = ""
     
+    var filteredDiagram: [DiagramInfo] {
+        if searchText.isEmpty {
+            return diagrams
+        } else {
+            return diagrams.filter { $0.label.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
     var topic: Topic?
+    @State private var currentIndex: Int = 0
+    // Controls the visibility of the camera interface.
+    @State private var showCamera = false
+    // Stores the image captured by the camera.
+    @State private var image: UIImage?
+    // Receives information about the text recognized in the image.
+    @State private var recognizedData: [(String, CGRect)] = []
+    @State private var showQuizz = false
+    /* Variables to move the image inside the scrollview */
+    @State private var offset = CGSize.zero
+    @GestureState private var dragState = CGSize.zero
+    
     
     let diagrams: [DiagramInfo] = [
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 75),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 60),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 90),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 75),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 5", statistics: 60),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 6", statistics: 90),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 7", statistics: 75),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 8", statistics: 60),
-            DiagramInfo(image: "ImagenPrueba", label: "Diagram 9", statistics: 90)
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.75),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.60),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.90),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 0.55),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 5", statistics: 0.260),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 6", statistics: 0.190),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 7", statistics: 0.75),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 8", statistics: 0.060),
+        DiagramInfo(image: "ImagenPrueba", label: "Diagram 9", statistics: 0.890)
             
         ]
 
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                HStack {
-                    Button(action: {
-                        activity = .diagrams
-                        textPosition = 10
-                    }) {
-                        Text("Diagrams")
-                            .font(.title3)
-                            .foregroundColor(activity == .diagrams ? .black : .gray)
-                    } .padding()
-                    Button(action: {
-                        activity = .diagrams1
-                        textPosition = 130
-                    }) {
-                        Text("Diagrams1")
-                            .font(.title3)
-                            .foregroundColor(activity == .diagrams1 ? .black : .gray)
+        NavigationStack {
+            VStack {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Button(action: {
+                            activity = .diagrams
+                            textPosition = 10
+                        }) {
+                            Text("Diagrams")
+                                .font(.title3)
+                                .foregroundColor(activity == .diagrams ? .black : .gray)
+                        } .padding()
+                        Button(action: {
+                            activity = .diagrams1
+                            textPosition = 130
+                        }) {
+                            Text("Diagrams1")
+                                .font(.title3)
+                                .foregroundColor(activity == .diagrams1 ? .black : .gray)
+                        }
+                        .padding()
+                        Spacer()
+                    }
+                    
+                    Rectangle()
+                        .frame(width: 110, height: 5)
+                        .foregroundColor(.black)
+                        .padding(.horizontal, textPosition)
+                        .padding(.bottom, -30.0)
+                    Divider()
+                }
+                ScrollView{
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
+                        ForEach(filteredDiagram, id: \.self) { diagram in
+                            NavigationLink {
+                                ImageDiagramView(diagram: diagram)
+                            } label: {
+                                DiagramButton(diagram: diagram)
+                                    .id(diagram.id)
+                                    .padding()
+                            }
+                            
+                        }
                     }
                     .padding()
-                    Spacer()
-                }
-                
-                Rectangle()
-                    .frame(width: 110, height: 5)
-                    .foregroundColor(.black)
-                    .padding(.horizontal, textPosition)
-                    .padding(.bottom, -30.0)
-                Divider()
-            }
-            ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                    ForEach(diagrams, id: \.self) { diagram in
-                        DiagramButton(diagram: diagram)
-                            .id(diagram.id)
-                            .padding()
-                    }
                 }
                 .padding()
+                Spacer()
+                    .navigationTitle(topic?.localizednavigationTitle ?? "")
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink {
+                                CameraView(image: $image, isShown: $showCamera)
+                                //                                .navigationBarBackButtonHidden(true)
+                            } label: {
+                                Image(systemName: "doc.viewfinder")
+                                    .foregroundColor(.blue)
+                            }
+                            //
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                
+                            }) {
+                                Image(systemName: "square.and.pencil")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                
+                            }) {
+                                Text("Select")
+                                    .foregroundColor(.blue)
+                                
+                                
+                                
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            SearchBar(text: $searchText)
+                                .padding()
+                        }
+                        
+                    }
             }
-            .padding()
-            Spacer()
-                .navigationTitle(topic?.localizednavigationTitle ?? "")
         }
     }
 }
@@ -127,7 +190,10 @@ struct BottomRoundedRectangle: Shape {
 }
 
 #Preview {
-    TopicDetail()
+    TopicDetail(topic: .all)
+}
+#Preview {
+    HomeView()
 }
 
 
@@ -146,6 +212,7 @@ struct DiagramButton: View {
                 VStack {
                     HStack {
                         Text(diagram.label)
+                            .foregroundColor(.black)
                             .font(.footnote)
                             .bold()
                         Spacer()
@@ -173,4 +240,29 @@ struct DiagramButton: View {
 
 #Preview {
     DiagramButton(diagram: DiagramInfo(image: "ImagenPrueba", label: "Diagram 1", statistics: 75))
+}
+
+
+
+struct SearchBar: View {
+    @Binding var text: String
+
+    var body: some View {
+        HStack {
+            TextField("Search", text: $text)
+                .padding(7)
+                .padding(.horizontal, 45)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+//                .padding(.horizontal, 10)
+                .overlay(
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 15)
+                    }
+                )
+        }
+    }
 }

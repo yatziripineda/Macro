@@ -12,25 +12,27 @@ struct HomeView: View {
     
     var body: some View {
         NavigationSplitView {
-            VStack {
-                List(Topic.allCases, selection: $selectedTopic) { topic in
-                    NavigationLink(
-                        destination: TopicDetail(topic: topic)
+            NavigationStack {
+                VStack {
+                    List(Topic.allCases, selection: $selectedTopic) { topic in
+                        NavigationLink(
+                            destination: TopicDetail(topic: topic)
                             ,
-                        tag: topic,
-                        selection: $selectedTopic
-                    ) {
-                        HStack {
-                            Image(systemName: "\(topic.localizedIcon)")
-                                .foregroundColor(.blue)
-                            Text(topic.localizedName)
+                            tag: topic,
+                            selection: $selectedTopic
+                        ) {
+                            HStack {
+                                Image(systemName: "\(topic.localizedIcon)")
+                                    .foregroundColor(.blue)
+                                Text(topic.localizedName)
+                            }
                         }
                     }
+                    .listStyle(SidebarListStyle())
                 }
-                .listStyle(SidebarListStyle())
+                .navigationTitle("Title")
             }
-            .navigationTitle("Title")
-        } 
+        }
     detail: {
         TopicDetail(topic: selectedTopic)
         }
