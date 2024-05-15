@@ -14,11 +14,14 @@ class Diagram:Hashable {
     let id = UUID()
     var name:String = ""
     var date:Date?
+    var image: Data?
+    
     var labels:[DiagramLabel]
-    init(name: String, date: Date?, labels: [DiagramLabel]) {
+    init(name: String, date: Date?, labels: [DiagramLabel], image: Data?) {
         self.name = name
         self.date = date
         self.labels = labels
+        self.image = image
     }
     
 //    HASHABE FUNCTIONS: Filter Functions

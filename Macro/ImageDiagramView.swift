@@ -14,7 +14,7 @@ struct ImageDiagramView: View {
     var body: some View {
         NavigationStack {
             VStack{
-                ProgressView(value: 100)
+                ProgressView(value: 0.70)
                     .tint(.orange)
                     .padding()
                     .scaleEffect(x: 1, y: 10)

@@ -80,7 +80,7 @@ struct TakePhotoView: View {
                             tupleList.append(DiagramLabel(text: s, rectangle: r))
                         
                         }
-                        context.insert(Diagram(name:"", date: Date.now,labels:tupleList))
+//                        context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: image! ))
                     }
                     .padding()
                     .background(Color.blue)
