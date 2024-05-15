@@ -9,6 +9,8 @@ import SwiftUI
 
 /// UI with a button to capture an image with the camera.
 struct TakePhotoView: View {
+    
+    @Environment(\.modelContext) var context
     @State private var currentIndex: Int = 0
     // Controls the visibility of the camera interface.
     @State private var showCamera = false
@@ -66,6 +68,19 @@ struct TakePhotoView: View {
                    
                     Button("Quizz") {
                         self.showQuizz = true
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .buttonStyle(PlainButtonStyle())
+                    Button("Save") {
+                        var tupleList:[DiagramLabel] = []
+                        for (s,r) in self.recognizedData{
+                            tupleList.append(DiagramLabel(text: s, rectangle: r))
+                        
+                        }
+                        context.insert(Diagram(name:"", date: Date.now,labels:tupleList))
                     }
                     .padding()
                     .background(Color.blue)

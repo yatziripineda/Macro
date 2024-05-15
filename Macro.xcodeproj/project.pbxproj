@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B4B51ED2BF36A6000BE3FF7 /* DiagramLabelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4B51EC2BF36A6000BE3FF7 /* DiagramLabelModel.swift */; };
 		780915BD2BECD91800654352 /* QuizzView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915BC2BECD91800654352 /* QuizzView.swift */; };
 		780915BF2BEE26C800654352 /* BugSolveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915BE2BEE26C800654352 /* BugSolveView.swift */; };
 		780915C12BF21BF300654352 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C02BF21BF300654352 /* HomeView.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B4B51EC2BF36A6000BE3FF7 /* DiagramLabelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramLabelModel.swift; sourceTree = "<group>"; };
 		780915BC2BECD91800654352 /* QuizzView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizzView.swift; sourceTree = "<group>"; };
 		780915BE2BEE26C800654352 /* BugSolveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugSolveView.swift; sourceTree = "<group>"; };
 		780915C02BF21BF300654352 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				780915C02BF21BF300654352 /* HomeView.swift */,
 				780915C22BF268E300654352 /* TopicDetail.swift */,
 				780915C42BF3557B00654352 /* DiagramModel.swift */,
+				6B4B51EC2BF36A6000BE3FF7 /* DiagramLabelModel.swift */,
 			);
 			path = Macro;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B4B51ED2BF36A6000BE3FF7 /* DiagramLabelModel.swift in Sources */,
 				780915C12BF21BF300654352 /* HomeView.swift in Sources */,
 				B30284922BEC26C90046DBD2 /* RectanglesOverlay.swift in Sources */,
 				B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */,
@@ -306,7 +310,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 6XT9AC4G36;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -345,7 +349,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 6XT9AC4G36;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

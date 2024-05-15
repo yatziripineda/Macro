@@ -5,12 +5,18 @@
 //  Created by yatziri on 14/05/24.
 //
 
-//import Foundation
-//import SwiftData
-//
-//@Model
-//class Recipe {
-//    @Attribute(.unique) var name: String
-//    var summary: String?
-//    var ingredients: [Ingredient]
-//}
+import Foundation
+import SwiftData
+import SwiftUI
+
+@Model
+class Diagram {
+    var name:String = ""
+    var date:Date?
+    var labels:[DiagramLabel]
+    init(name: String, date: Date?, labels: [DiagramLabel]) {
+        self.name = name
+        self.date = date
+        self.labels = labels
+    }
+}
