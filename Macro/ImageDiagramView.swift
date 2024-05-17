@@ -12,7 +12,6 @@ struct ImageDiagramView: View {
     @GestureState private var dragState = CGSize.zero
     @State private var currentIndex: Int = 0
     @State private var offset = CGSize.zero
-    @State private var  rectangles: [(String, CGRect)]
     var diagram: Diagram
     
     var body: some View {
@@ -26,7 +25,6 @@ struct ImageDiagramView: View {
                     .frame(width: 600)
                 if let imageData = diagram.image,
                    let uiImage = UIImage(data: imageData){
-                    
                     GeometryReader { geometry in
                         ScrollView([.horizontal, .vertical], showsIndicators: true){
                             Image(uiImage: uiImage)
@@ -42,7 +40,7 @@ struct ImageDiagramView: View {
                                 .padding()
                                 .padding(.horizontal, 80.0)
                                 .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-                                .overlay(RectanglesOverlay(rectangles: rectangles, currentIndex: $currentIndex))
+                                .overlay(RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex))
                                 .gesture(
                                     DragGesture()
                                         .updating($dragState) { value, state, _ in

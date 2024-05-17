@@ -70,16 +70,21 @@ class DiagramLabel{
     var originY: CGFloat
     var width: CGFloat
     var height: CGFloat
+    //var origin:CGPoint
     
     init(text: String, rectangle:CGRect) {
         self.text = text
-        self.originX = rectangle.minX
-        self.originY = rectangle.minY
+        
+        //self.originY = rectangle.minY
+        self.originY = rectangle.origin.y
         self.width = rectangle.width
         self.height = rectangle.height
+        //self.originX = rectangle.minX
+        self.originX = rectangle.minX
+        //print(rectangle.origin)
     }
     func toCGRect() -> CGRect {
-        return CGRect(x: CGFloat(originX), y: CGFloat(originY), width: CGFloat(width), height: CGFloat(height))
+        return CGRect(x: CGFloat(originX)+80, y: CGFloat(originY), width: CGFloat(width*1.1), height: CGFloat(height))
     }
     
 }
