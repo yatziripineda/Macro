@@ -10,13 +10,13 @@ import SwiftData
 import SwiftUI
 
 @Model
-class Diagram:Hashable {
-    let id = UUID()
+class Diagram {
     var name:String = ""
     var date:Date?
     var image: Data?
     
     var labels:[DiagramLabel]
+    
     init(name: String, date: Date?, labels: [DiagramLabel], image: Data?) {
         self.name = name
         self.date = date
