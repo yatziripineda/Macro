@@ -28,16 +28,6 @@ struct TopicDetail: View {
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
     @State private var searchText = ""
-    
-    var filteredDiagram: [Diagram] {
-        if searchText.isEmpty {
-            return diagram
-        } else {
-            return diagram.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-        }
-    }
-    
-    var topic: Topic?
     @State private var currentIndex: Int = 0
     // Controls the visibility of the camera interface.
     @State private var showCamera = false
@@ -48,7 +38,16 @@ struct TopicDetail: View {
     @State private var showQuizz = false
     /* Variables to move the image inside the scrollview */
     @State private var offset = CGSize.zero
-    @GestureState private var dragState = CGSize.zero
+    
+    var filteredDiagram: [Diagram] {
+        if searchText.isEmpty {
+            return diagram
+        } else {
+            return diagram.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    var topic: Topic?
     
     
     var body: some View {
@@ -169,12 +168,15 @@ struct TopicDetail: View {
         }
     }
 }
+
+
+
 struct BottomRoundedRectangle: Shape {
     var cornerRadius: CGFloat
-
+    
     func path(in rect: CGRect) -> Path {
         var path = Path()
-
+        
         path.move(to: CGPoint(x: rect.minX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
@@ -182,7 +184,7 @@ struct BottomRoundedRectangle: Shape {
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY))
         path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY - cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 180), clockwise: false)
         path.closeSubpath()
-
+        
         return path
     }
 }

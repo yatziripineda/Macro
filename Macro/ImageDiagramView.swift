@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ImageDiagramView: View {
     @State private var showQuizz = false
+    @GestureState private var dragState = CGSize.zero
+    @State private var currentIndex: Int = 0
     var diagram: Diagram
     
     var body: some View {
@@ -20,18 +22,48 @@ struct ImageDiagramView: View {
                     .scaleEffect(x: 1, y: 10)
                     .cornerRadius(4.0)
                     .frame(width: 600)
-                Image("ImagenPrueba")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(20)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color(hex: "999999").opacity(0.50)
-                                    , lineWidth: 2)
-                    )
-                    .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
-                    .padding()
-                    .padding(.horizontal, 80.0)
+                if let imageData = diagram.image,
+                   let uiImage = UIImage(data: imageData){
+//                    GeometryReader { geometry in
+//                        ScrollView([.horizontal, .vertical], showsIndicators: true) {
+//                            Image(uiImage: uiImage) // Scale 1.0 image (biiiiig)
+//                                .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
+//                                .overlay(RectanglesOverlay(rectangles: recognizedData, currentIndex: $currentIndex))
+//                                .gesture(
+//                                    DragGesture()
+//                                        .updating($dragState) { value, state, _ in
+//                                            state = value.translation
+//                                        }
+//                                )
+//                        }
+//                        .frame(width: geometry.size.width - 20, height: geometry.size.height)
+//                    }
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(20)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(hex: "999999").opacity(0.50)
+                                        , lineWidth: 2)
+                        )
+                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
+                        .padding()
+                        .padding(.horizontal, 80.0)
+//                        .overlay(RectanglesOverlay(rectangles: recognizedData, currentIndex: $currentIndex))
+                }
+//                Image("ImagenPrueba")
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .cornerRadius(20)
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .stroke(Color(hex: "999999").opacity(0.50)
+//                                    , lineWidth: 2)
+//                    )
+//                    .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
+//                    .padding()
+//                    .padding(.horizontal, 80.0)
                 Button("Quizz") {
                     self.showQuizz = true
                 }
