@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageDiagramView: View {
-    @State private var showQuizz = false
+//    @State private var showQuizz = false
     @GestureState private var dragState = CGSize.zero
     @State private var currentIndex: Int = 0
     @State private var offset = CGSize.zero
@@ -62,15 +62,20 @@ struct ImageDiagramView: View {
 //                    .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
 //                    .padding()
 //                    .padding(.horizontal, 80.0)
-                Button("Quizz") {
-                    self.showQuizz = true
+                NavigationLink {
+                    QuizzView(diagram: diagram, currentIndex: $currentIndex)
+                } label: {
+                    Text("Start Quizz")
                 }
                 .padding()
-                .background(Color.blue)
+                .background(Color.orange)
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .buttonStyle(PlainButtonStyle())
             }
+//            .sheet(isPresented: $showQuizz) {
+//                QuizzView(diagram: diagram, currentIndex: $currentIndex)
+//            }
             .toolbar {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {

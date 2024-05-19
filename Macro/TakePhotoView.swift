@@ -66,8 +66,8 @@ struct TakePhotoView: View {
                     }
                     .frame(height: 300)
                    
-                    Button("Quizz") {
-                        self.showQuizz = true
+                    Button("Start Quizz") {
+                        self.showQuizz.toggle()
                     }
                     .padding()
                     .background(Color.blue)
@@ -91,7 +91,7 @@ struct TakePhotoView: View {
                 
             }
             .sheet(isPresented: $showQuizz) {
-                QuizzView(rectangles: recognizedData, currentIndex: $currentIndex)
+                //QuizzView(rectangles: recognizedData, currentIndex: $currentIndex)
             }
         }
         // Activates as soon as the user taps "use photo"

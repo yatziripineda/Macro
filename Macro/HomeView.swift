@@ -9,9 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var selectedTopic: Topic? = .all
-    
+    // Column Visibility describes what should be done with the Sidebar of the Nav Split View
+    @State private var columnVisibility = NavigationSplitViewVisibility.detailOnly
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility:$columnVisibility) {
             NavigationStack {
                 VStack {
                     List(Topic.allCases, selection: $selectedTopic) { topic in

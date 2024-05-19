@@ -39,6 +39,8 @@ struct TopicDetail: View {
     /* Variables to move the image inside the scrollview */
     @State private var offset = CGSize.zero
     
+    
+    @Environment(\.modelContext) var context // CONTEXT ADDED FOR DEBBUGING (READ COMMENT BELOW)
     var filteredDiagram: [Diagram] {
         if searchText.isEmpty {
             return diagram
@@ -86,7 +88,15 @@ struct TopicDetail: View {
                         Divider()
                     }
                     if diagram.isEmpty{
-                        ContentUnavailableView("No Diagrams", image: "pencil.slash", description: Text("No views"))
+                        ContentUnavailableView {
+                            Label("No Diagrams", systemImage: "pencil.slash")
+                        } description: {
+                            Text("No views")
+                        }
+                        //BUTTON ADDED FOR DEBBUGING - ELIMINATE AFTER DEBBUGING
+                        Button("CLICK"){
+                            context.insert(Diagram(name:"",date:Date.now,labels: [DiagramLabel(text: "String", rectangle: CGRect(x: 50, y: 0, width: 100, height: 100)),DiagramLabel(text: "String2", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100))], image:UIImage(named: "ImagenPrueba")?.pngData()))
+                        }
                     }else{
                         ScrollView{
                             

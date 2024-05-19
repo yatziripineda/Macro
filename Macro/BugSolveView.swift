@@ -62,7 +62,7 @@ struct WordReviewView: View {
 
 
 
-#Preview {
-    WordReviewView(rectangles: .constant([("Exampl1", CGRect(x: 100, y: 50, width: 200, height: 50)),
-                                        ("Example2", CGRect(x: 50, y: 200, width: 250, height: 50))]), image: .constant(UIImage(named: "ImagenPrueba")))
-}
+//#Preview {
+//    WordReviewView(rectangles: .constant([("Exampl1", CGRect(x: 100, y: 50, width: 200, height: 50)),
+//                                        ("Example2", CGRect(x: 50, y: 200, width: 250, height: 50))]), image: .constant(UIImage(named: "ImagenPrueba")))
+//}
