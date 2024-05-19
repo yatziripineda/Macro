@@ -53,7 +53,7 @@ struct TopicDetail: View {
     var body: some View {
         NavigationStack {
             if !recognizedData.isEmpty{
-                BugSolveView(rectangles: $recognizedData, image: $image)
+                WordReviewView(rectangles: $recognizedData, image: $image)
             }else{
                 VStack {
                     VStack(alignment: .leading) {

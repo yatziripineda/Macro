@@ -7,7 +7,7 @@
 import SwiftUI
 import SwiftData
 
-struct BugSolveView: View {
+struct WordReviewView: View {
     
     @Environment(\.modelContext) var context
     @Binding var image: UIImage?
@@ -63,6 +63,6 @@ struct BugSolveView: View {
 
 
 #Preview {
-    BugSolveView(rectangles: .constant([("Exampl1", CGRect(x: 100, y: 50, width: 200, height: 50)),
+    WordReviewView(rectangles: .constant([("Exampl1", CGRect(x: 100, y: 50, width: 200, height: 50)),
                                         ("Example2", CGRect(x: 50, y: 200, width: 250, height: 50))]), image: .constant(UIImage(named: "ImagenPrueba")))
 }
