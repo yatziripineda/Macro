@@ -11,7 +11,7 @@ struct BugSolveView: View {
     
     @Environment(\.modelContext) var context
     @Binding var image: UIImage?
-    
+    @Environment(\.presentationMode) var presentationMode // added this var to dismiss the view latter
     @Binding var rectangles: [(String, CGRect)]
     @State var str: [String] = [""]
     
@@ -44,6 +44,9 @@ struct BugSolveView: View {
                     }
                     let data = image?.pngData()
                     context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data))
+                    //rectangles = [] this is another way to dismiss the view (since it only shows if !.isEmpty
+                    self.presentationMode.wrappedValue.dismiss()
+                    
                 }) {
                     Text("Guardar")
                         .padding()
