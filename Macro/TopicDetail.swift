@@ -39,8 +39,6 @@ struct TopicDetail: View {
     /* Variables to move the image inside the scrollview */
     @State private var offset = CGSize.zero
     
-    @State private var wordReviewPresentation:Bool = false
-    
     
     @Environment(\.modelContext) var context // CONTEXT ADDED FOR DEBBUGING (READ COMMENT BELOW)
     var filteredDiagram: [Diagram] {
@@ -56,7 +54,9 @@ struct TopicDetail: View {
     
     var body: some View {
         NavigationStack {
-            
+            if !recognizedData.isEmpty{
+                WordReviewView(rectangles: $recognizedData, image: $image)
+            }else{
                 VStack {
                     VStack(alignment: .leading) {
                         HStack {
@@ -166,7 +166,6 @@ struct TopicDetail: View {
                                         if let data = recognizedData {
                                             /* We update the State variable to get the recognition data */
                                             self.recognizedData = data
-                                            wordReviewPresentation.toggle()
                                         } else {
                                             print("No text was recognized.")
                                         }
@@ -174,10 +173,8 @@ struct TopicDetail: View {
                                 }
                             }
                         }
-                }.sheet(isPresented: $wordReviewPresentation, content: {
-                        WordReviewView(rectangles: $recognizedData, image: $image)
-                })
-            
+                }
+            }
         }
     }
 }
