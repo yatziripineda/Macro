@@ -48,7 +48,7 @@ struct WordReviewView: View {
                     self.presentationMode.wrappedValue.dismiss()
                     
                 }) {
-                    Text("Guardar")
+                    Text("Save")
                         .padding()
                         .foregroundColor(.white)
                         .background(Color.blue)
