@@ -14,6 +14,7 @@ class Diagram {
     var name:String = ""
     var date:Date?
     var image: Data?
+    var score: [Float]?
     
     var labels:[DiagramLabel]
     
