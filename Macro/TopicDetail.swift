@@ -94,8 +94,9 @@ struct TopicDetail: View {
                             Text("No views")
                         }
                         //BUTTON ADDED FOR DEBBUGING - ELIMINATE AFTER DEBBUGING
+                        //change yat: score: []
                         Button("CLICK"){
-                            context.insert(Diagram(name:"",date:Date.now,labels: [DiagramLabel(text: "String", rectangle: CGRect(x: 50, y: 0, width: 100, height: 100)),DiagramLabel(text: "String2", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100))], image:UIImage(named: "ImagenPrueba")?.pngData()))
+                            context.insert(Diagram(name:"",date:Date.now,labels: [DiagramLabel(text: "String", rectangle: CGRect(x: 50, y: 0, width: 100, height: 100)),DiagramLabel(text: "String2", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100))], image:UIImage(named: "ImagenPrueba")?.pngData(), score: [], QuizDificulty: .easy))
                         }
                     }else{
                         ScrollView{

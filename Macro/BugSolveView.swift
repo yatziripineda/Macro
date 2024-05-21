@@ -43,7 +43,8 @@ struct WordReviewView: View {
                         tupleList.append(DiagramLabel(text: s, rectangle: r))
                     }
                     let data = image?.pngData()
-                    context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data))
+                    //yat Change score: []
+                    context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
                     //rectangles = [] this is another way to dismiss the view (since it only shows if !.isEmpty
                     self.presentationMode.wrappedValue.dismiss()
                     

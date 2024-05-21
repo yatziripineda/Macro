@@ -8,23 +8,28 @@
 import Foundation
 import SwiftData
 import SwiftUI
+enum DifficultyLevel: String, Codable {
+    case easy, medium, hard
+}
 
 @Model
-class Diagram {
-    var name:String = ""
-    var date:Date?
+class Diagram: Identifiable {
+    var name: String
+    var date: Date?
     var image: Data?
-    var score: [Float]?
-    
-    var labels:[DiagramLabel]
-    
-    init(name: String, date: Date?, labels: [DiagramLabel], image: Data?) {
+    var score: [Float]
+    var QuizDificulty: DifficultyLevel
+    var labels: [DiagramLabel]
+
+    init(name: String, date: Date?, labels: [DiagramLabel], image: Data?, score: [Float], QuizDificulty: DifficultyLevel) {
         self.name = name
         self.date = date
         self.labels = labels
         self.image = image
+        self.score = score
+        self.QuizDificulty = QuizDificulty
     }
-    
+}
 //    HASHABE FUNCTIONS: Filter Functions
     
     //    func hash(into hasher: inout Hasher) {
@@ -40,4 +45,4 @@ class Diagram {
     //                lhs.label == rhs.label &&
     //                lhs.statistics == rhs.statistics
     //        }
-}
+

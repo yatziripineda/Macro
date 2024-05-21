@@ -13,10 +13,13 @@ struct QuizzView: View {
     
     // added this var to dismiss the view latter
     @Environment(\.presentationMode) var presentationMode
+    
+    @Environment(\.managedObjectContext) private var viewContext
     // word is the string that the user write or select
     @State private var word: String = ""
     
-//    @State private var message: String = ""
+ 
+   
     
     @State private var countCorrect: Int = 0
     // State variable that makes the array of words used for the EasyQuizzView()
@@ -25,8 +28,16 @@ struct QuizzView: View {
     @State private var isAnswerCorrect: Bool? = nil
     // State variable to restart the state of the buttons
     @State private var buttonsActive: [Bool] = []
-    //This variable detects if the buton is press so the other buttons ar "desactivated"
+    //This variable detects if the buton is press so the other buttons are "desactivated"
     @State private var FirstButtonSelected: Bool = false
+    // State variable to track the visiviliti of a feedbak message on the HardQuizView
+    @State private var MessageQuizState: Bool = false
+    // State variable to track the text of a feedbak message on the HardQuizView
+    @State private var message: String = ""
+    // State variable to track the visiviliti of the TextField on the HardQuizView
+    @State private var TextFieldQuizState: Bool = false
+    
+//    @State private var difficultyLevel: DifficultyLevel = .easy
 
     
     @Binding var currentIndex: Int
@@ -35,6 +46,10 @@ struct QuizzView: View {
     // Created to hide keyboard after you send the guess on IPhoneVerticalView()
     @FocusState private var isTextFieldFocused: Bool
 
+    
+//    enum DifficultyLevel {
+//        case easy, medium, hard
+//    }
     
     
     //MARK: MainQuizzView
@@ -47,39 +62,70 @@ struct QuizzView: View {
             }
         }
         .onChange(of: currentIndex) {
-            if !(currentIndex == diagram.labels.count  ){
-                WordsForQuiz = createRandomWords()
-            }
+                    if currentIndex == diagram.labels.count {
+                        diagram.score.append(Float(countCorrect) / Float(diagram.labels.count))
+                        if diagram.score.last == 1 {
+                            print(diagram.QuizDificulty)
+                            increaseDifficulty()
+                            print(diagram.QuizDificulty)
+                        }
+                    } else {
+                        if diagram.QuizDificulty == .easy {
+                            initializeQuizData()
+                        }
+                    }
+                }
+                .onAppear {
+                    currentIndex = 0
+                    if diagram.QuizDificulty == .easy {
+                        initializeQuizData()
+                    }
+                }
+        //        .onChange(of: currentIndex) {
+        //            if (currentIndex == diagram.labels.count  ){
+        //                diagram.score.append(Float(countCorrect) / Float(diagram.labels.count))
+        //            }
+        //        }
+        //        .onAppear {
+        //            currentIndex = 0
+        //
+        //        }
+    }
+    
+    func increaseDifficulty() {
+        switch diagram.QuizDificulty {
+        case .easy:
+            diagram.QuizDificulty = .medium
+        case .medium:
+            diagram.QuizDificulty = .hard
+        case .hard:
+            diagram.QuizDificulty = .hard
+        }
+//        saveContext()
+    }
+    func initializeQuizData() {
+            WordsForQuiz = createRandomWords()
+            FirstButtonSelected = false
             isAnswerCorrect = nil
             buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
         }
-        .onAppear {
-            currentIndex = 0
-            WordsForQuiz = createRandomWords()
-            FirstButtonSelected = false
-            buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-        }
-    }
     
     //MARK: Logic of the Quizz evaluation
     
     func checkAnswer(UserText:String) {
         if currentIndex < diagram.labels.count {
             let correctAnswer = diagram.labels[currentIndex].text
-            if UserText == correctAnswer {
-                word = ""
+            if UserText.capitalized == correctAnswer.capitalized {
                 countCorrect += 1
                 isAnswerCorrect = true
+                print("Correct: \(countCorrect)")
             } else {
                 isAnswerCorrect = false
-            }
-            if currentIndex == diagram.labels.count {
-                diagram.score?.append(Float(countCorrect/diagram.labels.count))
-                
             }
         }
     }
     
+    //MARK: Funcion that generate a array of Lables from diagram.lable
     func createRandomWords() -> [String] {
         var arrayWords = [String]()
             
@@ -96,6 +142,16 @@ struct QuizzView: View {
     }
     
     
+    func quizViewForDifficulty() -> some View {
+            switch diagram.QuizDificulty {
+            case .easy:
+                return AnyView(EasyQuizzView())
+            case .medium:
+                return AnyView(MediumQuizzView())
+            case .hard:
+                return AnyView(HardQuizzView())
+            }
+        }
     
     //MARK: Quizz View IPad
     //IPad on Horizontal Orientation View
@@ -109,11 +165,11 @@ struct QuizzView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color(hex: "999999").opacity(0.50)
-                                            , lineWidth: 2)
-                            )
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 20)
+//                                    .stroke(Color(hex: "999999").opacity(0.50)
+//                                            , lineWidth: 2)
+//                            )
                             .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                             .padding()
                             .padding(.horizontal, 80.0)
@@ -128,13 +184,48 @@ struct QuizzView: View {
                     }.frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
-            if !(currentIndex == diagram.labels.count  ){
-//                MediumQuizzView()
-                EasyQuizzView()
-            }
-            else{
-                Button("RETURN") {
-                    self.presentationMode.wrappedValue.dismiss()
+//            if !(currentIndex == diagram.labels.count  ){
+//                //                if diagram.score.last == 1{
+//                EasyQuizzView()
+//                    .onChange(of: currentIndex) {
+//                        if !(currentIndex == diagram.labels.count  ){
+//                            WordsForQuiz = createRandomWords()
+//                        }
+//                        isAnswerCorrect = nil
+//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+//                    }
+//                    .onAppear {
+//                        WordsForQuiz = createRandomWords()
+//                        FirstButtonSelected = false
+//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+//                    }
+//                //                }else{
+//                //                HardQuizzView()
+//                //                MediumQuizzView()
+//                //                }
+//            }
+//            else{
+//                VStack{
+//                    Text("Congratulations! You have Scored \( diagram.score.last!)")
+//                    Button("RETURN") {
+//                        self.presentationMode.wrappedValue.dismiss()
+//                    }
+//                    .frame(width: 470)
+//                }
+            //            }
+            if currentIndex != diagram.labels.count {
+                quizViewForDifficulty()
+            } else {
+                VStack {
+                    if let lastScore = diagram.score.last {
+                        Text("Congratulations! You have Scored \(lastScore)")
+                    } else {
+                        Text("Congratulations!")
+                    }
+                    Button("RETURN") {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                    .frame(width: 470)
                 }
             }
         }
@@ -153,11 +244,11 @@ struct QuizzView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color(hex: "999999").opacity(0.50)
-                                            , lineWidth: 2)
-                            )
+//                            .overlay(
+//                                RoundedRectangle(cornerRadius: 20)
+//                                    .stroke(Color(hex: "999999").opacity(0.50)
+//                                            , lineWidth: 2)
+//                            )
                             .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                             .padding()
                             .padding(.horizontal, 80.0)
@@ -172,12 +263,53 @@ struct QuizzView: View {
                     }.frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
-            EasyQuizzView()
-                .padding()
+//            if !(currentIndex == diagram.labels.count  ){
+////                if diagram.score.last == 1{
+//                    EasyQuizzView()
+//                    .onChange(of: currentIndex) {
+//                        if !(currentIndex == diagram.labels.count  ){
+//                            WordsForQuiz = createRandomWords()
+//                        }
+//                        isAnswerCorrect = nil
+//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+//                    }
+//                    .onAppear {
+//                        WordsForQuiz = createRandomWords()
+//                        FirstButtonSelected = false
+//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+//                    }
+////                }else{
+////                HardQuizzView()
+////                MediumQuizzView()
+////                }
+//                
+//            }
+//            else{
+//                VStack{
+//                    Text("Congratulations! You have Scored \( diagram.score.last!)")
+//                    Button("RETURN") {
+//                        self.presentationMode.wrappedValue.dismiss()
+//                    }
+//                    .frame(width: 470)
+//                }
+//            }
+            if currentIndex != diagram.labels.count {
+                quizViewForDifficulty()
+            } else {
+                VStack {
+                    if let lastScore = diagram.score.last {
+                        Text("Congratulations! You have Scored \(lastScore)")
+                    } else {
+                        Text("Congratulations!")
+                    }
+                    Button("RETURN") {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
+                    .frame(width: 470)
+                }
+            }
         }
     }
-    
-    
     
     //MARK: Easy Quizz view
     func EasyQuizzView() -> some View {
@@ -242,41 +374,135 @@ struct QuizzView: View {
                     .padding()
                 }
             }
-        }.frame(width: 467)
+        }.frame(width: 470)
     }
     
 
     //MARK: Medium Quizz view
     func MediumQuizzView() -> some View{
         VStack{
+            Text("What is this?")
+                .font(.title3)
+                .bold()
             TextField("",
-                      text: $word,
-                      prompt: Text("What is this?")
-                .foregroundColor(.black.opacity(0.4))
+                      text: $word
             )
+            .disabled(TextFieldQuizState)
             .padding(12)
             .background(.gray.opacity(0.1))
             .cornerRadius(8)
             .foregroundColor(.primary)
             .padding()
-            Button {
-                checkAnswer(UserText: word)
-            } label: {
-                Text("Check")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 200, height: 50)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
             
-            //            Text(message)
-            //                .padding()
-            //            if (message == "Quizz completed"){
-            Button("RETURN"){
-                self.presentationMode.wrappedValue.dismiss()
+            .onAppear(){
+                if !(currentIndex == diagram.labels.count  ){
+                    word = String(diagram.labels[currentIndex].text.prefix(1).capitalized)
+                }
             }
-            //        }
+            .onChange(of: word) {
+                if !(currentIndex == diagram.labels.count  ){
+                    if word == ""{
+                        word = String(diagram.labels[currentIndex].text.prefix(1).capitalized)
+                    }
+                }
+            }
+            if MessageQuizState {
+                Text(message)
+                    .padding()
+                    Button{
+                        currentIndex += 1
+                        MessageQuizState = false
+                        TextFieldQuizState = false
+                        word = ""
+                    }label: {
+                        if !(currentIndex == diagram.labels.count - 1  ){
+                            HStack{
+                                Text("Next")
+                                Image(systemName: "greaterthan")
+                            }
+                            .padding()
+                        }else{
+                            HStack{
+                                Text("Finish")
+                            }
+                            .padding()
+                        }
+                    }
+            }else{
+                Button {
+                    TextFieldQuizState = true
+                    MessageQuizState = true
+                    checkAnswer(UserText: word)
+                    print("Lable:\(diagram.labels[currentIndex].text)")
+                    if word == diagram.labels[currentIndex].text{
+                        message = "Correct!"
+                    }else{
+                        message = "Wrong The correct Answer is: \(diagram.labels[currentIndex].text)"
+                    }
+                } label: {
+                    Text("Check")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 200, height: 50)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }.disabled(word == "")
+            }
+          
+        }.frame(width: 300)
+    }
+    
+    //MARK: Hard Quizz view
+    func HardQuizzView() -> some View{
+        VStack{
+            TextField("",
+                      text: $word,
+                      prompt: Text("What is this?")
+                .foregroundColor(.black.opacity(0.4))
+            )
+            .disabled(TextFieldQuizState)
+            .padding(12)
+            .background(.gray.opacity(0.1))
+            .cornerRadius(8)
+            .foregroundColor(.primary)
+            .padding()
+            
+            if MessageQuizState {
+                Text(message)
+                    .padding()
+                    Button{
+                        currentIndex += 1
+                        MessageQuizState = false
+                        TextFieldQuizState = false
+                        word = ""
+                    }label: {
+                        HStack{
+                            Text("Next")
+                            Image(systemName: "greaterthan")
+                        }
+                        .padding()
+                    }
+            }else{
+                Button {
+                    TextFieldQuizState = true
+                    MessageQuizState = true
+                    checkAnswer(UserText: word)
+                    print("Lable:\(diagram.labels[currentIndex].text)")
+                    if word == diagram.labels[currentIndex].text{
+                        message = "Correct!"
+                    }else{
+                        message = "Wrong The correct Answer is: \(diagram.labels[currentIndex].text)"
+                    }
+                } label: {
+                    Text("Check")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 200, height: 50)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }.disabled(word == "")
+            }
+          
         }.frame(width: 300)
     }
 }
