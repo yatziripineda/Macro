@@ -16,16 +16,17 @@ struct QuizzView: View {
     // word is the string that the user write or select
     @State private var word: String = ""
     
-    @State private var message: String = ""
+//    @State private var message: String = ""
     
     @State private var countCorrect: Int = 0
-    
+    // State variable that makes the array of words used for the EasyQuizzView()
     @State private var WordsForQuiz: [String] = []
     // State variable to track the correctness of the answer
     @State private var isAnswerCorrect: Bool? = nil
-    
+    // State variable to restart the state of the buttons
     @State private var buttonsActive: [Bool] = []
-    
+    //This variable detects if the buton is press so the other buttons ar "desactivated"
+    @State private var FirstButtonSelected: Bool = false
 
     
     @Binding var currentIndex: Int
@@ -46,20 +47,17 @@ struct QuizzView: View {
             }
         }
         .onChange(of: currentIndex) {
-            WordsForQuiz = createRandomWords()
-            isAnswerCorrect = nil
-            buttonsActive.removeAll()
-            for _ in  0..<WordsForQuiz.count{
-                buttonsActive.append(false)
+            if !(currentIndex == diagram.labels.count  ){
+                WordsForQuiz = createRandomWords()
             }
+            isAnswerCorrect = nil
+            buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
         }
         .onAppear {
             currentIndex = 0
             WordsForQuiz = createRandomWords()
-            buttonsActive.removeAll()
-            for _ in  0..<WordsForQuiz.count{
-                buttonsActive.append(false)
-            }
+            FirstButtonSelected = false
+            buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
         }
     }
     
@@ -69,22 +67,16 @@ struct QuizzView: View {
         if currentIndex < diagram.labels.count {
             let correctAnswer = diagram.labels[currentIndex].text
             if UserText == correctAnswer {
-                message = "Correct!"
                 word = ""
                 countCorrect += 1
                 isAnswerCorrect = true
             } else {
-                message = "Try again"
                 isAnswerCorrect = false
             }
             if currentIndex == diagram.labels.count {
-                message = "Quizz completed"
                 diagram.score?.append(Float(countCorrect/diagram.labels.count))
                 
             }
-        } else {
-            message = "Quizz completed"
-//            diagram.score?.append(Float(countCorrect/diagram.labels.count))
         }
     }
     
@@ -108,7 +100,7 @@ struct QuizzView: View {
     //MARK: Quizz View IPad
     //IPad on Horizontal Orientation View
     func iPadHorizontalView() -> some View{
-        VStack{
+        HStack{
             if let imageData = diagram.image,
                let uiImage = UIImage(data: imageData){
                 GeometryReader { geometry in
@@ -136,9 +128,15 @@ struct QuizzView: View {
                     }.frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
-            EasyQuizzView()
-            
-//            MediumQuizzView()
+            if !(currentIndex == diagram.labels.count  ){
+//                MediumQuizzView()
+                EasyQuizzView()
+            }
+            else{
+                Button("RETURN") {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
         }
     }
     
@@ -179,77 +177,27 @@ struct QuizzView: View {
         }
     }
     
-    func AlternatedQuizzView() -> some View{
-        VStack{
-            if let imageData = diagram.image,
-               let uiImage = UIImage(data: imageData){
-                GeometryReader { geometry in
-                    ScrollView([.horizontal, .vertical], showsIndicators: true){
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .cornerRadius(20)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color(hex: "999999").opacity(0.50)
-                                            , lineWidth: 2)
-                            )
-                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
-                            .padding()
-                            .padding(.horizontal, 80.0)
-                        //.offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-                            .overlay(RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex))
-                            .gesture(
-                                DragGesture()
-                                    .updating($dragState) { value, state, _ in
-                                        state = value.translation
-                                    }
-                            )
-                    }.frame(width: geometry.size.width, height: geometry.size.height)
-                }
-            }
-            
-            VStack{
-                // Using LazyVGrid for a vertical grid layout
-                LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
-                    let WordsForQuiz = createRandomWords()
-                    ForEach(0..<4) { index in
-                        Button(action: {
-                            checkAnswer(UserText: WordsForQuiz[index])
-                            
-                        }) {
-                            Text(WordsForQuiz[index])
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
-                    }
-                }
-                .padding()
-                Text(message)
-                    .padding()
-                if (message == "Quizz completed"){
-                    Button("RETURN"){
-                        self.presentationMode.wrappedValue.dismiss()
-                    }}
-            }.frame(height: 300)
-        }
-    }
+    
+    
+    //MARK: Easy Quizz view
     func EasyQuizzView() -> some View {
         VStack {
             Text("What is this?")
                 .font(.title3)
                 .bold()
-            
             // Using LazyVGrid for a vertical grid layout
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
+                
                 ForEach(0..<WordsForQuiz.count, id: \.self) { index in
                     Button(action: {
-                        checkAnswer(UserText: WordsForQuiz[index])
-                        // Reset buttonsActive array and hide symbols
-                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-                        buttonsActive[index] = true // Activate selected button
+                        if FirstButtonSelected == false{
+                            FirstButtonSelected = true
+                            checkAnswer(UserText: WordsForQuiz[index])
+                            // Reset buttonsActive array and hide symbols
+                            buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+                            // Activate selected button
+                            buttonsActive[index] = true
+                        }
                     }) {
                         HStack {
                             if buttonsActive[index] {
@@ -268,8 +216,6 @@ struct QuizzView: View {
                             Text(WordsForQuiz[index])
                                 .padding()
                                 .frame(height: 45)
-                            
-                           
                         }
                         .padding(.horizontal)
                         .background(
@@ -284,35 +230,23 @@ struct QuizzView: View {
                 }
             }
             .padding()
-            Button(action: {
-                currentIndex += 1
-            }){
-                HStack{
-                    
-                    Text("Next")
-                    Image(systemName: "greaterthan")
-                }
-                .padding()
-            }
-            
-//            Text(message)
-//                .padding()
-//                .background(
-//                    message == "Correct!" ? Color.green : (message == "Try again" ? Color.red : Color.clear)
-//                )
-//                .foregroundColor(.white)
-//                .cornerRadius(8)
-//                .padding(.horizontal)
-//            
-            if message == "Quizz completed" {
-                Button("RETURN") {
-                    self.presentationMode.wrappedValue.dismiss()
+            if FirstButtonSelected {
+                Button(action: {
+                    currentIndex += 1
+                    FirstButtonSelected = false
+                }){
+                    HStack{
+                        Text("Next")
+                        Image(systemName: "greaterthan")
+                    }
+                    .padding()
                 }
             }
         }.frame(width: 467)
     }
-
     
+
+    //MARK: Medium Quizz view
     func MediumQuizzView() -> some View{
         VStack{
             TextField("",
@@ -336,15 +270,15 @@ struct QuizzView: View {
                     .cornerRadius(10)
             }
             
-            Text(message)
-                .padding()
-            if (message == "Quizz completed"){
-                Button("RETURN"){
-                    self.presentationMode.wrappedValue.dismiss()
-                }}
+            //            Text(message)
+            //                .padding()
+            //            if (message == "Quizz completed"){
+            Button("RETURN"){
+                self.presentationMode.wrappedValue.dismiss()
+            }
+            //        }
         }.frame(width: 300)
     }
-    
 }
 
 
