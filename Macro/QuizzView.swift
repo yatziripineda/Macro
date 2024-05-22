@@ -46,10 +46,7 @@ struct QuizzView: View {
     // Created to hide keyboard after you send the guess on IPhoneVerticalView()
     @FocusState private var isTextFieldFocused: Bool
 
-    
-//    enum DifficultyLevel {
-//        case easy, medium, hard
-//    }
+ 
     
     
     //MARK: MainQuizzView
@@ -81,15 +78,6 @@ struct QuizzView: View {
                         initializeQuizData()
                     }
                 }
-        //        .onChange(of: currentIndex) {
-        //            if (currentIndex == diagram.labels.count  ){
-        //                diagram.score.append(Float(countCorrect) / Float(diagram.labels.count))
-        //            }
-        //        }
-        //        .onAppear {
-        //            currentIndex = 0
-        //
-        //        }
     }
     
     func increaseDifficulty() {
@@ -165,15 +153,9 @@ struct QuizzView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(20)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 20)
-//                                    .stroke(Color(hex: "999999").opacity(0.50)
-//                                            , lineWidth: 2)
-//                            )
                             .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                             .padding()
                             .padding(.horizontal, 80.0)
-                        //.offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
                             .overlay(RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex))
                             .gesture(
                                 DragGesture()
@@ -184,35 +166,6 @@ struct QuizzView: View {
                     }.frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
-//            if !(currentIndex == diagram.labels.count  ){
-//                //                if diagram.score.last == 1{
-//                EasyQuizzView()
-//                    .onChange(of: currentIndex) {
-//                        if !(currentIndex == diagram.labels.count  ){
-//                            WordsForQuiz = createRandomWords()
-//                        }
-//                        isAnswerCorrect = nil
-//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-//                    }
-//                    .onAppear {
-//                        WordsForQuiz = createRandomWords()
-//                        FirstButtonSelected = false
-//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-//                    }
-//                //                }else{
-//                //                HardQuizzView()
-//                //                MediumQuizzView()
-//                //                }
-//            }
-//            else{
-//                VStack{
-//                    Text("Congratulations! You have Scored \( diagram.score.last!)")
-//                    Button("RETURN") {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                    }
-//                    .frame(width: 470)
-//                }
-            //            }
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
             } else {
@@ -244,15 +197,9 @@ struct QuizzView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(20)
-//                            .overlay(
-//                                RoundedRectangle(cornerRadius: 20)
-//                                    .stroke(Color(hex: "999999").opacity(0.50)
-//                                            , lineWidth: 2)
-//                            )
                             .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                             .padding()
                             .padding(.horizontal, 80.0)
-                        //.offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
                             .overlay(RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex))
                             .gesture(
                                 DragGesture()
@@ -263,36 +210,6 @@ struct QuizzView: View {
                     }.frame(width: geometry.size.width, height: geometry.size.height)
                 }
             }
-//            if !(currentIndex == diagram.labels.count  ){
-////                if diagram.score.last == 1{
-//                    EasyQuizzView()
-//                    .onChange(of: currentIndex) {
-//                        if !(currentIndex == diagram.labels.count  ){
-//                            WordsForQuiz = createRandomWords()
-//                        }
-//                        isAnswerCorrect = nil
-//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-//                    }
-//                    .onAppear {
-//                        WordsForQuiz = createRandomWords()
-//                        FirstButtonSelected = false
-//                        buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-//                    }
-////                }else{
-////                HardQuizzView()
-////                MediumQuizzView()
-////                }
-//                
-//            }
-//            else{
-//                VStack{
-//                    Text("Congratulations! You have Scored \( diagram.score.last!)")
-//                    Button("RETURN") {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                    }
-//                    .frame(width: 470)
-//                }
-//            }
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
             } else {
