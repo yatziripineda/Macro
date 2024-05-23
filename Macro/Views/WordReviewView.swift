@@ -11,7 +11,7 @@ struct WordReviewView: View {
     
     @Environment(\.modelContext) var context
     @Binding var image: UIImage?
-    @Environment(\.presentationMode) var presentationMode // added this var to dismiss the view latter
+    @Environment(\.dismiss) private var dismiss // added this var to dismiss the view latter
     @Binding var rectangles: [(String, CGRect)]
     @State var str: [String] = [""]
     
@@ -46,7 +46,7 @@ struct WordReviewView: View {
                     //yat Change score: []
                     context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
                     //rectangles = [] this is another way to dismiss the view (since it only shows if !.isEmpty
-                    self.presentationMode.wrappedValue.dismiss()
+                    dismiss()
                     
                 }) {
                     Text("Save")

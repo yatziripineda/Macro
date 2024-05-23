@@ -16,7 +16,7 @@ struct CameraView: UIViewControllerRepresentable {
     @Binding var isShown: Bool
     // Variable para cerrar la vista en una jerarquía de navegación
     @Environment(\.dismiss) var dismiss
-
+    @Binding var recognizedData:[(String,CGRect)]
     /// We configure a UIImagePickerController (a ViewController) to obtain an image from the camera. This is necessary for the CameraView structure to adopt the UIViewControllerRepresentable protocol.
     func makeUIViewController(context: Context) -> UIImagePickerController {
         // We create an image picker controller.
@@ -52,10 +52,21 @@ struct CameraView: UIViewControllerRepresentable {
             if let image = info[.originalImage] as? UIImage {
                 // We assign the image to the camera view's binding so it can be used in other views.
                 parent.image = image
+                processImage(image) { recognizedData in
+                    // Here we could use Async/Await to ensure linear programming.
+                    DispatchQueue.main.async {
+                        if let data = recognizedData {
+                            /* We update the State variable to get the recognition data */
+                            self.parent.recognizedData = data
+                        } else {
+                            print("No text was recognized.")
+                        }
+                    }
+                }
             }
             // We close the camera view.
             parent.isShown = false
-            parent.dismiss()
+//            parent.dismiss()
         }
     }
 }

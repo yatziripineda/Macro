@@ -36,8 +36,6 @@ struct QuizzView: View {
     @State private var message: String = ""
     // State variable to track the visiviliti of the TextField on the HardQuizView
     @State private var TextFieldQuizState: Bool = false
-    
-//    @State private var difficultyLevel: DifficultyLevel = .easy
 
     
     @Binding var currentIndex: Int

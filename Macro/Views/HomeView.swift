@@ -17,7 +17,7 @@ struct HomeView: View {
                 VStack {
                     List(Topic.allCases, selection: $selectedTopic) { topic in
                         NavigationLink(
-                            destination: TopicDetail(topic: topic)
+                            destination: DiagramListView(topic: topic)
                             ,
                             tag: topic,
                             selection: $selectedTopic
@@ -35,7 +35,7 @@ struct HomeView: View {
             }
         }
     detail: {
-        TopicDetail(topic: selectedTopic)
+        DiagramListView(topic: selectedTopic)
         }
     }
 }
