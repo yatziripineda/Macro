@@ -61,6 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B6A030E2BFF322C00E14C79 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B30284872BE98CF90046DBD2 /* TextRecognition.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		780BDD092BFF2A2B00AA899F /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,7 +118,7 @@
 			children = (
 				788AED682BE8DD2700D03FCC /* MacroApp.swift */,
 				780BDD0A2BFF2B0F00AA899F /* Views */,
-				B30284872BE98CF90046DBD2 /* TextRecognition.swift */,
+				6B6A030E2BFF322C00E14C79 /* Utils */,
 				788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */,
 				788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */,
 				780BDD092BFF2A2B00AA899F /* Models */,
