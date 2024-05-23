@@ -13,14 +13,13 @@ struct QuizzView: View {
     
     // added this var to dismiss the view latter
     @Environment(\.presentationMode) var presentationMode
-    
     @Environment(\.managedObjectContext) private var viewContext
+    
+    // Created to hide keyboard after you send the guess on IPhoneVerticalView()
+    @FocusState private var isTextFieldFocused: Bool
+    
     // word is the string that the user write or select
     @State private var word: String = ""
-    
- 
-   
-    
     @State private var countCorrect: Int = 0
     // State variable that makes the array of words used for the EasyQuizzView()
     @State private var WordsForQuiz: [String] = []
@@ -37,17 +36,11 @@ struct QuizzView: View {
     // State variable to track the visiviliti of the TextField on the HardQuizView
     @State private var TextFieldQuizState: Bool = false
 
-    
     @Binding var currentIndex: Int
     
     @GestureState private var dragState = CGSize.zero
-    // Created to hide keyboard after you send the guess on IPhoneVerticalView()
-    @FocusState private var isTextFieldFocused: Bool
-
- 
     
-    
-    //MARK: MainQuizzView
+    /// MARK: MainQuizzView
     var body: some View {
         Group {
             if UIDevice.current.userInterfaceIdiom == .phone {
@@ -96,7 +89,7 @@ struct QuizzView: View {
             buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
         }
     
-    //MARK: Logic of the Quizz evaluation
+    ///MARK: Logic of the Quizz evaluation
     
     func checkAnswer(UserText:String) {
         if currentIndex < diagram.labels.count {
@@ -111,7 +104,7 @@ struct QuizzView: View {
         }
     }
     
-    //MARK: Funcion that generate a array of Lables from diagram.lable
+    /// MARK: Funcion that generate a array of Lables from diagram.lable
     func createRandomWords() -> [String] {
         var arrayWords = [String]()
             
@@ -139,7 +132,7 @@ struct QuizzView: View {
             }
         }
     
-    //MARK: Quizz View IPad
+    /// MARK: Quizz View IPad
     //IPad on Horizontal Orientation View
     func iPadHorizontalView() -> some View{
         HStack{
@@ -183,7 +176,7 @@ struct QuizzView: View {
     }
     
     
-    //MARK: Quizz View IPhone
+    /// MARK: Quizz View IPhone
     //IPhone on Vertical Orientation View
     func iPhoneVerticalView() -> some View{
         VStack{
@@ -226,7 +219,7 @@ struct QuizzView: View {
         }
     }
     
-    //MARK: Easy Quizz view
+    /// MARK: Easy Quizz view
     func EasyQuizzView() -> some View {
         VStack {
             Text("What is this?")
@@ -293,7 +286,7 @@ struct QuizzView: View {
     }
     
 
-    //MARK: Medium Quizz view
+    /// MARK: Medium Quizz view
     func MediumQuizzView() -> some View{
         VStack{
             Text("What is this?")
@@ -367,7 +360,7 @@ struct QuizzView: View {
         }.frame(width: 300)
     }
     
-    //MARK: Hard Quizz view
+    /// MARK: Hard Quizz view
     func HardQuizzView() -> some View{
         VStack{
             TextField("",
@@ -421,8 +414,3 @@ struct QuizzView: View {
         }.frame(width: 300)
     }
 }
-
-
-//#Preview {
-//    QuizzView(diagram:Diagram(name:"",date:Date.now,labels: [DiagramLabel(text: "String", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100)),DiagramLabel(text: "String", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100))], image:UIImage(named: "ImagenPrueba")?.pngData()), currentIndex: .constant(1))
-//}

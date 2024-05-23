@@ -1,9 +1,10 @@
 //
-//  BugSolveView.swift
+//  WordReviewView.swift
 //  Macro
 //
 //  Created by yatziri on 10/05/24.
 //
+
 import SwiftUI
 import SwiftData
 
@@ -37,16 +38,9 @@ struct WordReviewView: View {
                     for i in 0..<rectangles.count {
                         rectangles[i] = (str[i], rectangles[i].1)
                     }
-//                    var tupleList:[DiagramLabel] = []
-//                    for (s,r) in rectangles{
-//                        print(s,r)
-//                        tupleList.append(DiagramLabel(text: s, rectangle: r))
-//                    }
                     var tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                     let data = image?.pngData()
-                    //yat Change score: []
                     context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
-                    //rectangles = [] this is another way to dismiss the view (since it only shows if !.isEmpty
                     dismiss()
                     
                 }) {
@@ -60,11 +54,3 @@ struct WordReviewView: View {
         }
     }
 }
-
-
-
-
-//#Preview {
-//    WordReviewView(rectangles: .constant([("Exampl1", CGRect(x: 100, y: 50, width: 200, height: 50)),
-//                                        ("Example2", CGRect(x: 50, y: 200, width: 250, height: 50))]), image: .constant(UIImage(named: "ImagenPrueba")))
-//}

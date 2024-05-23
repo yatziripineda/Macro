@@ -4,7 +4,7 @@
 //
 //  Created by yatziri on 13/05/24.
 //
-//
+
 import SwiftUI
 
 struct HomeView: View {
@@ -36,20 +36,17 @@ struct HomeView: View {
         }
     detail: {
         DiagramListView(topic: selectedTopic)
-        }
+    }
     }
 }
-
-
-
 
 
 enum Topic: Int, Hashable, CaseIterable, Identifiable, Codable {
     case all
     case favorites
-
+    
     var id: Int { rawValue }
-
+    
     var localizedName: LocalizedStringKey {
         switch self {
         case .all:

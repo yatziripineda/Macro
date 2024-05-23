@@ -55,7 +55,6 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
 /// Converts rectangles with normalized coordinates to image coordinates.
 func VNImageRectForNormalizedRect(_ normalizedRect: CGRect, _ imageWidth: Int, _ imageHeight: Int, _ uiimage:UIImage) -> CGRect {
     /* We calculate the coordinates (x, y), as well as the width and height in real numbers */
-    print("minX: \(normalizedRect.minX)","\n","minY: \(normalizedRect.minY)","maxX: \(normalizedRect.maxX)","\n","maxY: \(normalizedRect.maxY)")
     var x = CGFloat(0)
     var y = CGFloat(0)
     var height = CGFloat(0)

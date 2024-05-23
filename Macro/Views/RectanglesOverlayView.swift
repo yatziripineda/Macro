@@ -26,12 +26,4 @@ struct RectanglesOverlay: View {
         }
     }
 }
-//// Vista previa para la estructura RectanglesOverlay
-//struct RectanglesOverlay_Preview: PreviewProvider {
-//    static var previews: some View {
-//        RectanglesOverlay(rectangles: [("Rectangle 1", CGRect(x: 100, y: 50, width: 200, height: 50)),
-//                                       ("Rectangle 2", CGRect(x: 50, y: 200, width: 250, height: 50))], currentIndex: .constant(1))
-//            .frame(width: 300, height: 300)
-////
-//    }
-//}
+

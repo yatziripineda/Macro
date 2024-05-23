@@ -30,19 +30,3 @@ class Diagram: Identifiable {
         self.QuizDificulty = QuizDificulty
     }
 }
-//    HASHABE FUNCTIONS: Filter Functions
-    
-    //    func hash(into hasher: inout Hasher) {
-    //        hasher.combine(id)
-    //        hasher.combine(image)
-    //        hasher.combine(label)
-    //        hasher.combine(statistics)
-    //    }
-    //
-    //    static func ==(lhs: DiagramInfo, rhs: DiagramInfo) -> Bool {
-    //            return lhs.id == rhs.id &&
-    //                lhs.image == rhs.image &&
-    //                lhs.label == rhs.label &&
-    //                lhs.statistics == rhs.statistics
-    //        }
-

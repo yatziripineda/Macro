@@ -25,6 +25,7 @@
 		B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284852BE98C9A0046DBD2 /* CameraView.swift */; };
 		B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284872BE98CF90046DBD2 /* TextRecognition.swift */; };
 		B30284922BEC26C90046DBD2 /* RectanglesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284912BEC26C90046DBD2 /* RectanglesOverlayView.swift */; };
+		B3A7099C2BFF485200C57DC0 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A7099B2BFF485200C57DC0 /* Functions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		B30284852BE98C9A0046DBD2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B30284872BE98CF90046DBD2 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
 		B30284912BEC26C90046DBD2 /* RectanglesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectanglesOverlayView.swift; sourceTree = "<group>"; };
+		B3A7099B2BFF485200C57DC0 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				B30284872BE98CF90046DBD2 /* TextRecognition.swift */,
+				B3A7099B2BFF485200C57DC0 /* Functions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				780915BD2BECD91800654352 /* QuizzView.swift in Sources */,
 				780BDD082BFF24EE00AA899F /* ZoomView.swift in Sources */,
 				788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */,
+				B3A7099C2BFF485200C57DC0 /* Functions.swift in Sources */,
 				78340D8E2BF4FB8900A229FF /* SearchBarView.swift in Sources */,
 				780915C92BF4A38900654352 /* DiagramLabelModel.swift in Sources */,
 				B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */,

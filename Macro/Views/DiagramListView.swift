@@ -5,6 +5,7 @@
 //
 //  Created by yatziri on 13/05/24.
 //
+
 import SwiftUI
 import SwiftData
 
@@ -28,18 +29,10 @@ struct DiagramListView: View {
     @State private var textPosition: CGFloat = 10
     @State private var searchText = ""
     @State private var currentIndex: Int = 0
-    // Controls the visibility of the camera interface.
-//    @State private var showCamera = false
-    // Stores the image captured by the camera.
-//    @State private var image: UIImage?
-    // Receives information about the text recognized in the image.
-//    @State private var recognizedData: [(String, CGRect)] = []
-//    @State private var showQuizz = false
-    /* Variables to move the image inside the scrollview */
     @State private var offset = CGSize.zero
     
+    var topic: Topic?
     
-//    @Environment(\.modelContext) var context  CONTEXT ADDED FOR DEBBUGING (READ COMMENT BELOW)
     var filteredDiagram: [Diagram] {
         if searchText.isEmpty {
             return diagram
@@ -47,9 +40,6 @@ struct DiagramListView: View {
             return diagram.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
-    
-    var topic: Topic?
-    
     
     var body: some View {
         NavigationStack {
@@ -89,10 +79,6 @@ struct DiagramListView: View {
                     } description: {
                         Text("No views")
                     }
-//                    //BUTTON ADDED FOR DEBBUGING - ELIMINATE AFTER DEBBUGING
-//                    Button("CLICK"){
-//                        context.insert(Diagram(name:"",date:Date.now,labels: [DiagramLabel(text: "String", rectangle: CGRect(x: 50, y: 0, width: 100, height: 100)),DiagramLabel(text: "String2", rectangle: CGRect(x: 0, y: 0, width: 100, height: 100))], image:UIImage(named: "ImagenPrueba")?.pngData()))
-//                    }
                 }else{
                     ScrollView{
                         
@@ -105,7 +91,6 @@ struct DiagramListView: View {
                                         .id(diagram.id)
                                         .padding()
                                 }
-                                
                             }
                         }
                         .padding()
@@ -118,18 +103,13 @@ struct DiagramListView: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink {
                                 ImageReviewView()
-                                //CameraView(image: $image, isShown: $showCamera)
-                                
-                                //                                .navigationBarBackButtonHidden(true)
                             } label: {
                                 Image(systemName: "doc.viewfinder")
                                     .foregroundColor(.blue)
                             }
-                            //
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
-                                
                             }) {
                                 Image(systemName: "square.and.pencil")
                                     .foregroundColor(.blue)
@@ -141,30 +121,22 @@ struct DiagramListView: View {
                             }) {
                                 Text("Select")
                                     .foregroundColor(.blue)
-                                
-                                
-                                
                             }
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             SearchBar(text: $searchText)
                                 .padding()
                         }
-                        
                     }
             }
         }
     }
 }
 
-
-
 struct BottomRoundedRectangle: Shape {
     var cornerRadius: CGFloat
-    
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
         path.move(to: CGPoint(x: rect.minX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
@@ -172,18 +144,7 @@ struct BottomRoundedRectangle: Shape {
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY))
         path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY - cornerRadius), radius: cornerRadius, startAngle: Angle(degrees: 90), endAngle: Angle(degrees: 180), clockwise: false)
         path.closeSubpath()
-        
         return path
     }
 }
-
-#Preview {
-    DiagramListView(topic: .all)
-}
-#Preview {
-    HomeView()
-}
-
-
-
 

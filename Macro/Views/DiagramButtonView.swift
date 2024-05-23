@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-
 struct DiagramButton: View {
-    var diagram: Diagram
     
+    var diagram: Diagram
     
     var body: some View {
         ZStack {
@@ -51,9 +50,3 @@ struct DiagramButton: View {
         .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
     }
 }
-
-
-//
-//#Preview {
-//    DiagramButton(diagram: Diagram(name: "Diagram", date: Date.now, labels: [DiagramLabel(text: "hola", rectangle: CGRect(x: 100, y: 50, width: 200, height: 50))], image: UIImage(named: "ImagenPrueba")?.pngData() ))
-//}

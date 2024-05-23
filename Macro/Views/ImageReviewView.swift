@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct ImageReviewView: View {
+    
     @State private var recognizedData: [(String, CGRect)] = []
     @State private var image: UIImage?
     @State private var showCamera = false
     @State private var showWordReview:Bool = false
-    
-    @GestureState private var dragState = CGSize.zero
     @State private var currentIndex: Int = 0
     @State private var offset = CGSize.zero
+    
+    @GestureState private var dragState = CGSize.zero
+    
     var body: some View {
         if !recognizedData.isEmpty && image != nil {
             ZStack{
@@ -54,18 +56,5 @@ struct ImageReviewView: View {
         } else{
             CameraView(image: $image, isShown: $showCamera, recognizedData: $recognizedData)
         }
-        
     }
-    
 }
-
-func tuppleToDiagramLabel(rectangles:[(String,CGRect)]) -> [DiagramLabel]{
-    var tupleList:[DiagramLabel] = []
-    for (s,r) in rectangles{
-        tupleList.append(DiagramLabel(text: s, rectangle: r))
-    }
-    return tupleList
-}
-//#Preview {
-//    ImageReviewView()
-//}
