@@ -37,11 +37,12 @@ struct WordReviewView: View {
                     for i in 0..<rectangles.count {
                         rectangles[i] = (str[i], rectangles[i].1)
                     }
-                    var tupleList:[DiagramLabel] = []
-                    for (s,r) in rectangles{
-                        print(s,r)
-                        tupleList.append(DiagramLabel(text: s, rectangle: r))
-                    }
+//                    var tupleList:[DiagramLabel] = []
+//                    for (s,r) in rectangles{
+//                        print(s,r)
+//                        tupleList.append(DiagramLabel(text: s, rectangle: r))
+//                    }
+                    var tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                     let data = image?.pngData()
                     //yat Change score: []
                     context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
