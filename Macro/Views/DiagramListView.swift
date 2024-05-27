@@ -102,7 +102,7 @@ struct DiagramListView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink {
-                                ImageReviewView()
+                                ImageDiagramView()
                             } label: {
                                 Image(systemName: "doc.viewfinder")
                                     .foregroundColor(.blue)
