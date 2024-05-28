@@ -17,6 +17,7 @@ struct ImageDiagramView: View {
 
     //Adding this one to manage visibility of the overlay
     @State var overlayVisibility:Bool = true
+    
     //Brought from ImageReviewView
     @State private var recognizedData: [(String, CGRect)] = []
     @State private var image: UIImage?
@@ -95,24 +96,28 @@ struct ImageDiagramView: View {
                 Group {
                     if receivedInfoType() == "diagram" {
                         ZoomView {
-                            ZStack {
-                                Image(uiImage: UIImage(data: diagram!.image!)!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                if overlayVisibility{
-                                    RectanglesOverlay(labels: diagram!.labels, currentIndex: $currentIndex)}
-                            }
+                            DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                            ZStack {
+//                                Image(uiImage: UIImage(data: diagram!.image!)!)
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                if overlayVisibility{
+//                                    RectanglesOverlay(labels: diagram!.labels, currentIndex: $currentIndex)
+//                                }
+//                            }
                         }
                     } else if receivedInfoType() == "preDiagram"{
                         ZoomView {
-                            ZStack {
-                                Text("preDiagram")
-                                Image(uiImage: image!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                if overlayVisibility{
-                                    RectanglesOverlay(labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex)}
-                            }
+                            DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                            ZStack {
+//                                Text("preDiagram")
+//                                Image(uiImage: image!)
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                if overlayVisibility{
+//                                    RectanglesOverlay(labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex)
+//                                }
+//                            }
                         }
                     }
                 }
@@ -163,24 +168,26 @@ struct ImageDiagramView: View {
                         Group {
                             if receivedInfoType() == "diagram" {
                                 ZoomView {
-                                    ZStack {
-                                        Image(uiImage: UIImage(data: diagram!.image!)!)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                        if overlayVisibility{
-                                            RectanglesOverlay(labels: diagram!.labels, currentIndex: $currentIndex)}
-                                    }
+                                    DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                                    ZStack {
+//                                        Image(uiImage: UIImage(data: diagram!.image!)!)
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                        if overlayVisibility{
+//                                            RectanglesOverlay(labels: diagram!.labels, currentIndex: $currentIndex)}
+//                                    }
                                 }
                             } else if receivedInfoType() == "preDiagram"{
                                 ZoomView {
-                                    ZStack {
-                                        Text("preDiagram")
-                                        Image(uiImage: image!)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                        if overlayVisibility{
-                                            RectanglesOverlay(labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex)}
-                                    }
+                                    DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                                    ZStack {
+//                                        Text("preDiagram")
+//                                        Image(uiImage: image!)
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                        if overlayVisibility{
+//                                            RectanglesOverlay(labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex)}
+//                                    }
                                 }
                             }
                         }
@@ -207,6 +214,11 @@ struct ImageDiagramView: View {
             }
 
             
+        }.onDisappear{if receivedInfoType() == "preDiagram"{
+            let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy)
+            context.insert(newDiagram)
+            diagram = newDiagram
+            }
         }
     }
 }

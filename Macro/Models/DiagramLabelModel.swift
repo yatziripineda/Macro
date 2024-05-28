@@ -26,6 +26,6 @@ class DiagramLabel{
         self.originX = rectangle.minX
     }
     func toCGRect() -> CGRect {
-        return CGRect(x: CGFloat(originX)+80, y: CGFloat(originY), width: CGFloat(width*1.1), height: CGFloat(height))
+        return CGRect(x: CGFloat(originX), y: CGFloat(originY), width: CGFloat(width), height: CGFloat(height))
     }
 }
