@@ -138,7 +138,7 @@ struct ImageDiagramView: View {
             } else if receivedInfoType() == "preDiagram"{
                 Button(
                     action: {
-                        let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy)
+                        let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: [])
                         context.insert(newDiagram)
                         diagram = newDiagram
                     }) {
@@ -215,7 +215,7 @@ struct ImageDiagramView: View {
 
             
         }.onDisappear{if receivedInfoType() == "preDiagram"{
-            let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy)
+            let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: [])
             context.insert(newDiagram)
             diagram = newDiagram
             }
