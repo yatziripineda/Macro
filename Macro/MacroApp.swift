@@ -12,6 +12,7 @@ struct MacroApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.modelContainer(for:[Diagram.self,DiagramLabel.self]) // This is used to create Container of SwiftData
+        }.modelContainer(for:[Diagram.self,DiagramLabel.self,Topics.self]) // This is used to create Container of SwiftData
+            
     }
 }

@@ -25,12 +25,16 @@ extension Color {
 }
 
 struct ContentView: View {
+
+//    @EnvironmentObject var selectedTopic:SelectedTopic
     var body: some View {
         HomeView()
+            
+        
     }
 }
 
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}

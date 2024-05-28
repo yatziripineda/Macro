@@ -15,7 +15,7 @@ struct WordReviewView: View {
     @Environment(\.dismiss) private var dismiss // added this var to dismiss the view latter
     @Binding var rectangles: [(String, CGRect)]
     @State var str: [String] = [""]
-    
+    @Query(sort: \Topics.label) private var topics: [Topics]
     
     init(rectangles: Binding<[(String, CGRect)]>,image:Binding<UIImage?>) {
         self._image = image
@@ -38,9 +38,10 @@ struct WordReviewView: View {
                     for i in 0..<rectangles.count {
                         rectangles[i] = (str[i], rectangles[i].1)
                     }
-                    var tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
+                    let tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                     let data = image?.pngData()
-                    context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
+                    //yat change topic: [] need to fix the !
+                    context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: [Topics(label: "Math", iconName: "lightbulb.fill")]))
                     dismiss()
                     
                 }) {

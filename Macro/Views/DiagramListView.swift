@@ -9,30 +9,31 @@
 import SwiftUI
 import SwiftData
 
-enum Activities {
-    case Option_Diagram1
-    case Option_Diagram2
-    var ActivitiesText: String{
-        switch self {
-        case .Option_Diagram1:
-            return "Diagrams"
-        case .Option_Diagram2:
-            return "Diagrams1"
-        }
-    }
-}
+
+// MARK: Bug un Topic when go back from quizz
 
 struct DiagramListView: View {
     @Query (sort: \Diagram.date)var diagram: [Diagram]
-    @State private var activity: Activities = .Option_Diagram1
+//    @EnvironmentObject var selectedTopic:SelectedTopic
+//    @Environment(SelectedTopic.self) private var topic
+    
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
+    // state var for the searchbar
     @State private var searchText = ""
+    // state var that track  the indec of the lable on the diagram
     @State private var currentIndex: Int = 0
+    
     @State private var offset = CGSize.zero
+    //ChangeYat:add  @State private var HideToolBarItem:Bool = false, @State private var columnVisibility = NavigationSplitViewVisibility.detailOnly
+    // to trach when the sidebar needs to hide
+    @Binding var HideToolBarItem:Bool
+    @Binding var columnVisibility: NavigationSplitViewVisibility
+    //var that recive the actual topic to create the list of diagrams for that topic
+    /*here is the bug problem*/
+    var topic: Topics
     
-    var topic: Topic?
-    
+    // variable that change dhe list of diagram dippending on the searchbar
     var filteredDiagram: [Diagram] {
         if searchText.isEmpty {
             return diagram
@@ -41,38 +42,13 @@ struct DiagramListView: View {
         }
     }
     
+    
+    
     var body: some View {
         NavigationStack {
             VStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Button(action: {
-                            activity = .Option_Diagram1
-                            textPosition = 10
-                        }) {
-                            Text("Diagrams")
-                                .font(.title3)
-                                .foregroundColor(activity == .Option_Diagram1 ? .black : .gray)
-                        } .padding()
-                        Button(action: {
-                            activity = .Option_Diagram2
-                            textPosition = 130
-                        }) {
-                            Text("Diagrams1")
-                                .font(.title3)
-                                .foregroundColor(activity == .Option_Diagram2 ? .black : .gray)
-                        }
-                        .padding()
-                        Spacer()
-                    }
-                    
-                    Rectangle()
-                        .frame(width: 110, height: 5)
-                        .foregroundColor(.black)
-                        .padding(.horizontal, textPosition)
-                        .padding(.bottom, -30.0)
-                    Divider()
-                }
+                Divider()
+                
                 if diagram.isEmpty{
                     ContentUnavailableView {
                         Label("No Diagrams", systemImage: "pencil.slash")
@@ -81,16 +57,15 @@ struct DiagramListView: View {
                     }
                 }else{
                     ScrollView{
-                        
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                            ForEach(filteredDiagram, id: \.self) { diagram in
-                                NavigationLink {
-                                    ImageDiagramView(diagram: diagram)
-                                } label: {
-                                    DiagramButton(diagram: diagram)
-                                        .id(diagram.id)
-                                        .padding()
+                            if true {
+                                if topic.label == "All Diagrams"{
+                                    AllDiagramsView()
+                                }else{
+                                    FilterTopicsDiagramsView()
                                 }
+                            }else{
+                                AllDiagramsView()
                             }
                         }
                         .padding()
@@ -98,29 +73,23 @@ struct DiagramListView: View {
                     .padding()
                 }
                 Spacer()
-                    .navigationTitle(topic?.localizednavigationTitle ?? "")
+                    .navigationTitle(topic.label)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink {
                                 ImageReviewView()
                             } label: {
-                                Image(systemName: "doc.viewfinder")
-                                    .foregroundColor(.blue)
+                                Image(systemName: "plus.square.dashed")
+                                    .foregroundColor(Color.primaryColor1)
                             }
                         }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                            }) {
-                                Image(systemName: "square.and.pencil")
-                                    .foregroundColor(.blue)
-                            }
-                        }
+                        
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
                                 
                             }) {
                                 Text("Select")
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(Color.primaryColor1)
                             }
                         }
                         ToolbarItem(placement: .navigationBarTrailing) {
@@ -130,7 +99,48 @@ struct DiagramListView: View {
                     }
             }
         }
+        //ChangeYat: .onAppear()
+        .onAppear(){
+            HideToolBarItem = false
+        }
     }
+    func AllDiagramsView() -> some View{
+        ForEach(filteredDiagram, id: \.self) { diagram in
+            NavigationLink {
+                ImageDiagramView(diagram: diagram)
+                //ChangeYat: .onAppear()
+                    .onAppear(){
+                        HideToolBarItem = true
+                        columnVisibility = NavigationSplitViewVisibility.detailOnly
+                    }
+            } label: {
+                DiagramButton(diagram: diagram)
+                    .id(diagram.id)
+                    .padding()
+            }
+        }
+    }
+    func FilterTopicsDiagramsView() -> some View{
+        ForEach(filteredDiagram, id: \.self) { diagram in
+            ForEach (diagram.topic, id: \.self){ oneTopic in
+                if (oneTopic == topic) {
+                    NavigationLink {
+                        ImageDiagramView(diagram: diagram)
+                        //ChangeYat: .onAppear()
+                            .onAppear(){
+                                HideToolBarItem = true
+                                columnVisibility = NavigationSplitViewVisibility.detailOnly
+                            }
+                    } label: {
+                        DiagramButton(diagram: diagram)
+                            .id(diagram.id)
+                            .padding()
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 struct BottomRoundedRectangle: Shape {
