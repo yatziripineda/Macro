@@ -16,7 +16,8 @@ struct DiagramListView: View {
     @Query (sort: \Diagram.date)var diagram: [Diagram]
 //    @EnvironmentObject var selectedTopic:SelectedTopic
 //    @Environment(SelectedTopic.self) private var topic
-    
+    @State private var NameTopicSelected:String  = (UserDefaults.standard.string(forKey: "NameTopic") ?? "All Diagrams")
+//    @State private var IconTopicSelected:String  = (UserDefaults.standard.string(forKey: "IconTopic") ?? "tray.fill")
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
     // state var for the searchbar
@@ -31,7 +32,7 @@ struct DiagramListView: View {
     @Binding var columnVisibility: NavigationSplitViewVisibility
     //var that recive the actual topic to create the list of diagrams for that topic
     /*here is the bug problem*/
-    var topic: Topics
+    var topic: Topics!
     
     // variable that change dhe list of diagram dippending on the searchbar
     var filteredDiagram: [Diagram] {
@@ -102,6 +103,7 @@ struct DiagramListView: View {
         //ChangeYat: .onAppear()
         .onAppear(){
             HideToolBarItem = false
+            
         }
     }
     func AllDiagramsView() -> some View{
@@ -140,7 +142,19 @@ struct DiagramListView: View {
             }
         }
     }
+    func saveData(information:Topics) {
+        UserDefaults.standard.set(information, forKey: "Selectedtopic") // Save the logged-in status
+//        UserDefaults.standard.set(username, forKey: "username")  Save the username
+    }
     
+    /// Function to load data from UserDefaults
+//    func loadData() {
+//        if let savedtopic = UserDefaults.standard.Topics(forKey: "Selectedtopic") {
+//            username = savedUsername // If a username is saved, we load it
+//        }
+//        isUserLoggedIn = UserDefaults.standard.bool(forKey: "isUserLoggedIn") // Load the logged-in status
+//    }
+//    
 }
 
 struct BottomRoundedRectangle: Shape {
@@ -158,3 +172,11 @@ struct BottomRoundedRectangle: Shape {
     }
 }
 
+func getSelectedTopic(topicName:String,allTopicsList:[Topics]) -> Topics? {
+    for topic in allTopicsList {
+        if topic.label == topicName{
+            return topic
+        }
+    }
+    return nil
+}
