@@ -78,7 +78,7 @@ struct DiagramListView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink {
-                                ImageReviewView()
+                                ImageDiagramView()
                             } label: {
                                 Image(systemName: "plus.square.dashed")
                                     .foregroundColor(Color.primaryColor1)
