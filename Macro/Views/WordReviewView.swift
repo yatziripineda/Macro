@@ -104,25 +104,6 @@ struct WordReviewView: View {
                         .padding()
                 }
             }
-        Button(
-            action: {
-                for i in 0..<rectangles.count {
-                    rectangles[i] = (str[i], rectangles[i].1)
-                }
-                let tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
-                let data = image?.pngData()
-                //yat change topic: [] need to fix the !
-                context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: [Topics(label: "Math", iconName: "lightbulb.fill")]))
-                dismiss()
-                
-            }) {
-                Text("Save")
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-                    .cornerRadius(8)
-            }
-            .padding()
     }
 }
 
