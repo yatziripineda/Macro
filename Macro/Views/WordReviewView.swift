@@ -16,12 +16,14 @@ struct WordReviewView: View {
     @Binding var rectangles: [(String, CGRect)]
     @State var str: [String] = [""]
     @Binding var diagram:Diagram?
-//    @State var labels:[DiagramLabel]?
-    init(rectangles: Binding<[(String, CGRect)]>,image:Binding<UIImage?>,diagram:Binding<Diagram?>) {
+    @Binding var showWordReviewView:Bool
+    
+    init(rectangles: Binding<[(String, CGRect)]>,image:Binding<UIImage?>,diagram:Binding<Diagram?>,showWordReviewView:Binding<Bool>) {
             self._image = image
             self._rectangles = rectangles
             self._diagram = diagram
-        self._str = State(initialValue: rectangles.wrappedValue.isEmpty ? diagram.wrappedValue!.labels.map {$0.text} : rectangles.wrappedValue.map { $0.0 })
+            self._showWordReviewView = showWordReviewView
+            self._str = State(initialValue: rectangles.wrappedValue.isEmpty ? diagram.wrappedValue!.labels.map {$0.text} : rectangles.wrappedValue.map { $0.0 })
         }
     
     
@@ -30,10 +32,20 @@ struct WordReviewView: View {
             VStack {
                 ScrollView{
                     ForEach(0..<diagram!.labels.count, id: \.self) { index in
-                         TextField("", text: $str[index])
+                        TextField("", text: $str[index])
                             .padding()
-                            .border(Color.gray)
+                            .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
+                            .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
+                            .background(.secondaryColor1)
+                            .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
                             .padding()
+                            
                     }
                 }
                 Button(
@@ -41,12 +53,12 @@ struct WordReviewView: View {
                         for i in 0..<diagram!.labels.count {
                             diagram!.labels[i].text = str[i]
                         }
-                        dismiss()
+                        UIDevice.current.userInterfaceIdiom == .phone ? dismiss() : showWordReviewView.toggle()
                     }) {
                         Text("Save")
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color.blue)
+                            .background(.primaryColor1)
                             .cornerRadius(8)
                     }
                     .padding()
@@ -55,9 +67,19 @@ struct WordReviewView: View {
                     ScrollView{
                         ForEach(0..<rectangles.count, id: \.self) { index in
                             TextField("", text: $str[index])
+                                .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
                                 .padding()
-                                .border(Color.gray)
+                                .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
+                                .background(.secondaryColor1)
+                                .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
                                 .padding()
+                                
                         }
                     }
                     Button(
@@ -68,13 +90,13 @@ struct WordReviewView: View {
                             let tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                             let data = image?.pngData()
                             context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy))
-                            dismiss()
+                            UIDevice.current.userInterfaceIdiom == .phone ? dismiss() : showWordReviewView.toggle()
                             
                         }) {
                             Text("Save")
                                 .padding()
                                 .foregroundColor(.white)
-                                .background(Color.blue)
+                                .background(.primaryColor1)
                                 .cornerRadius(8)
                         }
                         .padding()

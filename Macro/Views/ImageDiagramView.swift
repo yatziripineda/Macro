@@ -28,14 +28,137 @@ struct ImageDiagramView: View {
     var body: some View {
         if receivedInfoType() != "empty"{
             NavigationStack {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    iPhoneVerticalView()
+                        .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                overlayVisibility.toggle()
+                            }) {
+                                Image(systemName: "eye.slash.fill")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showWordReview.toggle()
+                            } label: {
+                                Image(systemName: "pencil.line")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                    .sheet(isPresented: $showWordReview, content: {
+                            WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview)}
+                    )
+                } else {
+                    iPadView()
+                        .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                overlayVisibility.toggle()
+                            }) {
+                                Image(systemName: "eye.slash.fill")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showWordReview.toggle()
+                            } label: {
+                                Image(systemName: "pencil.line")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+                
+            }
+        } else{ CameraView(image: $image, isShown: $showCamera, recognizedData: $recognizedData)}
+    }
+    /// returns what kind of data is received (Full diagram, Not yet saved Diagram or nothing (needs to take picture). It returns the format in one of the following Strings: "diagram", "preDiagram" and "empty"
+    func receivedInfoType() -> String {
+        return self.diagram != nil ? "diagram" : (self.image != nil && !self.recognizedData.isEmpty) ? "preDiagram" : "empty"
+    }
+    
+    
+    func iPhoneVerticalView() -> some View{
+        VStack{
+            ProgressView(value: 0.70)
+                .tint(.primaryColor1)
+                .padding()
+                .scaleEffect(x: 1, y: 1)
+                .cornerRadius(4.0)
+                .frame(width: 600)
+            
+            GeometryReader { geo in
+                Group {
+                    if receivedInfoType() == "diagram" {
+                        ZoomView {
+                            ZStack {
+                                Image(uiImage: UIImage(data: diagram!.image!)!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                if overlayVisibility{
+                                    RectanglesOverlay(labels: diagram!.labels, currentIndex: $currentIndex)}
+                            }
+                        }
+                    } else if receivedInfoType() == "preDiagram"{
+                        ZoomView {
+                            ZStack {
+                                Text("preDiagram")
+                                Image(uiImage: image!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                if overlayVisibility{
+                                    RectanglesOverlay(labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex)}
+                            }
+                        }
+                    }
+                }
+                .frame(width: geo.size.width, height: geo.size.height)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 50)
+            if receivedInfoType() == "diagram"{
+                NavigationLink {
+                    QuizzView(diagram: diagram!, currentIndex: $currentIndex)
+                } label: {
+                    Text("Start Quizz")
+                }.padding()
+                    .background(.primaryColor1)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .buttonStyle(PlainButtonStyle())
+            } else if receivedInfoType() == "preDiagram"{
+                Button(
+                    action: {
+                        let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy)
+                        context.insert(newDiagram)
+                        diagram = newDiagram
+                    }) {
+                        Text("Save")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(.primaryColor1)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+            }
+            
+        }
+    }
+    
+    /// IPad view for the Image Diagram
+    func iPadView() -> some View{
+        HStack{
+            //            ProgressView(value: 0.70)
+            //                .tint(.orange)
+            //                .padding()
+            //                .scaleEffect(x: 1, y: 10)
+            //                .cornerRadius(4.0)
+            //                .frame(width: 600)
                 VStack{
-                    ProgressView(value: 0.70)
-                        .tint(.orange)
-                        .padding()
-                        .scaleEffect(x: 1, y: 10)
-                        .cornerRadius(4.0)
-                        .frame(width: 600)
-                    
                     GeometryReader { geo in
                         Group {
                             if receivedInfoType() == "diagram" {
@@ -65,60 +188,26 @@ struct ImageDiagramView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 50)
-                    if receivedInfoType() == "diagram"{
+                    if receivedInfoType() == "diagram" && !showWordReview{
                         NavigationLink {
                             QuizzView(diagram: diagram!, currentIndex: $currentIndex)
                         } label: {
                             Text("Start Quizz")
                         }.padding()
-                            .background(Color.orange)
+                            .background(.primaryColor1)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .buttonStyle(PlainButtonStyle())
-                    } else if receivedInfoType() == "preDiagram"{
-                        Button(
-                            action: {
-                                let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy)
-                                context.insert(newDiagram)
-                                diagram = newDiagram
-                            }) {
-                                Text("Save")
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.blue)
-                                    .cornerRadius(8)
-                            }
-                            .padding()
                     }
-                    
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            overlayVisibility.toggle()
-                        }) {
-                            Image(systemName: "eye.slash.fill")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            showWordReview.toggle()
-                        } label: {
-                            Image(systemName: "pencil.line")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                }
-                .sheet(isPresented: $showWordReview, content: {
-                        WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram)}
-                )
             }
-        } else{ CameraView(image: $image, isShown: $showCamera, recognizedData: $recognizedData)}
-    }
-    
-    func receivedInfoType() -> String {// returns what kind of data is received (Full diagram, Not yet saved Diagram or nothing (needs to take picture)
-        return self.diagram != nil ? "diagram" : (self.image != nil && !self.recognizedData.isEmpty) ? "preDiagram" : "empty"
+            if showWordReview{
+                WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview)
+                    .frame(width:470)
+                    .background(Color(uiColor: .systemGray6))
+            }
+
+            
+        }
     }
 }
 
