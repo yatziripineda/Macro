@@ -18,12 +18,14 @@ struct WordReviewView: View {
     @Query(sort: \Topics.label) private var topics: [Topics]
     @Binding var diagram:Diagram?
     @Binding var showWordReviewView:Bool
+    @Binding var selectedTopic:Topics?
     
-    init(rectangles: Binding<[(String, CGRect)]>,image:Binding<UIImage?>,diagram:Binding<Diagram?>,showWordReviewView:Binding<Bool>) {
+    init(rectangles: Binding<[(String, CGRect)]>,image:Binding<UIImage?>,diagram:Binding<Diagram?>,showWordReviewView:Binding<Bool>,selectedTopic:Binding<Topics?>) {
         self._image = image
         self._rectangles = rectangles
         self._diagram = diagram
         self._showWordReviewView = showWordReviewView
+        self._selectedTopic = selectedTopic
         self._str = State(initialValue: rectangles.wrappedValue.isEmpty ? diagram.wrappedValue!.labels.map {$0.text} : rectangles.wrappedValue.map { $0.0 })
     }
     
@@ -55,6 +57,7 @@ struct WordReviewView: View {
                         for i in 0..<diagram!.labels.count {
                             diagram!.labels[i].text = str[i]
                         }
+                        diagram!.topic = selectedTopic
                         UIDevice.current.userInterfaceIdiom == .phone ? dismiss() : showWordReviewView.toggle()
                     }) {
                         Text("Save")
@@ -91,7 +94,7 @@ struct WordReviewView: View {
                             }
                             let tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                             let data = image?.pngData()
-                            context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: []))
+                            context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: selectedTopic))
                             UIDevice.current.userInterfaceIdiom == .phone ? dismiss() : showWordReviewView.toggle()
                             
                         }) {

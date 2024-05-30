@@ -14,16 +14,20 @@ enum DifficultyLevel: String, Codable {
 
 @Model
 class Diagram: Identifiable {
+//    @Attribute(.unique)
     var name: String
     var date: Date?
     var image: Data?
     var score: [Float]
     var QuizDificulty: DifficultyLevel
+    
     var labels: [DiagramLabel]
-    var topic: [Topics]
+    
+    @Relationship(deleteRule: .nullify, inverse: \Topics.diagram)
+    var topic: Topics?
   
     
-    init(name: String, date: Date?, labels: [DiagramLabel], image: Data?, score: [Float], QuizDificulty: DifficultyLevel, topic: [Topics]) {
+    init(name: String, date: Date?, labels: [DiagramLabel], image: Data?, score: [Float], QuizDificulty: DifficultyLevel, topic: Topics?) {
         self.name = name
         self.date = date
         self.labels = labels

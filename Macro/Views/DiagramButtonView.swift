@@ -25,7 +25,7 @@ struct DiagramButton: View {
             ZStack {
                 VStack {
                     HStack {
-                        Text(diagram.name)
+                        Text(diagram.topic?.label ?? "nnnnn")
                             .foregroundColor(.black)
                             .font(.footnote)
                             .bold()

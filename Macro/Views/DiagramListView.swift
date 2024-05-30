@@ -30,9 +30,11 @@ struct DiagramListView: View {
     // to trach when the sidebar needs to hide
     @Binding var HideToolBarItem:Bool
     @Binding var columnVisibility: NavigationSplitViewVisibility
+    @Binding var allDiagramsToggle:Bool
+    
     //var that recive the actual topic to create the list of diagrams for that topic
     /*here is the bug problem*/
-    var topic: Topics!
+    var selectedTopic: Topics!
     
     // variable that change dhe list of diagram dippending on the searchbar
     var filteredDiagram: [Diagram] {
@@ -43,13 +45,10 @@ struct DiagramListView: View {
         }
     }
     
-    
-    
     var body: some View {
         NavigationStack {
             VStack {
                 Divider()
-                
                 if diagram.isEmpty{
                     ContentUnavailableView {
                         Label("No Diagrams", systemImage: "pencil.slash")
@@ -59,14 +58,17 @@ struct DiagramListView: View {
                 }else{
                     ScrollView{
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                            if true {
-                                if topic.label == "All Diagrams"{
-                                    AllDiagramsView()
+                            
+                            if selectedTopic.label == "All Diagrams"{
+                                AllDiagramsView()
+                            }else{
+                                if ((selectedTopic.diagram) == nil){
+                                    VStack(alignment: .center){
+                                        Text("No Diagrams")
+                                    }
                                 }else{
                                     FilterTopicsDiagramsView()
                                 }
-                            }else{
-                                AllDiagramsView()
                             }
                         }
                         .padding()
@@ -74,7 +76,7 @@ struct DiagramListView: View {
                     .padding()
                 }
                 Spacer()
-                    .navigationTitle(topic.label)
+                    .navigationTitle(selectedTopic.label)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             NavigationLink {
@@ -123,9 +125,13 @@ struct DiagramListView: View {
         }
     }
     func FilterTopicsDiagramsView() -> some View{
+        
         ForEach(filteredDiagram, id: \.self) { diagram in
-            ForEach (diagram.topic, id: \.self){ oneTopic in
-                if (oneTopic == topic) {
+            if(selectedTopic.diagram == nil){
+//                Text(selectedTopic!.label)
+            }
+            else{
+                if (diagram.topic! == selectedTopic) {
                     NavigationLink {
                         ImageDiagramView(diagram: diagram)
                         //ChangeYat: .onAppear()
@@ -142,19 +148,8 @@ struct DiagramListView: View {
             }
         }
     }
-    func saveData(information:Topics) {
-        UserDefaults.standard.set(information, forKey: "Selectedtopic") // Save the logged-in status
-//        UserDefaults.standard.set(username, forKey: "username")  Save the username
-    }
     
-    /// Function to load data from UserDefaults
-//    func loadData() {
-//        if let savedtopic = UserDefaults.standard.Topics(forKey: "Selectedtopic") {
-//            username = savedUsername // If a username is saved, we load it
-//        }
-//        isUserLoggedIn = UserDefaults.standard.bool(forKey: "isUserLoggedIn") // Load the logged-in status
-//    }
-//    
+    
 }
 
 struct BottomRoundedRectangle: Shape {

@@ -11,6 +11,8 @@ import Observation
 
 @Model
 class Topics: Identifiable{
+    
+    var diagram: [Diagram]?
     var label: String
     var iconName: String
         
