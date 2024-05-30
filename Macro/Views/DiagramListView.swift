@@ -67,7 +67,15 @@ struct DiagramListView: View {
                                         Text("No Diagrams")
                                     }
                                 }else{
-                                    FilterTopicsDiagramsView()
+                                    if (selectedTopic.diagram!.isEmpty){
+                                        ContentUnavailableView {
+                                            Label("No Diagrams", systemImage: "pencil.slash")
+                                        } description: {
+                                            Text("No views")
+                                        }
+                                    } else {
+                                        FilterTopicsDiagramsView()
+                                    }
                                 }
                             }
                         }
@@ -127,8 +135,7 @@ struct DiagramListView: View {
     func FilterTopicsDiagramsView() -> some View{
         
         ForEach(filteredDiagram, id: \.self) { diagram in
-            if(selectedTopic.diagram == nil){
-//                Text(selectedTopic!.label)
+            if(diagram.topic == nil){
             }
             else{
                 if (diagram.topic! == selectedTopic) {

@@ -218,7 +218,7 @@ struct ImageDiagramView: View {
             let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic)
             context.insert(newDiagram)
             diagram = newDiagram
-        } else if receivedInfoType() == "diagram"{diagram!.topic = selectingTopic}
+        } else if (receivedInfoType() == "diagram" && selectingTopic != nil){diagram!.topic = selectingTopic}
         }
     }
 }
