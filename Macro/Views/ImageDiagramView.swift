@@ -125,11 +125,14 @@ struct ImageDiagramView: View {
             
             GeometryReader { geo in
                 Group {
+                    /* Primero mostramos la vista de un diagrama terminado */
                     if receivedInfoType() == "diagram" {
                         ZoomView {
                             DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
                         }
-                    } else if receivedInfoType() == "preDiagram"{
+                    } 
+                    /* Después, mostramos la vista de un pre diagrama (antes de guardar) */
+                    else if receivedInfoType() == "preDiagram"{
                         ZoomView {
                             DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
                         }
@@ -139,8 +142,11 @@ struct ImageDiagramView: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 50)
-            if receivedInfoType() == "diagram"{
+            
+            /* Los botones que se muestran debajo del diagrama dependen del tipo de diagrama también */
+            if receivedInfoType() == "diagram" {
                 NavigationLink {
+                    // ¿Por qué el diagrama que se pasa como parámetro tiene que ser opcional?
                     QuizzView(diagram: diagram!, currentIndex: $currentIndex)
                 } label: {
                     Text("Start Quizz")
@@ -149,7 +155,9 @@ struct ImageDiagramView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .buttonStyle(PlainButtonStyle())
-            } else if receivedInfoType() == "preDiagram"{
+            } 
+            // Si es un prediagrama el botón es para guardar.
+            else if receivedInfoType() == "preDiagram"{
                 Button(
                     action: {
                         let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic )
@@ -164,13 +172,13 @@ struct ImageDiagramView: View {
                     }
                     .padding()
             }
-            
         }
     }
     //MARK: "iPadView()"
     /// IPad view for the Image Diagram
     func iPadView() -> some View{
         HStack{
+//<<<<<<< HEAD
             //            ProgressView(value: 0.70)
             //                .tint(.orange)
             //                .padding()
@@ -188,6 +196,22 @@ struct ImageDiagramView: View {
                         } else if receivedInfoType() == "preDiagram"{
                             ZoomView {
                                 DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//=======
+//                VStack{
+//                    GeometryReader { geo in
+//                        Group {
+//                            // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!
+//                            if receivedInfoType() == "diagram" {
+//                                ZoomView {
+//                                    DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                                }
+//                            } 
+//                            // Si apenas vamos a guardar el diagrama, usamos image!
+//                            else if receivedInfoType() == "preDiagram"{
+//                                ZoomView {
+//                                    DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+//                                }
+//>>>>>>> origin/QuizViewFix
                             }
                         }
                     }
@@ -207,8 +231,13 @@ struct ImageDiagramView: View {
                         .buttonStyle(PlainButtonStyle())
                 }
             }
+//<<<<<<< HEAD
             if showWordReview{
                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
+//=======
+//            if showWordReview {
+//                WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview)
+//>>>>>>> origin/QuizViewFix
                     .frame(width:470)
                     .background(Color(uiColor: .systemGray6))
             }
@@ -222,5 +251,3 @@ struct ImageDiagramView: View {
         }
     }
 }
-
-//context.insert(Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy))
