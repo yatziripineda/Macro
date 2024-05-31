@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct QuizzView: View {
-    //var rectangles: [DiagramLabel]
-    var diagram:Diagram
+    
+    var diagram: Diagram
     
     // added this var to dismiss the view latter
     @Environment(\.presentationMode) var presentationMode
@@ -21,6 +21,7 @@ struct QuizzView: View {
     // word is the string that the user write or select
     @State private var word: String = ""
     @State private var countCorrect: Int = 0
+    
     // State variable that makes the array of words used for the EasyQuizzView()
     @State private var WordsForQuiz: [String] = []
     // State variable to track the correctness of the answer
@@ -37,6 +38,8 @@ struct QuizzView: View {
     @State private var TextFieldQuizState: Bool = false
     
     @Binding var currentIndex: Int
+    //Adding this one to manage visibility of the overlay
+    @State var overlayVisibility:Bool = true
     
     @GestureState private var dragState = CGSize.zero
     var IsIphone:Bool{
@@ -47,25 +50,22 @@ struct QuizzView: View {
         }
     }
     
-    // MARK: MainQuizzView
+    /// MARK: MainQuizzView
     var body: some View {
         NavigationStack{
             Group {
                 if !IsIphone {
                     iPadHorizontalView()
-                    
                 } else {
-                    
                     iPhoneVerticalView()
                 }
             }
             .onChange(of: currentIndex) {
+                // Lógica para actualizar la puntuación del usuario.
                 if currentIndex == diagram.labels.count {
                     diagram.score.append(Float(countCorrect) / Float(diagram.labels.count))
                     if diagram.score.last == 1 {
-                        print(diagram.QuizDificulty)
                         increaseDifficulty()
-                        print(diagram.QuizDificulty)
                     }
                 } else {
                     if diagram.QuizDificulty == .easy {
@@ -80,8 +80,9 @@ struct QuizzView: View {
                 }
             }
         }
-        
     }
+    
+    
     
     func increaseDifficulty() {
         switch diagram.QuizDificulty {
@@ -94,6 +95,8 @@ struct QuizzView: View {
         }
     }
     
+    
+    
     func initializeQuizData() {
         WordsForQuiz = createRandomWords()
         FirstButtonSelected = false
@@ -101,8 +104,9 @@ struct QuizzView: View {
         buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
     }
     
-    //MARK: Logic of the Quizz evaluation
     
+    
+    /// MARK: Logic of the Quizz evaluation
     func checkAnswer(UserText:String) {
         if currentIndex < diagram.labels.count {
             let correctAnswer = diagram.labels[currentIndex].text
@@ -116,7 +120,9 @@ struct QuizzView: View {
         }
     }
     
-    // MARK: Funcion that generate a array of Lables from diagram.lable
+    
+    
+    /// MARK: Funcion that generate a array of Lables from diagram.lable
     func createRandomWords() -> [String] {
         var arrayWords = [String]()
         
@@ -131,7 +137,6 @@ struct QuizzView: View {
         return subArray
     }
     
-    
     func quizViewForDifficulty() -> some View {
         switch diagram.QuizDificulty {
         case .easy:
@@ -143,27 +148,17 @@ struct QuizzView: View {
         }
     }
     
-    // MARK: Quizz View IPad
-    //IPad on Horizontal Orientation View
-    func iPadHorizontalView() -> some View{
+    
+    
+    /// MARK: QuizzView for iPad
+    func iPadHorizontalView() -> some View {
         VStack{
-            if let imageData = diagram.image,
-               let _ = UIImage(data: imageData){
+            if let imageData = diagram.image, let _ = UIImage(data: imageData) {
                 GeometryReader { geo in
                     Group {
                         if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                             ZoomView {
-                                ZStack {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-//                                        .frame(width: 634.31,height: 404)
-//                                        .cornerRadius(20)
-//                                        .aspectRatio(contentMode: .fit)
-                                    RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex)
-                                        
-                                }
-                                    .frame(width: 800,height: 600)
-                                    .cornerRadius(20)
+                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
                             }
                         }
                     }
@@ -172,51 +167,31 @@ struct QuizzView: View {
                 .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                 .ignoresSafeArea()
             }
+            
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
                     .padding()
-               
-            } 
-//            else {
-//                
-//                VStack {
-//                    if let lastScore = diagram.score.last {
-//                        Text("Congratulations! You have Scored \(lastScore)")
-//                    } else {
-//                        Text("Congratulations!")
-//                    }
-//                    Button("RETURN") {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                    }
-//                    .frame(width: 470)
-//                }
-//            }
-//            Spacer()
+            }
         }
+        // La vista de la puntuación se presenta cuando el índice se iguala al número de labels.
         .sheet(isPresented: .constant(currentIndex == diagram.labels.count), content: {
             CongratulationView()
         })
-        
     }
     
     
-    // MARK: Quizz View IPhone
-    //IPhone on Vertical Orientation View
-    func iPhoneVerticalView() -> some View{
+    
+    
+    /// MARK: QuizzView for iPhone
+    func iPhoneVerticalView() -> some View {
         VStack{
-            
             if let imageData = diagram.image,
                let uiImage = UIImage(data: imageData){
                 GeometryReader { geo in
                     Group {
                         if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                             ZoomView {
-                                ZStack {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                    //RectanglesOverlay(labels: diagram.labels, currentIndex: $currentIndex)
-                                }
+                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
                             }
                         }
                     }
@@ -241,11 +216,12 @@ struct QuizzView: View {
                 }
             }
         }
-        
-        
     }
     
-    // MARK: Easy Quizz view
+    
+    
+    
+    /// MARK: Easy Quizz view
     func EasyQuizzView() -> some View {
         VStack {
             Text("What is this?")
@@ -256,7 +232,7 @@ struct QuizzView: View {
                 
                 ForEach(0..<WordsForQuiz.count, id: \.self) { index in
                     Button(action: {
-                        if FirstButtonSelected == false{
+                        if FirstButtonSelected == false {
                             FirstButtonSelected = true
                             checkAnswer(UserText: WordsForQuiz[index])
                             // Reset buttonsActive array and hide symbols
@@ -317,14 +293,14 @@ struct QuizzView: View {
     }
     
     
-    // MARK: Medium Quizz view
+    /// MARK: Medium Quizz view
     func MediumQuizzView() -> some View{
         VStack(alignment: .leading){
             Text("What is this?")
                 .font(.largeTitle)
                 .bold()
                 .padding(.horizontal)
-            Text("Comlete the name of the element")
+            Text("Complete the name of the element")
                 .font(.body)
                 .foregroundStyle(Color.gray)
                 .padding(.horizontal)
@@ -346,7 +322,7 @@ struct QuizzView: View {
                     //disabled the textfield
                     TextFieldQuizState = true
                     checkAnswer(UserText: word)
-                    print("Lable:\(diagram.labels[currentIndex].text)")
+                    print("Label: \(diagram.labels[currentIndex].text)")
                 } label: {
                     Text("Check")
                         .foregroundColor(.white)
@@ -408,7 +384,11 @@ struct QuizzView: View {
         .frame(width: 780)
     }
     
-    // MARK: Hard Quizz view
+    
+    
+    
+    
+    /// MARK: Hard Quizz view
     func HardQuizzView() -> some View{
         VStack(alignment: .leading){
             Text("What is this?")
@@ -439,7 +419,7 @@ struct QuizzView: View {
                     //disabled the textfield
                     TextFieldQuizState = true
                     checkAnswer(UserText: word)
-                    print("Lable:\(diagram.labels[currentIndex].text)")
+                    print("Label:\(diagram.labels[currentIndex].text)")
                 } label: {
                     Text("Check")
                         .foregroundColor(.white)
@@ -488,21 +468,26 @@ struct QuizzView: View {
         }
         .frame(width: 780)
     }
-    func CongratulationView() -> some View{
+    
+    
+    
+    /// This view shows a message with the obtained score.
+    func CongratulationView() -> some View {
         VStack{
-            if let lastScore = diagram.score.last{
-                if lastScore > 0.9{
+            if let lastScore = diagram.score.last {
+                let score = String(format: "%.2f", lastScore*100)
+                if lastScore > 0.9 {
                     Text("🎉")
                         .font(.system(size: 150))
                         .padding()
-                    Text("Congratulations!!!")
+                    Text("Congrats!")
                         .font(.system(size: 90))
                         .bold()
                         .padding()
-                    Text("You scored \(round(lastScore * 100))%")
+                    Text("You scored \(score)%")
                         .font(.title2)
                         .padding()
-                }else{
+                } else {
                     if lastScore > 0.6{
                         Text("👍🏻")
                             .font(.system(size: 150))
@@ -511,18 +496,18 @@ struct QuizzView: View {
                             .font(.system(size: 90))
                             .bold()
                             .padding()
-                        Text("You scored \(round(lastScore * 100))%")
+                        Text("You scored \(score)%")
                             .font(.title2)
                             .padding()
                     }else{
                         Text("🙂")
                             .font(.system(size: 150))
                             .padding()
-                        Text("Keep traing")
+                        Text("Keep practicing")
                             .font(.system(size: 90))
                             .bold()
                             .padding()
-                        Text("You scored \(round(lastScore * 100))%")
+                        Text("You scored \(score)%")
                             .font(.title2)
                             .padding()
                     }
