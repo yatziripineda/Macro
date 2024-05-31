@@ -13,6 +13,5 @@ struct MacroApp: App {
         WindowGroup {
             ContentView()
         }.modelContainer(for:[Diagram.self,DiagramLabel.self,Topics.self]) // This is used to create Container of SwiftData
-            
     }
 }

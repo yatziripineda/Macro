@@ -14,7 +14,6 @@ enum DifficultyLevel: String, Codable {
 
 @Model
 class Diagram: Identifiable {
-//    @Attribute(.unique)
     var name: String
     var date: Date?
     var image: Data?

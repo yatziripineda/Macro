@@ -10,8 +10,6 @@ import SwiftUI
 struct QuizzView: View {
     
     var diagram: Diagram
-    
-    // added this var to dismiss the view latter
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -40,6 +38,9 @@ struct QuizzView: View {
     @Binding var currentIndex: Int
     //Adding this one to manage visibility of the overlay
     @State var overlayVisibility:Bool = true
+    
+    // Variable para mostrar el rectángulo rojo
+    @State private var isQuiz: Bool = true
     
     @GestureState private var dragState = CGSize.zero
     var IsIphone:Bool{
@@ -83,7 +84,6 @@ struct QuizzView: View {
     }
     
     
-    
     func increaseDifficulty() {
         switch diagram.QuizDificulty {
         case .easy:
@@ -96,14 +96,12 @@ struct QuizzView: View {
     }
     
     
-    
     func initializeQuizData() {
         WordsForQuiz = createRandomWords()
         FirstButtonSelected = false
         isAnswerCorrect = nil
         buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
     }
-    
     
     
     /// MARK: Logic of the Quizz evaluation
@@ -119,7 +117,6 @@ struct QuizzView: View {
             }
         }
     }
-    
     
     
     /// MARK: Funcion that generate a array of Lables from diagram.lable
@@ -149,7 +146,6 @@ struct QuizzView: View {
     }
     
     
-    
     /// MARK: QuizzView for iPad
     func iPadHorizontalView() -> some View {
         VStack{
@@ -158,7 +154,7 @@ struct QuizzView: View {
                     Group {
                         if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                             ZoomView {
-                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                             }
                         }
                     }
@@ -180,8 +176,6 @@ struct QuizzView: View {
     }
     
     
-    
-    
     /// MARK: QuizzView for iPhone
     func iPhoneVerticalView() -> some View {
         VStack{
@@ -191,7 +185,7 @@ struct QuizzView: View {
                     Group {
                         if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                             ZoomView {
-                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                             }
                         }
                     }
@@ -217,8 +211,6 @@ struct QuizzView: View {
             }
         }
     }
-    
-    
     
     
     /// MARK: Easy Quizz view
@@ -258,7 +250,6 @@ struct QuizzView: View {
                     }
                 }
             }
-            
             .padding()
             .toolbar{
                 ToolbarItem{
@@ -360,7 +351,6 @@ struct QuizzView: View {
                         .cornerRadius(20.0)
                         .position(x: UIScreen.main.bounds.width / 5)
                         .padding()
-
                 }
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button(action: {
@@ -383,9 +373,6 @@ struct QuizzView: View {
         }
         .frame(width: 780)
     }
-    
-    
-    
     
     
     /// MARK: Hard Quizz view
@@ -416,7 +403,7 @@ struct QuizzView: View {
                 .foregroundColor(.primary)
                 .padding()
                 Button {
-                    //disabled the textfield
+                    // Disabled the textfield
                     TextFieldQuizState = true
                     checkAnswer(UserText: word)
                     print("Label:\(diagram.labels[currentIndex].text)")
@@ -468,7 +455,6 @@ struct QuizzView: View {
         }
         .frame(width: 780)
     }
-    
     
     
     /// This view shows a message with the obtained score.

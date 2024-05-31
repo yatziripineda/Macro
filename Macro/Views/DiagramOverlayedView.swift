@@ -18,18 +18,20 @@ struct DiagramOverlayedView: View {
     // Variable to control the overlay visibility
     @Binding var overlayVisibility: Bool
     
+    // Variable to control the red rectangle
+    @Binding var isQuiz: Bool
+    
     var body: some View {
         GeometryReader { geometry in
             let imageSize = CGSize(width: uiImage.size.width, height: uiImage.size.height)
             let scale = calculateScale(geometrySize: geometry.size, imageSize: imageSize)
             let offset = calculateOffset(geometrySize: geometry.size, imageSize: imageSize, scale: scale)
-            
             ZStack {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                 if overlayVisibility {
-                    RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex)
+                    RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex, isQuiz: $isQuiz)
                 }
             }
         }

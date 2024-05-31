@@ -12,7 +12,7 @@ struct WordReviewView: View {
     
     @Environment(\.modelContext) var context
     @Binding var image: UIImage?
-    @Environment(\.dismiss) private var dismiss // added this var to dismiss the view latter
+    @Environment(\.dismiss) private var dismiss
     @Binding var rectangles: [(String, CGRect)]
     @State var str: [String] = [""]
     @Query(sort: \Topics.label) private var topics: [Topics]
@@ -28,7 +28,6 @@ struct WordReviewView: View {
         self._selectedTopic = selectedTopic
         self._str = State(initialValue: rectangles.wrappedValue.isEmpty ? diagram.wrappedValue!.labels.map {$0.text} : rectangles.wrappedValue.map { $0.0 })
     }
-    
     
     
     var body: some View {

@@ -8,24 +8,16 @@
 import SwiftUI
 import SwiftData
 
-
-
-
 struct HomeView: View {
     @Environment(\.modelContext) var context
-    
     @State private var selectedTopic: Topics? = Topics(label: "All Diagrams", iconName: "tray.fill")
     // Column Visibility describes what should be done with the Sidebar of the Nav Split View
     @State private var columnVisibility = NavigationSplitViewVisibility.detailOnly
     
     @State private var HideToolBarItem:Bool = false
-    
     @State private var allDiagramsToggle:Bool = true
-    
     @State private var AddTopic:Bool = false
-    
     @State private var TopicName:String = ""
-    
     @State private var selectedIcon: String = "lightbulb.fill"
     
     let iconCatalog: [String] = ["house.fill", "figure.arms.open", "tree.fill", "flask.fill", "syringe.fill", "mountain.2.fill", "globe.americas.fill","sun.dust.fill", "cloud.drizzle.fill", "lightbulb.fill" ]
@@ -41,7 +33,6 @@ struct HomeView: View {
             else{
                 ListSidebarView()
             }
-            
         }
         detail: {
             DiagramListView(HideToolBarItem: $HideToolBarItem, columnVisibility: $columnVisibility, allDiagramsToggle: $allDiagramsToggle, selectedTopic: selectedTopic)
@@ -49,7 +40,6 @@ struct HomeView: View {
             AddTopicView()
         })
     }
-    
     
     
     func ListSidebarView() -> some View{
@@ -85,8 +75,6 @@ struct HomeView: View {
                             withAnimation {
                                 context.delete(topicM)
                             }
-                           
-                            
                         } label: {
                             Label("Delete", systemImage: "trash.fill")
                         }
@@ -112,13 +100,11 @@ struct HomeView: View {
                             .foregroundStyle(Color.primaryColor1)
                     }
                 )
-                
             }
         }
     }
     
     func AddTopicView() -> some View{
-        
         VStack {
             Spacer()
             Circle()
@@ -135,7 +121,6 @@ struct HomeView: View {
                 )
                 .padding()
                 .padding(.bottom, 20)
-            
             List {
                 Section("Write the name of the new topic") {
                     TextField("Topic", text: $TopicName)
@@ -155,12 +140,10 @@ struct HomeView: View {
             Button(action: {
                 context.insert(Topics(label: TopicName, iconName: selectedIcon))
                 AddTopic = false
-                
             }, label: {
                 ZStack{
                     Rectangle()
                         .foregroundStyle(Color.primaryColor1)
-                    
                         .frame(maxWidth: .infinity )
                         .frame(height: 35)
                         .padding()
@@ -174,65 +157,4 @@ struct HomeView: View {
           
         }
     }
-//    private func deleteItem(item: Topic){
-//        Button(role: .destructive) {
-//            withAnimation {
-//                context.delete(item)
-//            }
-//        } label: {
-//            Label("Delete", systemImage: "trash.fill")
-//        }
-        
-//    }
 }
-//
-//UserDefaults example:
-//
-//import SwiftUI
-//
-//struct ContentView: View {
-//    /* These 2 variables are going to be storaged in UserDefauls */
-//    // Track whether the user is logged in
-//    @State private var isUserLoggedIn: Bool = false
-//    // Store the username
-//    @State private var username: String = ""
-//    
-//    var body: some View {
-//        VStack {
-//            Toggle(isOn: $isUserLoggedIn) {
-//                Text("User logged in“)
-//            }
-//            .padding()
-//            
-//            // TextField for entering the username
-//            TextField(“User name”, text: $username)
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
-//                .padding()
-//            
-//            // Button that saves the data when tapped
-//            Button(action: {
-//                saveData() // Call the saveData function when the button is tapped
-//            }) {
-//                Text(“Save”)
-//            }
-//        }
-//        .onAppear {
-//            /* * We load the saved data when the view appears * */
-//            loadData()
-//        }
-//    }
-//    
-//    /// Function to save data to UserDefaults
-//    func saveData() {
-//        UserDefaults.standard.set(isUserLoggedIn, forKey: "isUserLoggedIn") // Save the logged-in status
-//        UserDefaults.standard.set(username, forKey: "username") // Save the username
-//    }
-//    
-//    /// Function to load data from UserDefaults
-//    func loadData() {
-//        if let savedUsername = UserDefaults.standard.string(forKey: "username") {
-//            username = savedUsername // If a username is saved, we load it
-//        }
-//        isUserLoggedIn = UserDefaults.standard.bool(forKey: "isUserLoggedIn") // Load the logged-in status
-//    }
-//}

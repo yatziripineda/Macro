@@ -24,8 +24,6 @@
 		788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788AED6A2BE8DD2700D03FCC /* ContentView.swift */; };
 		788AED6D2BE8DD2B00D03FCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */; };
 		788AED712BE8DD2B00D03FCC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */; };
-		7898711C2C0669A000636049 /* SelectTopicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7898711B2C0669A000636049 /* SelectTopicsView.swift */; };
-		78C588B12BFF2E1300D6C5DF /* ImageReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C588B02BFF2E1300D6C5DF /* ImageReviewView.swift */; };
 		B30284862BE98C9A0046DBD2 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284852BE98C9A0046DBD2 /* CameraView.swift */; };
 		B30284882BE98CF90046DBD2 /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284872BE98CF90046DBD2 /* TextRecognition.swift */; };
 		B30284922BEC26C90046DBD2 /* RectanglesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30284912BEC26C90046DBD2 /* RectanglesOverlayView.swift */; };
@@ -52,8 +50,6 @@
 		788AED6C2BE8DD2B00D03FCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		788AED6E2BE8DD2B00D03FCC /* Macro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Macro.entitlements; sourceTree = "<group>"; };
 		788AED702BE8DD2B00D03FCC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7898711B2C0669A000636049 /* SelectTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTopicsView.swift; sourceTree = "<group>"; };
-		78C588B02BFF2E1300D6C5DF /* ImageReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageReviewView.swift; sourceTree = "<group>"; };
 		B30284852BE98C9A0046DBD2 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B30284872BE98CF90046DBD2 /* TextRecognition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
 		B30284912BEC26C90046DBD2 /* RectanglesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectanglesOverlayView.swift; sourceTree = "<group>"; };
@@ -105,9 +101,7 @@
 				780915C62BF3DFD700654352 /* ImageDiagramView.swift */,
 				78340D8B2BF4F94800A229FF /* DiagramButtonView.swift */,
 				78340D8D2BF4FB8900A229FF /* SearchBarView.swift */,
-				78C588B02BFF2E1300D6C5DF /* ImageReviewView.swift */,
 				6B11BACF2C05D11E0082A3F8 /* DiagramOverlayedView.swift */,
-				7898711B2C0669A000636049 /* SelectTopicsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -220,9 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78C588B12BFF2E1300D6C5DF /* ImageReviewView.swift in Sources */,
 				780915C72BF3DFD700654352 /* ImageDiagramView.swift in Sources */,
-				7898711C2C0669A000636049 /* SelectTopicsView.swift in Sources */,
 				78340D8C2BF4F94800A229FF /* DiagramButtonView.swift in Sources */,
 				780915C12BF21BF300654352 /* HomeView.swift in Sources */,
 				B30284922BEC26C90046DBD2 /* RectanglesOverlayView.swift in Sources */,
@@ -370,7 +362,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 84TTD6VG5A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -409,7 +401,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Macro/Preview Content\"";
-				DEVELOPMENT_TEAM = SFL626YUT9;
+				DEVELOPMENT_TEAM = 84TTD6VG5A;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

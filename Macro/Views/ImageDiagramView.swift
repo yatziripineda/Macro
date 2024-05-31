@@ -28,11 +28,11 @@ struct ImageDiagramView: View {
     
     @Environment(\.modelContext) var context
     
+    @State private var isQuiz: Bool = false
+    
     var body: some View {
         if receivedInfoType() != "empty"{
             NavigationStack {
-                
-                
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     iPhoneVerticalView()
                         .toolbar {
@@ -48,7 +48,6 @@ struct ImageDiagramView: View {
                                 Button {
                                     showWordReview.toggle()
                                 } label: {
-                                    
                                     Image(systemName: "pencil.line")
                                         .foregroundColor(.blue)
                                 }
@@ -69,7 +68,6 @@ struct ImageDiagramView: View {
                                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
                             }
                         })
-                    
                 } else {
                     iPadView()
                         .toolbar {
@@ -102,18 +100,17 @@ struct ImageDiagramView: View {
                             TopicPickerView(selectedTopic: $selectingTopic)
                         })
                 }
-                
             }
         } else{ CameraView(image: $image, isShown: $showCamera, recognizedData: $recognizedData)}
     }
     
-    //MARK: Function  "receivedInfoType()"
+    /// MARK: Function  "receivedInfoType()"
     /// returns what kind of data is received (Full diagram, Not yet saved Diagram or nothing (needs to take picture). It returns the format in one of the following Strings: "diagram", "preDiagram" and "empty"
     func receivedInfoType() -> String {
         return self.diagram != nil ? "diagram" : (self.image != nil && !self.recognizedData.isEmpty) ? "preDiagram" : "empty"
     }
     
-    //MARK: "iPhoneVerticalView()"
+    /// MARK: "iPhoneVerticalView()"
     func iPhoneVerticalView() -> some View{
         VStack{
             ProgressView(value: 0.70)
@@ -122,19 +119,18 @@ struct ImageDiagramView: View {
                 .scaleEffect(x: 1, y: 1)
                 .cornerRadius(4.0)
                 .frame(width: 600)
-            
             GeometryReader { geo in
                 Group {
                     /* Primero mostramos la vista de un diagrama terminado */
                     if receivedInfoType() == "diagram" {
                         ZoomView {
-                            DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+                            DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                         }
                     } 
                     /* Después, mostramos la vista de un pre diagrama (antes de guardar) */
                     else if receivedInfoType() == "preDiagram"{
                         ZoomView {
-                            DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+                            DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                         }
                     }
                 }
@@ -174,44 +170,25 @@ struct ImageDiagramView: View {
             }
         }
     }
-    //MARK: "iPadView()"
+    
+    
     /// IPad view for the Image Diagram
     func iPadView() -> some View{
         HStack{
-//<<<<<<< HEAD
-            //            ProgressView(value: 0.70)
-            //                .tint(.orange)
-            //                .padding()
-            //                .scaleEffect(x: 1, y: 10)
-            //                .cornerRadius(4.0)
-            //                .frame(width: 600)
             VStack{
                 if selectingTopic != nil{Text(selectingTopic!.label)}
                 GeometryReader { geo in
                     Group {
+                        // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!
                         if receivedInfoType() == "diagram" {
                             ZoomView {
-                                DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
+                                DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                             }
-                        } else if receivedInfoType() == "preDiagram"{
+                        } 
+                        // Si apenas vamos a guardar el diagrama, usamos image!
+                        else if receivedInfoType() == "preDiagram"{
                             ZoomView {
-                                DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
-//=======
-//                VStack{
-//                    GeometryReader { geo in
-//                        Group {
-//                            // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!
-//                            if receivedInfoType() == "diagram" {
-//                                ZoomView {
-//                                    DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
-//                                }
-//                            } 
-//                            // Si apenas vamos a guardar el diagrama, usamos image!
-//                            else if receivedInfoType() == "preDiagram"{
-//                                ZoomView {
-//                                    DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility)
-//                                }
-//>>>>>>> origin/QuizViewFix
+                                DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                             }
                         }
                     }
@@ -231,18 +208,11 @@ struct ImageDiagramView: View {
                         .buttonStyle(PlainButtonStyle())
                 }
             }
-//<<<<<<< HEAD
             if showWordReview{
                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
-//=======
-//            if showWordReview {
-//                WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview)
-//>>>>>>> origin/QuizViewFix
                     .frame(width:470)
                     .background(Color(uiColor: .systemGray6))
             }
-            
-            
         }.onDisappear{if receivedInfoType() == "preDiagram"{
             let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic)
             context.insert(newDiagram)

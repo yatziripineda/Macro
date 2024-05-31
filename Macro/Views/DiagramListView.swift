@@ -14,10 +14,7 @@ import SwiftData
 
 struct DiagramListView: View {
     @Query (sort: \Diagram.date)var diagram: [Diagram]
-//    @EnvironmentObject var selectedTopic:SelectedTopic
-//    @Environment(SelectedTopic.self) private var topic
     @State private var NameTopicSelected:String  = (UserDefaults.standard.string(forKey: "NameTopic") ?? "All Diagrams")
-//    @State private var IconTopicSelected:String  = (UserDefaults.standard.string(forKey: "IconTopic") ?? "tray.fill")
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
     // state var for the searchbar
@@ -26,7 +23,6 @@ struct DiagramListView: View {
     @State private var currentIndex: Int = 0
     
     @State private var offset = CGSize.zero
-    //ChangeYat:add  @State private var HideToolBarItem:Bool = false, @State private var columnVisibility = NavigationSplitViewVisibility.detailOnly
     // to trach when the sidebar needs to hide
     @Binding var HideToolBarItem:Bool
     @Binding var columnVisibility: NavigationSplitViewVisibility
@@ -110,7 +106,6 @@ struct DiagramListView: View {
                     }
             }
         }
-        //ChangeYat: .onAppear()
         .onAppear(){
             HideToolBarItem = false
             
@@ -120,7 +115,6 @@ struct DiagramListView: View {
         ForEach(filteredDiagram, id: \.self) { diagram in
             NavigationLink {
                 ImageDiagramView(diagram: diagram)
-                //ChangeYat: .onAppear()
                     .onAppear(){
                         HideToolBarItem = true
                         columnVisibility = NavigationSplitViewVisibility.detailOnly
@@ -141,7 +135,6 @@ struct DiagramListView: View {
                 if (diagram.topic! == selectedTopic) {
                     NavigationLink {
                         ImageDiagramView(diagram: diagram)
-                        //ChangeYat: .onAppear()
                             .onAppear(){
                                 HideToolBarItem = true
                                 columnVisibility = NavigationSplitViewVisibility.detailOnly
@@ -155,9 +148,8 @@ struct DiagramListView: View {
             }
         }
     }
-    
-    
 }
+
 
 struct BottomRoundedRectangle: Shape {
     var cornerRadius: CGFloat

@@ -21,9 +21,3 @@ class Topics: Identifiable{
         self.iconName = iconName
     }
 }
-//
-//
-//class SelectedTopic: ObservableObject {
-//    @Published var topic:Topics = Topics(label: "All Diagrams", iconName: "tray.fill")
-//}
-

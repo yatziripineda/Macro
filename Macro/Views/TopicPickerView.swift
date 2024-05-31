@@ -15,14 +15,6 @@ struct TopicPickerView: View {
 
     var body: some View {
         VStack {
-//            Picker("Please choose a color", selection: $selectingTopic ) {
-//                ForEach(topics, id: \.self) {topic in
-//                    HStack{
-//                        Text(topic.label)
-//                        Image(systemName: topic.iconName)
-//                    }.tag(topic)
-//                }
-//            }            Button(
             ForEach(topics, id: \.self) {topic in
                 Button(topic.label){selectingTopic = topic}
             }
@@ -36,6 +28,3 @@ struct TopicPickerView: View {
         }
     }
 }
-//#Preview {
-//    TopicPickerView()
-//}

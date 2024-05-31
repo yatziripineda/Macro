@@ -11,16 +11,21 @@ struct RectanglesOverlay: View {
     
     var labels: [DiagramLabel]
     @Binding var currentIndex: Int
+    @Binding var isQuiz: Bool
     
     var body: some View {
         // Usamos un canvas para dibujar gráficos 2D dentro de una vista SwiftUI.
         Canvas { context, size in
             for (index, label) in labels.enumerated() {
                 let rect = label.toCGRect()
-                if index == currentIndex {
-                    context.fill(Path(rect), with: .color(.red)) // Cambiar el color del rectángulo actual
+                if isQuiz {
+                    if index == currentIndex {
+                        context.fill(Path(rect), with: .color(.red)) // We change the color of the current rectangle
+                    } else {
+                        context.fill(Path(rect), with: .color(.black.opacity(1.0)))
+                    }
                 } else {
-                    context.fill(Path(rect), with: .color(.black.opacity(0.5))) // Usar color por defecto para otros rectángulos
+                    context.fill(Path(rect), with: .color(.black.opacity(1.0)))
                 }
             }
         }

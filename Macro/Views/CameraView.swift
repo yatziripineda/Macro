@@ -66,7 +66,6 @@ struct CameraView: UIViewControllerRepresentable {
             }
             // We close the camera view.
             parent.isShown = false
-//            parent.dismiss()
         }
     }
 }
