@@ -9,56 +9,61 @@ import SwiftUI
 
 struct QuizzView: View {
     
-    var diagram: Diagram
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) private var viewContext
+    /* *** Variables que probablemente no se necesitan *** */
     
+    @Environment(\.managedObjectContext) private var viewContext
     // Created to hide keyboard after you send the guess on IPhoneVerticalView()
     @FocusState private var isTextFieldFocused: Bool
+    /* *** *** *** */
     
-    // word is the string that the user write or select
+    
+    
+    /* *** Variables que si se utilizan al menos 1 vez, pero no creé yo *** */
+    var diagram: Diagram
+    // Manage the visibility of the overlay
+    @State var overlayVisibility: Bool = true
+    @Environment(\.presentationMode) var presentationMode
+    // Word is the string that the user write or select
     @State private var word: String = ""
     @State private var countCorrect: Int = 0
-    
     // State variable that makes the array of words used for the EasyQuizzView()
     @State private var WordsForQuiz: [String] = []
     // State variable to track the correctness of the answer
     @State private var isAnswerCorrect: Bool? = nil
     // State variable to restart the state of the buttons
     @State private var buttonsActive: [Bool] = []
-    //This variable detects if the buton is press so the other buttons are "desactivated"
-    @State private var FirstButtonSelected: Bool = false
-    // State variable to track the visiviliti of a feedbak message on the HardQuizView
+    // State variable to track the visibility of a feedback message on the HardQuizView
     @State private var MessageQuizState: Bool = false
-    // State variable to track the text of a feedbak message on the HardQuizView
+    // State variable to track the text of a feedback message on the HardQuizView
     @State private var message: String = ""
-    // State variable to track the visivility of the TextField on the HardQuizView
+    // State variable to track the visibility of the TextField on the HardQuizView
     @State private var TextFieldQuizState: Bool = false
-    
     @Binding var currentIndex: Int
-    //Adding this one to manage visibility of the overlay
-    @State var overlayVisibility:Bool = true
+    /* *** *** *** */
+    
+    
+    
+    /* *** Variables que si se utilizan y que cree yo *** */
     
     // Variable para mostrar el rectángulo rojo
     @State private var isQuiz: Bool = true
+    // Variable para reconocer el botón seleccionado y poder separarlo del ForEach.
+    @State private var indexSelectedButton: Int? = nil
+    // Variable necesaria para el botón de next
+    @State private var isChecked: Bool = false
+    /* *** *** *** */
     
-    @GestureState private var dragState = CGSize.zero
-    var IsIphone:Bool{
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return true
-        }else{
-            return false
-        }
-    }
+    
     
     /// MARK: MainQuizzView
     var body: some View {
         NavigationStack{
             Group {
-                if !IsIphone {
-                    iPadHorizontalView()
-                } else {
+                // Si se está usando un iPhone, usamos la vista del iPhone
+                if UIDevice.current.userInterfaceIdiom == .phone  {
                     iPhoneVerticalView()
+                } else {
+                    iPadHorizontalView()
                 }
             }
             .onChange(of: currentIndex) {
@@ -83,7 +88,7 @@ struct QuizzView: View {
         }
     }
     
-    
+    /// Aquí tal vez se deba mejorar la lógica para poder hacer un ciclo de estudio de diagramas.
     func increaseDifficulty() {
         switch diagram.QuizDificulty {
         case .easy:
@@ -95,10 +100,10 @@ struct QuizzView: View {
         }
     }
     
-    
+    /// Esta función inicializa los valores con los que se va a trabajar en el Quiz.
     func initializeQuizData() {
         WordsForQuiz = createRandomWords()
-        FirstButtonSelected = false
+        //FirstButtonSelected = false
         isAnswerCorrect = nil
         buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
     }
@@ -119,10 +124,9 @@ struct QuizzView: View {
     }
     
     
-    /// MARK: Funcion that generate a array of Lables from diagram.lable
+    /// MARK: Funcion that generate a array of lables from diagram.lable
     func createRandomWords() -> [String] {
         var arrayWords = [String]()
-        
         for index in 0..<diagram.labels.count {
             arrayWords.append(diagram.labels[index].text)
         }
@@ -163,7 +167,6 @@ struct QuizzView: View {
                 .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                 .ignoresSafeArea()
             }
-            
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
                     .padding()
@@ -179,21 +182,20 @@ struct QuizzView: View {
     /// MARK: QuizzView for iPhone
     func iPhoneVerticalView() -> some View {
         VStack{
-            if let imageData = diagram.image,
-               let uiImage = UIImage(data: imageData){
-                GeometryReader { geo in
-                    Group {
-                        if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
-                            ZoomView {
-                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
-                            }
+            GeometryReader { geo in
+                Group {
+                    if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
+                        ZoomView {
+                            DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                         }
                     }
-                    .frame(width: geo.size.width, height: geo.size.height)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 50)
+                .frame(width: geo.size.width, height: geo.size.height)
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 50)
+            
+            /* Esta es la lógica para mostrar la vista de resultados en el iPhone */
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
             } else {
@@ -209,6 +211,8 @@ struct QuizzView: View {
                     .frame(width: 470)
                 }
             }
+            /* Pero no parece estar muy bien implementada. */
+            
         }
     }
     
@@ -219,69 +223,77 @@ struct QuizzView: View {
             Text("What is this?")
                 .font(.title)
                 .bold()
-            // Using LazyVGrid for a vertical grid layout
+            // Creamos los botones con todas las opciones, pero necesita espacio dinámico... ***
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16),GridItem(.flexible(), spacing: 16)], spacing: 40) {
-                
                 ForEach(0..<WordsForQuiz.count, id: \.self) { index in
                     Button(action: {
-                        if FirstButtonSelected == false {
-                            FirstButtonSelected = true
-                            checkAnswer(UserText: WordsForQuiz[index])
-                            // Reset buttonsActive array and hide symbols
-                            buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
-                            // Activate selected button
-                            buttonsActive[index] = true
+                        /* "Toggle" para poder elegir la opción correcta con feedback */
+                        if indexSelectedButton == index {
+                            indexSelectedButton = nil
+                        } else {
+                            indexSelectedButton = index
                         }
                     }) {
                         HStack {
                             Text(WordsForQuiz[index])
                                 .padding()
-                                .frame(width: 200,height: 45)
+                                .frame(minWidth: 200)
+                                .frame(height: 45)
+                                .foregroundStyle(Color.black)
                         }
                         .padding(.horizontal)
                         .background(
-                            buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) : Color(hex: "F2F2F7")
-                        )
-                        .foregroundColor(
-                            buttonsActive[index] ? (isAnswerCorrect ?? false ? .black : .black) : .black
+                            buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
+                                indexSelectedButton == index ? Color.blue : Color.gray.opacity(0.2)
                         )
                         .cornerRadius(20)
                         .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
-                    }
+                    }.disabled(isChecked)
                 }
             }
             .padding()
-            .toolbar{
-                ToolbarItem{
-                    ProgressView(value: Float(currentIndex), total: Float(diagram.labels.count))
-                        .tint(Color.primaryColor1)
-                        .scaleEffect(y: 20)
-                        .frame(width: 810)
-                        .cornerRadius(20.0)
-                        .position(x: UIScreen.main.bounds.width / 5)
-                        .padding()
-
+            
+            // "Next" button for easy Quiz
+            Button {
+                if let index =  indexSelectedButton {
+                    checkAnswer(UserText: WordsForQuiz[index])
+                    // Reset buttonsActive array and hide symbols
+                    buttonsActive = Array(repeating: false, count: WordsForQuiz.count)
+                    // Activate selected button
+                    buttonsActive[index] = true
+                    isChecked = true
+                    indexSelectedButton = nil
+                } else {
+                    currentIndex += 1
+                    isChecked = false
                 }
-                ToolbarItem(placement: .navigationBarTrailing){
-                    Button(action: {
-                        currentIndex += 1
-                        FirstButtonSelected = false
-                    }){
-                        HStack{
-                            Text("Next")
-                            Image(systemName: "chevron.forward")
-                        }
-                        .padding()
-                        .foregroundStyle(
-                            FirstButtonSelected ? Color.primaryColor1 : Color(hex: "DCDCDD")
-                        )
-                    }
-                    .disabled(!FirstButtonSelected)
-                }
+            } label: {
+                Text(isChecked ? "Next" : "Check")
+                    .font(.title3)
+                    .padding()
+                    .background((indexSelectedButton == nil && !isChecked) ? Color.gray.opacity(0.2) : .primaryColor1)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .buttonStyle(PlainButtonStyle())
             }
+            .disabled(indexSelectedButton == nil && !isChecked) // Ya funciona bien!
+                
         }
         .frame(width: 780)
+        // La toolbar de la barra de progreso tiene un detalle, tal vez sea bueno descartarla por ahora.
+        .toolbar{
+            ToolbarItem{
+                ProgressView(value: Float(currentIndex), total: Float(diagram.labels.count))
+                    .tint(Color.primaryColor1)
+                    .scaleEffect(y: 20)
+                    .frame(width: 810)
+                    .cornerRadius(20.0)
+                    .position(x: UIScreen.main.bounds.width / 5)
+                    .padding()
+            }
+        }
     }
+
     
     
     /// MARK: Medium Quizz view
@@ -310,7 +322,7 @@ struct QuizzView: View {
                 .foregroundColor(.primary)
                 .padding()
                 Button {
-                    //disabled the textfield
+                    // Disabled the textfield
                     TextFieldQuizState = true
                     checkAnswer(UserText: word)
                     print("Label: \(diagram.labels[currentIndex].text)")

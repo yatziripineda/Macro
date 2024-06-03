@@ -201,6 +201,7 @@ struct ImageDiagramView: View {
                         QuizzView(diagram: diagram!, currentIndex: $currentIndex)
                     } label: {
                         Text("Start Quizz")
+                            .font(.title3)
                     }.padding()
                         .background(.primaryColor1)
                         .foregroundColor(.white)
