@@ -185,9 +185,8 @@ struct ImageDiagramView: View {
             /* Los botones que se muestran debajo del diagrama dependen del tipo de diagrama también */
             if receivedInfoType() == "diagram" {
                 NavigationLink {
-                    /* HERE: MainQuizView(diagram: diagram!, currentIndex: $currentIndex) */
-                    
-                    QuizzView(diagram: diagram!, currentIndex: $currentIndex)
+                    // ¿Por qué el diagrama que se pasa como parámetro tiene que ser opcional?
+                    MainQuizView(diagram: diagram!, currentIndex: $currentIndex)
                 } label: {
                     Text("Start Quizz")
                 }.padding()
@@ -241,10 +240,10 @@ struct ImageDiagramView: View {
                 .padding(.vertical, 50)
                 if receivedInfoType() == "diagram" && !showWordReview{
                     NavigationLink {
-                        /* HERE MainQuizView(diagram: diagram!, currentIndex: $currentIndex) */
-                        QuizzView(diagram: diagram!, currentIndex: $currentIndex)
+                        MainQuizView(diagram: diagram!, currentIndex: $currentIndex)
                     } label: {
                         Text("Start Quizz")
+                            .font(.title3)
                     }.padding()
                         .background(.primaryColor1)
                         .foregroundColor(.white)
