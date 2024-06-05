@@ -50,3 +50,29 @@ struct DiagramButton: View {
         .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
     }
 }
+
+
+struct AddDiagramButton: View {
+    
+    
+    var body: some View {
+        ZStack {
+            NavigationLink {
+                ImageDiagramView()
+            } label: {
+                Image(systemName: "photo.badge.plus").resizable().aspectRatio(contentMode: .fit)
+                .padding(.leading, 10)
+                .foregroundColor(Color.primaryColor1)
+                .padding()
+                .frame(width: 100)
+                .background {
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
+                        .frame(width: 190, height: 163)
+                        .foregroundColor(Color.primaryColor1)
+            }
+                
+            }
+        }
+    }
+}

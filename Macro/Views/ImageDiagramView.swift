@@ -63,7 +63,32 @@ struct ImageDiagramView: View {
                         }
                         .sheet(isPresented: $showWordReview, content: {
                             if topicPickerVisibility{
-                                TopicPickerView(selectedTopic: $selectingTopic)
+                                
+                                NavigationView(content: {
+                                    TopicPickerView(selectedTopic: $selectingTopic)
+                                        .navigationBarTitle("New Topic")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .toolbar {
+                                        
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("Done") {
+
+
+
+                                            }
+                                        }
+                                        ToolbarItem(placement: .cancellationAction) {
+                                            Button("Cancel") {
+                                                
+
+                                            }
+                                        }
+                                    }.toolbarBackground(Color(.white), for: .navigationBar)
+                                        .toolbarBackground(.visible, for: .navigationBar)
+                                })
+                                
+                                
+                                
                             }else{
                                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
                             }
@@ -97,7 +122,25 @@ struct ImageDiagramView: View {
                             }
                         }
                         .sheet(isPresented: $topicPickerVisibility, content: {
-                            TopicPickerView(selectedTopic: $selectingTopic)
+                            NavigationView(content: {
+                                TopicPickerView(selectedTopic: $selectingTopic)
+                                    .navigationBarTitle("Save to...")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                    
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("+ List") {
+
+                                        }
+                                    }
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Cancel") {
+                                            topicPickerVisibility.toggle()
+                                        }
+                                    }
+                                }.toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(.visible, for: .navigationBar)
+                            })
                         })
                 }
             }
@@ -176,7 +219,6 @@ struct ImageDiagramView: View {
     func iPadView() -> some View{
         HStack{
             VStack{
-                if selectingTopic != nil{Text(selectingTopic!.label)}
                 GeometryReader { geo in
                     Group {
                         // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!

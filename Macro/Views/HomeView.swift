@@ -18,9 +18,9 @@ struct HomeView: View {
     @State private var allDiagramsToggle:Bool = true
     @State private var AddTopic:Bool = false
     @State private var TopicName:String = ""
-    @State private var selectedIcon: String = "lightbulb.fill"
+    @State private var selectedIcon: String = "figure"
     
-    let iconCatalog: [String] = ["house.fill", "figure.arms.open", "tree.fill", "flask.fill", "syringe.fill", "mountain.2.fill", "globe.americas.fill","sun.dust.fill", "cloud.drizzle.fill", "lightbulb.fill" ]
+    let iconCatalog: [String] = iconCatalogFunc()
         
     @Query(sort: \Topics.label) private var topics: [Topics]
     
@@ -37,7 +37,29 @@ struct HomeView: View {
         detail: {
             DiagramListView(HideToolBarItem: $HideToolBarItem, columnVisibility: $columnVisibility, allDiagramsToggle: $allDiagramsToggle, selectedTopic: selectedTopic)
         }.sheet(isPresented: $AddTopic, content: {
-            AddTopicView()
+            NavigationView(content: {
+                AddTopicView()
+                    .navigationBarTitle("New Topic")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                    
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            context.insert(Topics(label: TopicName, iconName: selectedIcon))
+                            self.AddTopic.toggle()
+
+                        }
+                    }
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            self.AddTopic.toggle()
+
+                        }
+                    }
+                }.toolbarBackground(Color(.white), for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+            })
+            
         })
     }
     
@@ -104,57 +126,100 @@ struct HomeView: View {
         }
     }
     
-    func AddTopicView() -> some View{
-        VStack {
-            Spacer()
-            Circle()
-                .fill(Color.primaryColor2)
-                .frame(width: 200, height: 200)
-                .overlay(
-                    Image(systemName: selectedIcon)
-                        .resizable()
+        func AddTopicView() -> some View{
+            VStack {
+                VStack{
+                    Circle()
+                        .fill(Color.primaryColor1)
+                        .frame(width: 200, height: 200)
+                        .overlay(
+                            Image(systemName: selectedIcon)
+                                .font(.system(size: 110))
+                                .padding()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.white)
+                                .padding()
+                        )
+                        .padding(.top,20)
                         .padding()
-                        .frame(width: 120, height: 120)
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(Color.white)
+                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                    TextField("Topic Name", text: $TopicName)
                         .padding()
-                )
+                        .frame(height: 60)
+                        .background(Color(uiColor: .systemGray5))
+                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                        .padding(40)
+                        
+                }
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))).padding(.top,20)
                 .padding()
-                .padding(.bottom, 20)
-            List {
-                Section("Write the name of the new topic") {
-                    TextField("Topic", text: $TopicName)
-                        .padding()
-                }
-                Section("Select the icon for the new topic"){
-                    Picker("Icon", selection: $selectedIcon) {
+                .padding(.bottom,25)
+                HStack{Text("Icon").foregroundStyle(.gray)
+                    Spacer()}.padding(.leading,25)
+                Section(){
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15),
+                                        GridItem(.flexible(), spacing: 15)
+                                       ], spacing: 20) {
+                        
                         ForEach(iconCatalog, id: \.self) { icon in
-                            Image(systemName: icon).tag(icon)
-                                .foregroundStyle(Color.primaryColor1)
+                            Button(action: {
+                                self.selectedIcon = icon
+                            }) {
+                            
+                                VStack{
+                                    Image(systemName: icon)
+                                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                                        .frame(width: 60, height: 60, alignment: .center)
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundStyle(self.selectedIcon == icon ? .primaryColor2 : .gray)
+                                        
+                                }
+                                .background(self.selectedIcon == icon ? .secondaryColor1 : Color(uiColor: .systemGray6))
+                                .clipShape(Circle())
+                            }
                         }
-                    }
-                    .padding()
-                }
-            }.listStyle(.sidebar)
-            
-            Button(action: {
-                context.insert(Topics(label: TopicName, iconName: selectedIcon))
-                AddTopic = false
-            }, label: {
-                ZStack{
-                    Rectangle()
-                        .foregroundStyle(Color.primaryColor1)
-                        .frame(maxWidth: .infinity )
-                        .frame(height: 35)
-                        .padding()
-                        .shadow(color: Color.primaryColor2, radius: 10, x: 0, y: 5)
-                        .cornerRadius(10)
-                    Text("Save")
-                        .font(.title)
-                        .foregroundStyle(Color.white)
-                }
-            })
-          
+                    }.padding().background(.white)
+                }.clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                    .padding([.bottom,.leading,.trailing],15)
+                Spacer()
+    //            List {
+    //                Section("Select the icon for the new topic"){
+    //                    Picker("Icon", selection: $selectedIcon) {
+    //                        ForEach(iconCatalog, id: \.self) { icon in
+    //                            Image(systemName: icon).tag(icon)
+    //                                .foregroundStyle(Color.primaryColor1)
+    //                        }
+    //                    }
+    //                    .padding()
+    //                }
+    //            }.listStyle(.sidebar)
+                
+    //            Button(action: {
+    //                context.insert(Topics(label: TopicName, iconName: selectedIcon))
+    //                AddTopic = false
+    //            }, label: {
+    //                ZStack{
+    //                    Rectangle()
+    //                        .foregroundStyle(Color.primaryColor1)
+    //                        .frame(maxWidth: .infinity )
+    //                        .frame(height: 35)
+    //                        .padding()
+    //                        .shadow(color: Color.primaryColor2, radius: 10, x: 0, y: 5)
+    //                        .cornerRadius(10)
+    //                    Text("Save")
+    //                        .font(.title)
+    //                        .foregroundStyle(Color.white)
+    //                }
+    //            })
+              
+            }.background(Color(uiColor: .systemGray6))
         }
-    }
 }

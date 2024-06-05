@@ -15,3 +15,8 @@ func tuppleToDiagramLabel(rectangles:[(String,CGRect)]) -> [DiagramLabel]{
     }
     return tupleList
 }
+
+func iconCatalogFunc() -> [String] {
+    return ["figure","globe.americas.fill","tree.fill","brain.filled.head.profile","fossil.shell.fill","map.fill","lungs.fill","mountain.2.fill","allergens.fill","house.fill","atom","pawprint.fill","music.note","soccerball.inverse","sparkles","camera.shutter.button.fill","wrench.adjustable.fill","scissors","cart.fill","applescript.fill","stethoscope","theatermask.and.paintbrush.fill","building.columns.fill","macbook.and.iphone","guitars.fill","car.fill","hanger","ladybug.fill","fish.fill","gamecontroller.fill","carrot.fill","fork.knife","banknote.fill","textformat.alt","function","popcorn.fill"]
+
+}
