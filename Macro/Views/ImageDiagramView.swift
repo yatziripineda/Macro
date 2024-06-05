@@ -220,7 +220,6 @@ struct ImageDiagramView: View {
     func iPadView() -> some View{
         HStack{
             VStack{
-                if selectingTopic != nil{Text(selectingTopic!.label)}
                 GeometryReader { geo in
                     Group {
                         // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!
