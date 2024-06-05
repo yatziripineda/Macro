@@ -143,7 +143,7 @@ struct ImageDiagramView: View {
             if receivedInfoType() == "diagram" {
                 NavigationLink {
                     // ¿Por qué el diagrama que se pasa como parámetro tiene que ser opcional?
-                    QuizzView(diagram: diagram!, currentIndex: $currentIndex)
+                    MainQuizView(diagram: diagram!, currentIndex: $currentIndex)
                 } label: {
                     Text("Start Quizz")
                 }.padding()
@@ -198,9 +198,10 @@ struct ImageDiagramView: View {
                 .padding(.vertical, 50)
                 if receivedInfoType() == "diagram" && !showWordReview{
                     NavigationLink {
-                        QuizzView(diagram: diagram!, currentIndex: $currentIndex)
+                        MainQuizView(diagram: diagram!, currentIndex: $currentIndex)
                     } label: {
                         Text("Start Quizz")
+                            .font(.title3)
                     }.padding()
                         .background(.primaryColor1)
                         .foregroundColor(.white)
