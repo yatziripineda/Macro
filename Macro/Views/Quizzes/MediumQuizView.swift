@@ -94,7 +94,7 @@ struct MediumQuizView: View {
                         }
                         .padding()
                         .foregroundStyle(
-                            TextFieldQuizState ? Color.primaryColor1 : Color(hex: "DCDCDD")
+                            TextFieldQuizState ? Color.primaryColor1 : Color.gray.opacity(0.2)
                         )
                     }
                     .disabled(!TextFieldQuizState)

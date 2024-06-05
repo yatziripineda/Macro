@@ -35,7 +35,7 @@ struct DiagramButton: View {
                         Spacer()
                         Text("100%")
                             .font(.footnote)
-                            .foregroundColor(Color(hex: "3C3C43").opacity(0.60))
+                            .foregroundColor(Color.black.opacity(0.2))
                     }
                 }
                 .padding()
@@ -43,7 +43,7 @@ struct DiagramButton: View {
                 .background {
                     BottomRoundedRectangle(cornerRadius: 20)
                         .frame(width: 190, height: 55)
-                        .foregroundColor(Color(hex: "F1F1F1"))
+                        .foregroundColor(Color.gray.opacity(0.2))
                 }
             }.offset(y: 54)
         }
