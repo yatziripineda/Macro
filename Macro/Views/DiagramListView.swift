@@ -46,15 +46,11 @@ struct DiagramListView: View {
             VStack {
                 Divider()
                 if diagram.isEmpty{
-                    ContentUnavailableView {
-                        Label("No Diagrams", systemImage: "pencil.slash")
-                    } description: {
-                        Text("No views")
-                    }
+                    AddDiagramButton()
                 }else{
                     ScrollView{
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                            
+                            AddDiagramButton()
                             if selectedTopic.label == "All Diagrams"{
                                 AllDiagramsView()
                             }else{
@@ -127,7 +123,6 @@ struct DiagramListView: View {
         }
     }
     func FilterTopicsDiagramsView() -> some View{
-        
         ForEach(filteredDiagram, id: \.self) { diagram in
             if(diagram.topic == nil){
             }

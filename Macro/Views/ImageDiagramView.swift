@@ -63,7 +63,32 @@ struct ImageDiagramView: View {
                         }
                         .sheet(isPresented: $showWordReview, content: {
                             if topicPickerVisibility{
-                                TopicPickerView(selectedTopic: $selectingTopic)
+                                
+                                NavigationView(content: {
+                                    TopicPickerView(selectedTopic: $selectingTopic)
+                                        .navigationBarTitle("New Topic")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .toolbar {
+                                        
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("Done") {
+
+
+
+                                            }
+                                        }
+                                        ToolbarItem(placement: .cancellationAction) {
+                                            Button("Cancel") {
+                                                
+
+                                            }
+                                        }
+                                    }.toolbarBackground(Color(.white), for: .navigationBar)
+                                        .toolbarBackground(.visible, for: .navigationBar)
+                                })
+                                
+                                
+                                
                             }else{
                                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
                             }
@@ -97,7 +122,25 @@ struct ImageDiagramView: View {
                             }
                         }
                         .sheet(isPresented: $topicPickerVisibility, content: {
-                            TopicPickerView(selectedTopic: $selectingTopic)
+                            NavigationView(content: {
+                                TopicPickerView(selectedTopic: $selectingTopic)
+                                    .navigationBarTitle("Save to...")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                    
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("+ List") {
+
+                                        }
+                                    }
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Cancel") {
+                                            topicPickerVisibility.toggle()
+                                        }
+                                    }
+                                }.toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(.visible, for: .navigationBar)
+                            })
                         })
                 }
             }
@@ -142,7 +185,8 @@ struct ImageDiagramView: View {
             /* Los botones que se muestran debajo del diagrama dependen del tipo de diagrama también */
             if receivedInfoType() == "diagram" {
                 NavigationLink {
-                    // ¿Por qué el diagrama que se pasa como parámetro tiene que ser opcional?
+                    /* HERE: MainQuizView(diagram: diagram!, currentIndex: $currentIndex) */
+                    
                     QuizzView(diagram: diagram!, currentIndex: $currentIndex)
                 } label: {
                     Text("Start Quizz")
@@ -198,6 +242,7 @@ struct ImageDiagramView: View {
                 .padding(.vertical, 50)
                 if receivedInfoType() == "diagram" && !showWordReview{
                     NavigationLink {
+                        /* HERE MainQuizView(diagram: diagram!, currentIndex: $currentIndex) */
                         QuizzView(diagram: diagram!, currentIndex: $currentIndex)
                     } label: {
                         Text("Start Quizz")
