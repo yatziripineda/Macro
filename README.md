@@ -1,32 +1,37 @@
-# Eyedia
+# Eyedia 📚
 
-**Eyedia** es una aplicación innovadora diseñada para ayudarte a estudiar de manera más eficiente. Con Eyedia, puedes digitalizar cualquier diagrama y reconocer automáticamente el texto de todas las etiquetas, permitiéndote practicar y memorizar cada término de manera rápida y efectiva.
+**Eyedia** is an innovative app designed to help you study more efficiently. With Eyedia, you can digitize any diagram and automatically recognize the text of all labels, allowing you to quickly and effectively practice and memorize each term.
 
-## Características
+## Features ✨
 
-- **Reconocimiento Automático de Texto**: Toma una fotografía de cualquier diagrama y Eyedia reconocerá automáticamente todas las palabras.
-- **Ocultación de Palabras**: Todas las palabras del diagrama se ocultarán automáticamente para que puedas desafiar tu memoria.
-- **Quizzes Personalizados**: Inicia tu estudio con quizzes que ofrecen 3 niveles de dificultad según tu progreso.
+- **Automatic Text Recognition** 📷: Take a photo of any diagram and Eyedia will automatically recognize all the words.
+- **Word Hiding** 🕵️‍♂️: All words in the diagram will be automatically hidden so you can challenge your memory.
+- **Personalized Quizzes** 🎓: Start your study session with quizzes that offer 3 levels of difficulty based on your progress.
 
-## Capturas de Pantalla
+## Screenshots 📸
 
-![Pantalla Principal](images/pantalla_principal.png)
-![Reconocimiento de Texto](images/reconocimiento_texto.png)
-![Quiz de Estudio](images/quiz_estudio.png)
+![Main Screen](Macro/images/MainScreen.png)
+![Text Recognition](Macro/images/TextRecognition.png)
+![Study Quiz](Macro/images/EasyQuiz.png)
+![Results](Macro/images/Results.png)
 
-## Instalación
+## Installation 📲
 
-Puedes descargar Eyedia directamente desde la [App Store](https://www.apple.com/app-store/).
+You can download Eyedia directly from the [App Store](https://www.apple.com/app-store/).
 
-## Uso
+## Usage 🚀
 
-1. **Tomar una Foto**: Abre la aplicación y toma una foto de tu diagrama.
-2. **Reconocer Texto**: Deja que Eyedia procese la imagen y reconozca automáticamente todas las palabras.
-3. **Iniciar Quiz**: Comienza tu sesión de estudio con las palabras ocultas, el nivel de dificultad de ajustará automáticamente de acuerdo a tu progreso.
+1. **Take a Photo**: Open the app and take a photo of your diagram.
+2. **Recognize Text**: Let Eyedia process the image and automatically recognize all the words.
+3. **Start Quiz**: Begin your study session with the words hidden. The difficulty level will adjust automatically according to your progress.
 
-## Créditos
+## Credits 🙌
 
-Desarrollado por:
-- Vitor Gebrin
+Developed by:
+- Carmine Iemmino
+- Fernanda Lozoya
+- Francesca Pia De Rosa
 - Miguel Torres
+- Vitor Gebrin
 - Yatziri Pineda
+
