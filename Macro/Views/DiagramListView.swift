@@ -60,11 +60,6 @@ struct DiagramListView: View {
                                     }
                                 }else{
                                     if (selectedTopic.diagram!.isEmpty){
-                                        ContentUnavailableView {
-                                            Label("No Diagrams", systemImage: "pencil.slash")
-                                        } description: {
-                                            Text("No views")
-                                        }
                                     } else {
                                         FilterTopicsDiagramsView()
                                     }
