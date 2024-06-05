@@ -10,10 +10,10 @@
 
 ## Screenshots 📸
 
-![Main Screen](Macro/images/MainScreen.png)
-![Text Recognition](Macro/images/TextRecognition.png)
-![Study Quiz](Macro/images/EasyQuiz.png)
-![Results](Macro/images/Results.png)
+![Main Screen](Macro/Images/MainScreen.PNG)
+![Text Recognition](Macro/Images/TextRecognition.PNG)
+![Study Quiz](Macro/Images/EasyQuiz.PNG)
+![Results](Macro/Images/Results.PNG)
 
 ## Installation 📲
 
