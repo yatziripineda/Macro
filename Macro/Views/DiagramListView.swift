@@ -46,7 +46,10 @@ struct DiagramListView: View {
             VStack {
                 Divider()
                 if diagram.isEmpty{
-                    AddDiagramButton()
+                    
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
+                            AddDiagramButton()
+                        }.padding(.top,55)
                 }else{
                     ScrollView{
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
