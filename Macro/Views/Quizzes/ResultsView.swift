@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CongratulationView: View {
+struct ResultsView: View {
+    
     var diagram: Diagram
 
     var body: some View {

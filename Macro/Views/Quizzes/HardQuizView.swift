@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct HardQuizView: View {
+    
     var diagram: Diagram
+    
     @Binding var currentIndex: Int
     @Binding var word: String
     @Binding var isAnswerCorrect: Bool?

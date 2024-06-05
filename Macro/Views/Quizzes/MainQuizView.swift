@@ -9,18 +9,12 @@ import SwiftUI
 
 struct MainQuizView: View {
     
-    /* *** Variables que probablemente no se necesitan *** */
-    
-    @Environment(\.managedObjectContext) private var viewContext
-    // Created to hide keyboard after you send the guess on IPhoneVerticalView()
-    @FocusState private var isTextFieldFocused: Bool
-    /* *** *** *** */
-    
-    /* *** Variables que si se utilizan al menos 1 vez, pero no creé yo *** */
     var diagram: Diagram
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     // Manage the visibility of the overlay
     @State var overlayVisibility: Bool = true
-    @Environment(\.presentationMode) var presentationMode
     // Word is the string that the user write or select
     @State private var word: String = ""
     @State private var countCorrect: Int = 0
@@ -36,17 +30,14 @@ struct MainQuizView: View {
     @State private var message: String = ""
     // State variable to track the visibility of the TextField on the HardQuizView
     @State private var TextFieldQuizState: Bool = false
-    @Binding var currentIndex: Int
-    /* *** *** *** */
-    
-    /* *** Variables que si se utilizan y que cree yo *** */
     // Variable para mostrar el rectángulo rojo
     @State private var isQuiz: Bool = true
     // Variable para reconocer el botón seleccionado y poder separarlo del ForEach.
     @State private var indexSelectedButton: Int? = nil
     // Variable necesaria para el botón de next
     @State private var isChecked: Bool = false
-    /* *** *** *** */
+    
+    @Binding var currentIndex: Int
 
     var body: some View {
         NavigationStack {
@@ -148,7 +139,7 @@ struct MainQuizView: View {
         }
         // La vista de la puntuación se presenta cuando el índice se iguala al número de labels.
         .sheet(isPresented: .constant(currentIndex == diagram.labels.count), content: {
-            CongratulationView(diagram: diagram)
+            ResultsView(diagram: diagram)
         })
     }
     

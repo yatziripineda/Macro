@@ -30,9 +30,7 @@ struct DiagramOverlayedView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                if overlayVisibility {
-                    RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex, isQuiz: $isQuiz)
-                }
+                RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex, isQuiz: $isQuiz, overlayVisibility: $overlayVisibility)
             }
         }
     }

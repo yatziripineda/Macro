@@ -1,6 +1,5 @@
-
 //
-//  TopicDetail.swift
+//  DiagramListView.swift
 //  Macro
 //
 //  Created by yatziri on 13/05/24.
@@ -10,10 +9,11 @@ import SwiftUI
 import SwiftData
 
 
-// MARK: Bug un Topic when go back from quizz
-
+/// MARK: Bug un Topic when go back from quizz
 struct DiagramListView: View {
+    
     @Query (sort: \Diagram.date)var diagram: [Diagram]
+    
     @State private var NameTopicSelected:String  = (UserDefaults.standard.string(forKey: "NameTopic") ?? "All Diagrams")
     @State private var showRectangle = true
     @State private var textPosition: CGFloat = 10
@@ -21,9 +21,9 @@ struct DiagramListView: View {
     @State private var searchText = ""
     // state var that track  the indec of the lable on the diagram
     @State private var currentIndex: Int = 0
-    
     @State private var offset = CGSize.zero
     // to trach when the sidebar needs to hide
+    
     @Binding var HideToolBarItem:Bool
     @Binding var columnVisibility: NavigationSplitViewVisibility
     @Binding var allDiagramsToggle:Bool
@@ -46,11 +46,10 @@ struct DiagramListView: View {
             VStack {
                 Divider()
                 if diagram.isEmpty{
-                    
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                            AddDiagramButton()
-                        }.padding(.top,55)
-                }else{
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
+                        AddDiagramButton()
+                    }.padding(.top,55)
+                } else {
                     ScrollView{
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
                             AddDiagramButton()
@@ -84,10 +83,9 @@ struct DiagramListView: View {
                                     .foregroundColor(Color.primaryColor1)
                             }
                         }
-                        
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
-                                
+                                /* Missing action for "Select" button */
                             }) {
                                 Text("Select")
                                     .foregroundColor(Color.primaryColor1)
@@ -102,10 +100,10 @@ struct DiagramListView: View {
         }
         .onAppear(){
             HideToolBarItem = false
-            
         }
     }
-    func AllDiagramsView() -> some View{
+    
+    func AllDiagramsView() -> some View {
         ForEach(filteredDiagram, id: \.self) { diagram in
             NavigationLink {
                 ImageDiagramView(diagram: diagram)
@@ -120,7 +118,8 @@ struct DiagramListView: View {
             }
         }
     }
-    func FilterTopicsDiagramsView() -> some View{
+    
+    func FilterTopicsDiagramsView() -> some View {
         ForEach(filteredDiagram, id: \.self) { diagram in
             if(diagram.topic == nil){
             }

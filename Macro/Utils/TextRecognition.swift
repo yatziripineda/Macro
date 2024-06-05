@@ -33,6 +33,9 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
             let boundingBox = observation.boundingBox
             // We convert the normalized coordinates of the bounding box to image coordinates.
             let imageRect = VNImageRectForNormalizedRect(boundingBox, Int(cgImage.width), Int(cgImage.height), image)
+            
+            /* Here we can add some conditions to */
+            
             // We return a tuple with the text and its box.
             return (topCandidate.string, imageRect)
         }

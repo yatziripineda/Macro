@@ -12,6 +12,7 @@ struct RectanglesOverlay: View {
     var labels: [DiagramLabel]
     @Binding var currentIndex: Int
     @Binding var isQuiz: Bool
+    @Binding var overlayVisibility: Bool
     
     var body: some View {
         // Usamos un canvas para dibujar gráficos 2D dentro de una vista SwiftUI.
@@ -22,10 +23,10 @@ struct RectanglesOverlay: View {
                     if index == currentIndex {
                         context.fill(Path(rect), with: .color(.red)) // We change the color of the current rectangle
                     } else {
-                        context.fill(Path(rect), with: .color(.black.opacity(1.0)))
+                        context.fill(Path(rect), with: .color(.black.opacity(overlayVisibility ? 1.0 : 0.1)))
                     }
                 } else {
-                    context.fill(Path(rect), with: .color(.black.opacity(1.0)))
+                    context.fill(Path(rect), with: .color(.black.opacity(overlayVisibility ? 1.0 : 0.1)))
                 }
             }
         }

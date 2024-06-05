@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct EasyQuizView: View {
+    
     var diagram: Diagram
+    
     @Binding var currentIndex: Int
     @Binding var WordsForQuiz: [String]
     @Binding var indexSelectedButton: Int?

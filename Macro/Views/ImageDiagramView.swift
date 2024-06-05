@@ -1,5 +1,5 @@
 //
-//  ImageDiagramView.swift + ImageReviewView.swift
+//  ImageDiagramView.swift
 //  Macro
 //
 //  Created by yatziri on 14/05/24.
@@ -10,29 +10,27 @@ import SwiftUI
 
 /// This is the view showed when you open an specific diagram from the list in the main View.
 struct ImageDiagramView: View {
+    
     @GestureState private var dragState = CGSize.zero
+    
     @State private var currentIndex: Int = 0
     @State private var offset = CGSize.zero
     @State var diagram: Diagram?
-    
     @State var selectingTopic:Topics?
-    //Adding this one to manage visibility of the overlay
-    @State var overlayVisibility:Bool = true
+    @State var overlayVisibility:Bool = true // Manage the visibility of the overlay
     @State var topicPickerVisibility:Bool = false
-    
-    //Brought from ImageReviewView
     @State private var recognizedData: [(String, CGRect)] = []
     @State private var image: UIImage?
     @State private var showCamera = false
     @State private var showWordReview:Bool = false
+    @State private var isQuiz: Bool = false
     
     @Environment(\.modelContext) var context
-    
-    @State private var isQuiz: Bool = false
     
     var body: some View {
         if receivedInfoType() != "empty"{
             NavigationStack {
+                /* If the device is an iPhone... */
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     iPhoneVerticalView()
                         .toolbar {
@@ -40,7 +38,7 @@ struct ImageDiagramView: View {
                                 Button(action: {
                                     overlayVisibility.toggle()
                                 }) {
-                                    Image(systemName: "eye.slash.fill")
+                                    Image(systemName: overlayVisibility ? "eye.slash.fill" : "eye.fill")
                                         .foregroundColor(.blue)
                                 }
                             }
@@ -60,50 +58,46 @@ struct ImageDiagramView: View {
                                         .foregroundColor(Color.primaryColor1)
                                 }
                             }
-                        }
+                        } // We show the modal for WordReview in the iPhone.
                         .sheet(isPresented: $showWordReview, content: {
-                            if topicPickerVisibility{
-                                
+                            if topicPickerVisibility {
                                 NavigationView(content: {
                                     TopicPickerView(selectedTopic: $selectingTopic)
                                         .navigationBarTitle("New Topic")
                                         .navigationBarTitleDisplayMode(.inline)
                                         .toolbar {
-                                        
-                                        ToolbarItem(placement: .confirmationAction) {
-                                            Button("Done") {
-
-
-
+                                            ToolbarItem(placement: .confirmationAction) {
+                                                Button("Done") {
+                                                    /* Missing action for "Done" button */
+                                                }
                                             }
-                                        }
-                                        ToolbarItem(placement: .cancellationAction) {
-                                            Button("Cancel") {
-                                                
-
+                                            ToolbarItem(placement: .cancellationAction) {
+                                                Button("Cancel") {
+                                                    /* Missing action for "Cancel" button */
+                                                }
                                             }
-                                        }
-                                    }.toolbarBackground(Color(.white), for: .navigationBar)
+                                        }.toolbarBackground(Color(.white), for: .navigationBar)
                                         .toolbarBackground(.visible, for: .navigationBar)
                                 })
-                                
-                                
-                                
-                            }else{
+                            } else{
                                 WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
                             }
                         })
                 } else {
+                    /* If not, then is an iPad... */
                     iPadView()
+                    // First we add all the buttons to the toolbar.
                         .toolbar {
+                            /* Button to show or hide the overlayed rectangles */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button(action: {
                                     overlayVisibility.toggle()
                                 }) {
-                                    Image(systemName: "eye.slash.fill")
+                                    Image(systemName: overlayVisibility ? "eye.slash.fill" : "eye.fill")
                                         .foregroundColor(Color.primaryColor1)
                                 }
                             }
+                            /* Button to edit the labels */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button {
                                     showWordReview.toggle()
@@ -112,6 +106,7 @@ struct ImageDiagramView: View {
                                         .foregroundColor(Color.primaryColor1)
                                 }
                             }
+                            /* Button to select the topic for the current diagram */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button(action: {
                                     topicPickerVisibility.toggle()
@@ -121,24 +116,25 @@ struct ImageDiagramView: View {
                                 }
                             }
                         }
+                    // Then, we add the modal to show the topic picker view.
                         .sheet(isPresented: $topicPickerVisibility, content: {
                             NavigationView(content: {
                                 TopicPickerView(selectedTopic: $selectingTopic)
                                     .navigationBarTitle("Save to...")
                                     .navigationBarTitleDisplayMode(.inline)
                                     .toolbar {
-                                    
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("+ List") {
-
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("+ List") {
+                                                /* Missin action for "+ List" button */
+                                            }
+                                        }
+                                        ToolbarItem(placement: .cancellationAction) {
+                                            Button("Cancel") {
+                                                topicPickerVisibility.toggle()
+                                            }
                                         }
                                     }
-                                    ToolbarItem(placement: .cancellationAction) {
-                                        Button("Cancel") {
-                                            topicPickerVisibility.toggle()
-                                        }
-                                    }
-                                }.toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(Color(.white), for: .navigationBar)
                                     .toolbarBackground(.visible, for: .navigationBar)
                             })
                         })
@@ -147,8 +143,7 @@ struct ImageDiagramView: View {
         } else{ CameraView(image: $image, isShown: $showCamera, recognizedData: $recognizedData)}
     }
     
-    /// MARK: Function  "receivedInfoType()"
-    /// returns what kind of data is received (Full diagram, Not yet saved Diagram or nothing (needs to take picture). It returns the format in one of the following Strings: "diagram", "preDiagram" and "empty"
+    /// This function returns what kind of data is received (Full diagram, Not yet saved Diagram or nothing (needs to take picture). It returns the format in one of the following Strings: "diagram", "preDiagram" and "empty"
     func receivedInfoType() -> String {
         return self.diagram != nil ? "diagram" : (self.image != nil && !self.recognizedData.isEmpty) ? "preDiagram" : "empty"
     }
@@ -164,13 +159,13 @@ struct ImageDiagramView: View {
                 .frame(width: 600)
             GeometryReader { geo in
                 Group {
-                    /* Primero mostramos la vista de un diagrama terminado */
+                    /* A complete diagram is shown, with DiagramOverlayedView */
                     if receivedInfoType() == "diagram" {
                         ZoomView {
                             DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                         }
-                    } 
-                    /* Después, mostramos la vista de un pre diagrama (antes de guardar) */
+                    }
+                    /* Before saving the diagram, we show a "pre-diagram", with DiagramOverlayedView but different parameters */
                     else if receivedInfoType() == "preDiagram"{
                         ZoomView {
                             DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
@@ -182,10 +177,10 @@ struct ImageDiagramView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 50)
             
-            /* Los botones que se muestran debajo del diagrama dependen del tipo de diagrama también */
+            /* All the buttons bellow the diagram depends on the diagram type */
             if receivedInfoType() == "diagram" {
+                /* If it's a "diagram", the button is a navigation link to start the quiz */
                 NavigationLink {
-                    // ¿Por qué el diagrama que se pasa como parámetro tiene que ser opcional?
                     MainQuizView(diagram: diagram!, currentIndex: $currentIndex)
                 } label: {
                     Text("Start Quizz")
@@ -194,9 +189,9 @@ struct ImageDiagramView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .buttonStyle(PlainButtonStyle())
-            } 
-            // Si es un prediagrama el botón es para guardar.
+            }
             else if receivedInfoType() == "preDiagram"{
+                /* If it's a "prediagram" the button is just to save the diagram */
                 Button(
                     action: {
                         let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic )
@@ -214,20 +209,17 @@ struct ImageDiagramView: View {
         }
     }
     
-    
     /// IPad view for the Image Diagram
     func iPadView() -> some View{
         HStack{
             VStack{
                 GeometryReader { geo in
                     Group {
-                        // Si tenemos el diagrama completo usamos UIImage(data: diagram!.image!)!
                         if receivedInfoType() == "diagram" {
                             ZoomView {
                                 DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
                             }
-                        } 
-                        // Si apenas vamos a guardar el diagrama, usamos image!
+                        }
                         else if receivedInfoType() == "preDiagram"{
                             ZoomView {
                                 DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
@@ -256,11 +248,14 @@ struct ImageDiagramView: View {
                     .frame(width:470)
                     .background(Color(uiColor: .systemGray6))
             }
-        }.onDisappear{if receivedInfoType() == "preDiagram"{
-            let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic)
-            context.insert(newDiagram)
-            diagram = newDiagram
-        } else if (receivedInfoType() == "diagram" && selectingTopic != nil){diagram!.topic = selectingTopic}
+        }.onDisappear{
+            if receivedInfoType() == "preDiagram"{
+                let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic)
+                context.insert(newDiagram)
+                diagram = newDiagram
+            } else if (receivedInfoType() == "diagram" && selectingTopic != nil) {
+                diagram!.topic = selectingTopic
+            }
         }
     }
 }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ZoomView<Content: View>: View {
+    
     let content: Content
 
     @State private var scale: CGFloat = 1
     @State private var lastScale: CGFloat = 1
-
     @State private var offset: CGPoint = .zero
     @State private var lastTranslation: CGSize = .zero
 
@@ -39,7 +39,6 @@ struct ZoomView<Content: View>: View {
             .onChanged { value in
                 let delta = value / lastScale
                 lastScale = value
-
                 // To minimize jittering
                 if abs(1 - delta) > 0.01 {
                     scale *= delta
@@ -72,6 +71,7 @@ struct ZoomView<Content: View>: View {
     }
 
     private func adjustMaxOffset(size: CGSize) {
+        
         let maxOffsetX = (size.width * (scale - 1)) / 2
         let maxOffsetY = (size.height * (scale - 1)) / 2
 
