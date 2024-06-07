@@ -51,8 +51,8 @@ struct CameraView: UIViewControllerRepresentable {
             // We extract the selected original image.
             if let image = info[.originalImage] as? UIImage {
                 // We assign the image to the camera view's binding so it can be used in other views.
-                parent.image = image
-                processImage(image) { recognizedData in
+                parent.image = UIImage(named: "Example")
+                processImage(UIImage(named: "Example")!) { recognizedData in
                     // Here we could use Async/Await to ensure linear programming.
                     DispatchQueue.main.async {
                         if let data = recognizedData {
