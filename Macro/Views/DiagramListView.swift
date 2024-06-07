@@ -12,6 +12,9 @@ import SwiftData
 /// MARK: Bug un Topic when go back from quizz
 struct DiagramListView: View {
     
+    // Variable neede to use "modelContext" with .add() and .delete() functions.
+    @Environment(\.modelContext) var modelContext
+    
     @Query (sort: \Diagram.date)var diagram: [Diagram]
     
     @State private var NameTopicSelected:String  = (UserDefaults.standard.string(forKey: "NameTopic") ?? "All Diagrams")
@@ -50,7 +53,7 @@ struct DiagramListView: View {
                         AddDiagramButton()
                     }.padding(.top,55)
                 } else {
-                    ScrollView{
+                    ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
                             AddDiagramButton()
                             if selectedTopic.label == "All Diagrams"{
@@ -75,14 +78,14 @@ struct DiagramListView: View {
                 Spacer()
                     .navigationTitle(selectedTopic.label)
                     .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink {
-                                ImageDiagramView()
-                            } label: {
-                                Image(systemName: "plus.square.dashed")
-                                    .foregroundColor(Color.primaryColor1)
-                            }
-                        }
+//                        ToolbarItem(placement: .navigationBarTrailing) {
+//                            NavigationLink {
+//                                ImageDiagramView()
+//                            } label: {
+//                                Image(systemName: "plus.square.dashed")
+//                                    .foregroundColor(Color.primaryColor1)
+//                            }
+//                        }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: {
                                 /* Missing action for "Select" button */
@@ -116,8 +119,24 @@ struct DiagramListView: View {
                     .id(diagram.id)
                     .padding()
             }
+            .contextMenu {
+                Button(role: .destructive) {
+                    deleteDiagram(diagram)
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
         }
     }
+    
+    func deleteDiagram(_ diagram: Diagram) {
+            modelContext.delete(diagram)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error al guardar el contexto: \(error)")
+            }
+        }
     
     func FilterTopicsDiagramsView() -> some View {
         ForEach(filteredDiagram, id: \.self) { diagram in
@@ -135,6 +154,13 @@ struct DiagramListView: View {
                         DiagramButton(diagram: diagram)
                             .id(diagram.id)
                             .padding()
+                    }
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            deleteDiagram(diagram)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
                     }
                 }
             }

@@ -47,8 +47,8 @@ struct EasyQuizView: View {
                             buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
                                 indexSelectedButton == index ? Color.blue : .accentColor
                         )
-                        .cornerRadius(20)
-                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
+                        .cornerRadius(10)
+                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
                     }.disabled(isChecked)
                 }
             }
