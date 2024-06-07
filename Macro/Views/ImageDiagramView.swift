@@ -34,22 +34,25 @@ struct ImageDiagramView: View {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     iPhoneVerticalView()
                         .toolbar {
+                            /* Button to show or hide the overlayed rectangles */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button(action: {
                                     overlayVisibility.toggle()
                                 }) {
                                     Image(systemName: overlayVisibility ? "eye.slash.fill" : "eye.fill")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(Color.primaryColor1)
                                 }
                             }
+                            /* Button to edit the labels */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button {
                                     showWordReview.toggle()
                                 } label: {
                                     Image(systemName: "pencil.line")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(Color.primaryColor1)
                                 }
                             }
+                            /* Button to select the topic for the current diagram */
                             ToolbarItem(placement: .navigationBarTrailing) {
                                 Button(action: {
                                     topicPickerVisibility.toggle()
@@ -59,29 +62,26 @@ struct ImageDiagramView: View {
                                 }
                             }
                         } // We show the modal for WordReview in the iPhone.
-                        .sheet(isPresented: $showWordReview, content: {
-                            if topicPickerVisibility {
-                                NavigationView(content: {
-                                    TopicPickerView(selectedTopic: $selectingTopic)
-                                        .navigationBarTitle("New Topic")
-                                        .navigationBarTitleDisplayMode(.inline)
-                                        .toolbar {
-                                            ToolbarItem(placement: .confirmationAction) {
-                                                Button("Done") {
-                                                    /* Missing action for "Done" button */
-                                                }
+                        .sheet(isPresented: $topicPickerVisibility, content: {
+                            NavigationView(content: {
+                                TopicPickerView(selectedTopic: $selectingTopic)
+                                    .navigationBarTitle("Save to...")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("+ List") {
+                                                /* Missin action for "+ List" button */
                                             }
-                                            ToolbarItem(placement: .cancellationAction) {
-                                                Button("Cancel") {
-                                                    /* Missing action for "Cancel" button */
-                                                }
+                                        }
+                                        ToolbarItem(placement: .cancellationAction) {
+                                            Button("Cancel") {
+                                                topicPickerVisibility.toggle()
                                             }
-                                        }.toolbarBackground(Color(.white), for: .navigationBar)
-                                        .toolbarBackground(.visible, for: .navigationBar)
-                                })
-                            } else{
-                                WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
-                            }
+                                        }
+                                    }
+                                    .toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(.visible, for: .navigationBar)
+                            })
                         })
                 } else {
                     /* If not, then is an iPad... */
