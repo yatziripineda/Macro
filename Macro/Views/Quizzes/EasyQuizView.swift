@@ -40,12 +40,12 @@ struct EasyQuizView: View {
                                 .padding()
                                 .frame(minWidth: 200)
                                 .frame(height: 45)
-                                .foregroundStyle(Color.black)
+                                .foregroundStyle(Color.primary)
                         }
                         .padding(.horizontal)
                         .background(
                             buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
-                                indexSelectedButton == index ? Color.blue : Color.gray.opacity(0.2)
+                                indexSelectedButton == index ? Color.blue : .accentColor
                         )
                         .cornerRadius(20)
                         .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
@@ -72,6 +72,7 @@ struct EasyQuizView: View {
                 Text(isChecked ? "Next" : "Check")
                     .font(.title3)
                     .padding()
+                    .frame(width: 200)
                     .background((indexSelectedButton == nil && !isChecked) ? Color.gray.opacity(0.2) : .primaryColor1)
                     .foregroundColor(.white)
                     .cornerRadius(10)
