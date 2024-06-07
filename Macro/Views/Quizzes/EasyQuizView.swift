@@ -25,34 +25,65 @@ struct EasyQuizView: View {
                 .font(.title)
                 .bold()
             // Creamos los botones con todas las opciones, pero necesita espacio dinámico... ***
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 40) {
-                ForEach(0..<WordsForQuiz.count, id: \.self) { index in
-                    Button(action: {
-                        /* "Toggle" para poder elegir la opción correcta con feedback */
-                        if indexSelectedButton == index {
-                            indexSelectedButton = nil
-                        } else {
-                            indexSelectedButton = index
+//            LazyVGrid(columns: [GridItem(spacing: 3), GridItem(spacing: 3)], spacing: 5) {
+//                ForEach(0..<WordsForQuiz.count, id: \.self) { index in
+//                    Button(action: {
+//                        /* "Toggle" para poder elegir la opción correcta con feedback */
+//                        if indexSelectedButton == index {
+//                            indexSelectedButton = nil
+//                        } else {
+//                            indexSelectedButton = index
+//                        }
+//                    }) {
+//                        HStack {
+//                            Text(WordsForQuiz[index])
+//                                .padding()
+//                                .frame(minWidth: 100)
+//                                .frame(height: 45)
+//                                .foregroundStyle(Color.primary)
+//                        }
+//                        .background(
+//                            buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
+//                                indexSelectedButton == index ? Color.blue : .accentColor
+//                        )
+//                        .cornerRadius(10)
+//                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
+//                    }.disabled(isChecked)
+//                }
+//            
+//            }
+            
+            ScrollView {
+                VStack(spacing: 15) {
+                    ForEach(0..<WordsForQuiz.count, id: \.self) { index in
+                        Button(action: {
+                            /* "Toggle" para poder elegir la opción correcta con feedback */
+                            if indexSelectedButton == index {
+                                indexSelectedButton = nil
+                            } else {
+                                indexSelectedButton = index
+                            }
+                        }) {
+                            HStack {
+                                Text(WordsForQuiz[index])
+                                    .padding()
+                                    .frame(minWidth: 100)
+                                    .frame(height: 45)
+                                    .foregroundStyle(Color.primary)
+                            }
+                            .background(
+                                buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
+                                    indexSelectedButton == index ? Color.blue : .accentColor
+                            )
+                            .cornerRadius(10)
+                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
                         }
-                    }) {
-                        HStack {
-                            Text(WordsForQuiz[index])
-                                .padding()
-                                .frame(minWidth: 200)
-                                .frame(height: 45)
-                                .foregroundStyle(Color.primary)
-                        }
-                        .padding(.horizontal)
-                        .background(
-                            buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
-                                indexSelectedButton == index ? Color.blue : .accentColor
-                        )
-                        .cornerRadius(20)
-                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 4)
-                    }.disabled(isChecked)
+                        .disabled(isChecked)
+                    }
                 }
+                .padding(.horizontal, 3) // Ajuste de padding para los lados
             }
-            .padding()
+
             
             // "Next" button for easy Quiz
             Button {
