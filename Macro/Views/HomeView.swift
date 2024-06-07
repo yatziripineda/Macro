@@ -143,7 +143,7 @@ struct HomeView: View {
                     .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                     .padding(40)
             }
-            .background(.white)
+            .background(.primary)
             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))).padding(.top,20)
             .padding()
             .padding(.bottom,25)
@@ -171,7 +171,7 @@ struct HomeView: View {
                             .clipShape(Circle())
                         }
                     }
-                }.padding().background(.white)
+                }.padding().background(.primary)
             }.clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                 .padding([.bottom,.leading,.trailing],15)
             Spacer()
