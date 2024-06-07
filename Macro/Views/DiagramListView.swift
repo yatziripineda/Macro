@@ -52,7 +52,7 @@ struct DiagramListView: View {
                     }.padding(.top,55)
                 } else {
                     ScrollView{
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 50) {
                             AddDiagramButton()
                             if selectedTopic.label == "All Diagrams"{
                                 AllDiagramsView()
@@ -69,7 +69,7 @@ struct DiagramListView: View {
                                 }
                             }
                         }
-                        .padding()
+                        .padding().padding(.top,55)
                     }
                     .padding()
                 }
