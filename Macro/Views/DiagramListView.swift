@@ -49,34 +49,36 @@ struct DiagramListView: View {
             VStack {
                 Divider()
                 if diagram.isEmpty{
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 10) {
-                        AddDiagramButton()
-                    }.padding(.top,55)
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 50) {
+                        AddDiagramButton().padding(60)
+                    }.padding(.horizontal,15)
                 } else {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 50) {
-                            AddDiagramButton()
-                            if selectedTopic.label == "All Diagrams"{
-                                AllDiagramsView()
-                            }else{
-                                if ((selectedTopic.diagram) == nil){
-                                    VStack(alignment: .center){
-                                        Text("No Diagrams")
-                                    }
+                            AddDiagramButton().padding(selectedTopic != nil ? 60 : 50)
+                            if selectedTopic != nil{
+                                if selectedTopic.label == "All Diagrams"{
+                                    AllDiagramsView()
                                 }else{
-                                    if (selectedTopic.diagram!.isEmpty){
-                                    } else {
-                                        FilterTopicsDiagramsView()
+                                    if ((selectedTopic.diagram) == nil){
+                                        VStack(alignment: .center){
+                                            Text("No Diagrams")
+                                        }
+                                    }else{
+                                        if (selectedTopic.diagram!.isEmpty){
+                                        } else {
+                                            FilterTopicsDiagramsView()
+                                        }
                                     }
                                 }
                             }
-                        }
-                        .padding().padding(.top,55)
+                        }.padding(.horizontal,15)
+                        
                     }
-                    .padding()
+                    
                 }
                 Spacer()
-                    .navigationTitle(selectedTopic.label)
+                    .navigationTitle(selectedTopic == nil ? "All Diagrams" : selectedTopic.label)
                     .toolbar {
 //                        ToolbarItem(placement: .navigationBarTrailing) {
 //                            NavigationLink {

@@ -24,6 +24,10 @@ struct ImageDiagramView: View {
     @State private var showCamera = false
     @State private var showWordReview:Bool = false
     @State private var isQuiz: Bool = false
+    @State private var showAddNewTopic: Bool = false
+    
+    @State private var TopicName:String = ""
+    @State private var selectedIcon: String = "figure"
     
     @Environment(\.modelContext) var context
     
@@ -70,18 +74,41 @@ struct ImageDiagramView: View {
                                     .toolbar {
                                         ToolbarItem(placement: .confirmationAction) {
                                             Button("+ List") {
-                                                /* Missin action for "+ List" button */
-                                            }
+                                                showAddNewTopic.toggle()
+                                            }.foregroundStyle(.primaryColor1)
                                         }
                                         ToolbarItem(placement: .cancellationAction) {
                                             Button("Cancel") {
                                                 topicPickerVisibility.toggle()
-                                            }
+                                            }.foregroundStyle(.primaryColor1)
                                         }
                                     }
-                                    .toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(.bar, for: .navigationBar)
                                     .toolbarBackground(.visible, for: .navigationBar)
+                            }).sheet(isPresented: $showAddNewTopic, content: {
+                                NavigationView(content: {
+                                    AddNewTopicView(selectedIcon: $selectedIcon, TopicName: $TopicName)
+                                        .navigationBarTitle("New Topic")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .toolbar {
+                                            ToolbarItem(placement: .confirmationAction) {
+                                                Button("Done") {
+                                                    context.insert(Topics(label: TopicName, iconName: selectedIcon))
+                                                    self.showAddNewTopic.toggle()
+                                                }.foregroundStyle(.primaryColor1)
+                                            }
+                                            ToolbarItem(placement: .cancellationAction) {
+                                                Button("Cancel") {
+                                                    self.showAddNewTopic.toggle()
+                                                }.foregroundStyle(.primaryColor1)
+                                            }
+                                        }.toolbarBackground(.bar, for: .navigationBar)
+                                        .toolbarBackground(.visible, for: .navigationBar)
+                                })
                             })
+                        }).sheet(isPresented: $showWordReview, content: {
+                            WordReviewView(rectangles: $recognizedData, image: $image, diagram: $diagram,showWordReviewView: $showWordReview,selectedTopic: $selectingTopic)
+                                .background(Color(uiColor: .systemGray6))
                         })
                 } else {
                     /* If not, then is an iPad... */
@@ -125,17 +152,37 @@ struct ImageDiagramView: View {
                                     .toolbar {
                                         ToolbarItem(placement: .confirmationAction) {
                                             Button("+ List") {
-                                                /* Missin action for "+ List" button */
-                                            }
+                                                showAddNewTopic.toggle()
+                                            }.foregroundStyle(.primaryColor1)
                                         }
                                         ToolbarItem(placement: .cancellationAction) {
                                             Button("Cancel") {
                                                 topicPickerVisibility.toggle()
-                                            }
+                                            }.foregroundStyle(.primaryColor1)
                                         }
                                     }
-                                    .toolbarBackground(Color(.white), for: .navigationBar)
+                                    .toolbarBackground(.bar, for: .navigationBar)
                                     .toolbarBackground(.visible, for: .navigationBar)
+                            }).sheet(isPresented: $showAddNewTopic, content: {
+                                NavigationView(content: {
+                                    AddNewTopicView(selectedIcon: $selectedIcon, TopicName: $TopicName)
+                                        .navigationBarTitle("New Topic")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .toolbar {
+                                            ToolbarItem(placement: .confirmationAction) {
+                                                Button("Done") {
+                                                    context.insert(Topics(label: TopicName, iconName: selectedIcon))
+                                                    self.showAddNewTopic.toggle()
+                                                }.foregroundStyle(.primaryColor1)
+                                            }
+                                            ToolbarItem(placement: .cancellationAction) {
+                                                Button("Cancel") {
+                                                    self.showAddNewTopic.toggle()
+                                                }.foregroundStyle(.primaryColor1)
+                                            }
+                                        }.toolbarBackground(.bar, for: .navigationBar)
+                                        .toolbarBackground(.visible, for: .navigationBar)
+                                })
                             })
                         })
                 }
@@ -151,12 +198,6 @@ struct ImageDiagramView: View {
     /// MARK: "iPhoneVerticalView()"
     func iPhoneVerticalView() -> some View{
         VStack{
-            ProgressView(value: 0.70)
-                .tint(.primaryColor1)
-                .padding()
-                .scaleEffect(x: 1, y: 1)
-                .cornerRadius(4.0)
-                .frame(width: 600)
             GeometryReader { geo in
                 Group {
                     /* A complete diagram is shown, with DiagramOverlayedView */

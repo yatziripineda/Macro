@@ -37,7 +37,7 @@ struct HomeView: View {
         DiagramListView(HideToolBarItem: $HideToolBarItem, columnVisibility: $columnVisibility, allDiagramsToggle: $allDiagramsToggle, selectedTopic: selectedTopic)
     }.sheet(isPresented: $AddTopic, content: {
         NavigationView(content: {
-            AddTopicView()
+            AddNewTopicView(selectedIcon: $selectedIcon, TopicName: $TopicName)
                 .navigationBarTitle("New Topic")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -45,14 +45,14 @@ struct HomeView: View {
                         Button("Done") {
                             context.insert(Topics(label: TopicName, iconName: selectedIcon))
                             self.AddTopic.toggle()
-                        }
+                        }.foregroundStyle(.primaryColor1)
                     }
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
                             self.AddTopic.toggle()
-                        }
+                        }.foregroundStyle(.primaryColor1)
                     }
-                }.toolbarBackground(Color(.white), for: .navigationBar)
+                }.toolbarBackground(.bar, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
         })
     })
@@ -143,7 +143,7 @@ struct HomeView: View {
                     .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                     .padding(40)
             }
-            .background(.primary)
+            .background(.bar)
             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))).padding(.top,20)
             .padding()
             .padding(.bottom,25)
@@ -154,7 +154,7 @@ struct HomeView: View {
             .padding(.leading,25)
             Section() {
                 // We create 9 columns with a repeated array for using them in the LazyVGrid.
-                let columns = Array(repeating: GridItem(.flexible(), spacing: 15), count: 9)
+                let columns = UIDevice.current.userInterfaceIdiom == .phone ? Array(repeating: GridItem(.flexible(), spacing: 15), count: 3) : Array(repeating: GridItem(.flexible(), spacing: 15), count: 9)
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(iconCatalog, id: \.self) { icon in
                         Button(action: {
@@ -167,11 +167,11 @@ struct HomeView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .foregroundStyle(self.selectedIcon == icon ? .primaryColor2 : .gray)
                             }
-                            .background(self.selectedIcon == icon ? .secondaryColor1 : Color(uiColor: .systemGray6))
+                            .background(self.selectedIcon == icon ? .lightPurple : Color(uiColor: .systemGray6))
                             .clipShape(Circle())
                         }
                     }
-                }.padding().background(.primary)
+                }.padding().background(.bar)
             }.clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                 .padding([.bottom,.leading,.trailing],15)
             Spacer()
@@ -208,3 +208,4 @@ struct HomeView: View {
         .background(Color(uiColor: .systemGray6))
     }
 }
+

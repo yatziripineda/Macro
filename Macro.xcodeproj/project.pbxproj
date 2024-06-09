@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6B11BAD02C05D11E0082A3F8 /* DiagramOverlayedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B11BACF2C05D11E0082A3F8 /* DiagramOverlayedView.swift */; };
+		6B23C9E52C15F0CF009D97FB /* AddNewTopicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B23C9E42C15F0CF009D97FB /* AddNewTopicView.swift */; };
 		780915BF2BEE26C800654352 /* WordReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915BE2BEE26C800654352 /* WordReviewView.swift */; };
 		780915C12BF21BF300654352 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C02BF21BF300654352 /* HomeView.swift */; };
 		780915C32BF268E300654352 /* DiagramListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780915C22BF268E300654352 /* DiagramListView.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		6B11BACF2C05D11E0082A3F8 /* DiagramOverlayedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramOverlayedView.swift; sourceTree = "<group>"; };
+		6B23C9E42C15F0CF009D97FB /* AddNewTopicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTopicView.swift; sourceTree = "<group>"; };
 		780915BE2BEE26C800654352 /* WordReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReviewView.swift; sourceTree = "<group>"; };
 		780915C02BF21BF300654352 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		780915C22BF268E300654352 /* DiagramListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramListView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				780BDD072BFF24EE00AA899F /* ZoomView.swift */,
 				B30284852BE98C9A0046DBD2 /* CameraView.swift */,
 				78608F262C07250C006F5696 /* TopicPickerView.swift */,
+				6B23C9E42C15F0CF009D97FB /* AddNewTopicView.swift */,
 				B30284912BEC26C90046DBD2 /* RectanglesOverlayView.swift */,
 				B3348BB12C105EF9008F4C6D /* Quizzes */,
 				780915BE2BEE26C800654352 /* WordReviewView.swift */,
@@ -271,6 +274,7 @@
 				6B11BAD02C05D11E0082A3F8 /* DiagramOverlayedView.swift in Sources */,
 				780BDD082BFF24EE00AA899F /* ZoomView.swift in Sources */,
 				B3348BB32C105F1C008F4C6D /* MainQuizView.swift in Sources */,
+				6B23C9E52C15F0CF009D97FB /* AddNewTopicView.swift in Sources */,
 				788AED6B2BE8DD2700D03FCC /* ContentView.swift in Sources */,
 				B3A7099C2BFF485200C57DC0 /* Functions.swift in Sources */,
 				78608F272C07250C006F5696 /* TopicPickerView.swift in Sources */,
