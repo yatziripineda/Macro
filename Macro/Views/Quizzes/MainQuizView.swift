@@ -163,19 +163,8 @@ struct MainQuizView: View {
             if currentIndex != diagram.labels.count {
                 quizViewForDifficulty()
             } else {
-                VStack {
-                    if let lastScore = diagram.score.last {
-                        Text("Congratulations! You have Scored \(lastScore)")
-                    } else {
-                        Text("Congratulations!")
-                    }
-                    Button("RETURN") {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                    .frame(width: 470)
-                }
+                ResultsView(diagram: diagram)
             }
-            /* Pero no parece estar muy bien implementada. */
         }
     }
 }

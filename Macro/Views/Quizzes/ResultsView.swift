@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultsView: View {
     
     var diagram: Diagram
+    var isPhone: Bool = UIDevice.current.userInterfaceIdiom == .phone
 
     var body: some View {
         VStack {
@@ -17,10 +18,10 @@ struct ResultsView: View {
                 let score = String(format: "%.2f", lastScore * 100)
                 if lastScore > 0.9 {
                     Text("🎉")
-                        .font(.system(size: 150))
+                        .font(.system(size: isPhone ? 50 : 150))
                         .padding()
                     Text("Congrats!")
-                        .font(.system(size: 90))
+                        .font(.title)
                         .bold()
                         .padding()
                     Text("You scored \(score)%")
@@ -28,10 +29,10 @@ struct ResultsView: View {
                         .padding()
                 } else if lastScore > 0.6 {
                     Text("👍🏻")
-                        .font(.system(size: 150))
+                        .font(.system(size: isPhone ? 50 : 150))
                         .padding()
                     Text("Good job!")
-                        .font(.system(size: 90))
+                        .font(.title)
                         .bold()
                         .padding()
                     Text("You scored \(score)%")
@@ -39,10 +40,10 @@ struct ResultsView: View {
                         .padding()
                 } else {
                     Text("🙂")
-                        .font(.system(size: 150))
+                        .font(.system(size: isPhone ? 50 : 150))
                         .padding()
                     Text("Keep practicing")
-                        .font(.system(size: 90))
+                        .font(.title)
                         .bold()
                         .padding()
                     Text("You scored \(score)%")

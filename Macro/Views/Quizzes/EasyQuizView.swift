@@ -19,40 +19,75 @@ struct EasyQuizView: View {
     @Binding var isAnswerCorrect: Bool?
     @Binding var countCorrect: Int
     
+    var isPhone: Bool = UIDevice.current.userInterfaceIdiom == .phone
+    
     var body: some View {
         VStack {
-            Text("What is this?")
+            Text(isChecked ? (isAnswerCorrect ?? false ? "Correct" : "Wrong") : "What is this?")
                 .font(.title)
                 .bold()
-            // Creamos los botones con todas las opciones, pero necesita espacio dinámico... ***
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 40) {
-                ForEach(0..<WordsForQuiz.count, id: \.self) { index in
-                    Button(action: {
-                        /* "Toggle" para poder elegir la opción correcta con feedback */
-                        if indexSelectedButton == index {
-                            indexSelectedButton = nil
-                        } else {
-                            indexSelectedButton = index
+            if isPhone {
+                // ScrollView para la vista en teléfono
+                ScrollView {
+                    VStack(spacing: 40) {
+                        ForEach(0..<WordsForQuiz.count, id: \.self) { index in
+                            Button(action: {
+                                /* "Toggle" para poder elegir la opción correcta con feedback */
+                                if indexSelectedButton == index {
+                                    indexSelectedButton = nil
+                                } else {
+                                    indexSelectedButton = index
+                                }
+                            }) {
+                                HStack {
+                                    Text(WordsForQuiz[index])
+                                        .padding()
+                                        .frame(minWidth: 200)
+                                        .frame(height: 45)
+                                        .foregroundStyle(Color.primary)
+                                }
+                                .padding(.horizontal)
+                                .background(
+                                    buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
+                                        indexSelectedButton == index ? Color.blue : .accentColor
+                                )
+                                .cornerRadius(10)
+                                .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
+                            }.disabled(isChecked)
                         }
-                    }) {
-                        HStack {
-                            Text(WordsForQuiz[index])
-                                .padding()
-                                .frame(minWidth: 200)
-                                .frame(height: 45)
-                                .foregroundStyle(Color.primary)
-                        }
-                        .padding(.horizontal)
-                        .background(
-                            buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
-                                indexSelectedButton == index ? Color.blue : .accentColor
-                        )
-                        .cornerRadius(10)
-                        .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
-                    }.disabled(isChecked)
+                    }
+                }
+            } else {
+                // LazyVGrid para la vista en no-teléfono
+                let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
+                LazyVGrid(columns: columns, spacing: 40) {
+                    ForEach(0..<WordsForQuiz.count, id: \.self) { index in
+                        Button(action: {
+                            /* "Toggle" para poder elegir la opción correcta con feedback */
+                            if indexSelectedButton == index {
+                                indexSelectedButton = nil
+                            } else {
+                                indexSelectedButton = index
+                            }
+                        }) {
+                            HStack {
+                                Text(WordsForQuiz[index])
+                                    .padding()
+                                    .frame(minWidth: 200)
+                                    .frame(height: 45)
+                                    .foregroundStyle(Color.primary)
+                            }
+                            .padding(.horizontal)
+                            .background(
+                                buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
+                                    indexSelectedButton == index ? Color.blue : .accentColor
+                            )
+                            .cornerRadius(10)
+                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
+                        }.disabled(isChecked)
+                    }
                 }
             }
-            .padding()
             
             // "Next" button for easy Quiz
             Button {
@@ -79,7 +114,6 @@ struct EasyQuizView: View {
                     .buttonStyle(PlainButtonStyle())
             }
             .disabled(indexSelectedButton == nil && !isChecked)
-                
         }
         .frame(width: 780)
         // La toolbar de la barra de progreso tiene un detalle, tal vez sea bueno descartarla por ahora.
