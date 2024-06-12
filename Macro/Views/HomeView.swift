@@ -105,7 +105,7 @@ struct HomeView: View {
                 allDiagramsToggle = false
             }
         })
-        .navigationTitle("Title")
+        .navigationTitle("Topic list")
         .toolbar {
             /* This is the button to add a new Topic in the Topic list */
             ToolbarItem(placement: .navigationBarTrailing) {
