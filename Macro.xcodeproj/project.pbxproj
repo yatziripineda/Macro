@@ -71,6 +71,7 @@
 		B3348BBD2C107076008F4C6D /* MainScreen.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainScreen.PNG; sourceTree = "<group>"; };
 		B3348BBE2C107076008F4C6D /* Results.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Results.PNG; sourceTree = "<group>"; };
 		B3348BBF2C107076008F4C6D /* TextRecognition.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextRecognition.PNG; sourceTree = "<group>"; };
+		B34DDBFC2C1A6B0D00575BBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B3A7099B2BFF485200C57DC0 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +145,7 @@
 		788AED672BE8DD2700D03FCC /* Macro */ = {
 			isa = PBXGroup;
 			children = (
+				B34DDBFC2C1A6B0D00575BBD /* Info.plist */,
 				788AED682BE8DD2700D03FCC /* MacroApp.swift */,
 				780BDD0A2BFF2B0F00AA899F /* Views */,
 				6B6A030E2BFF322C00E14C79 /* Utils */,
@@ -421,9 +423,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Macro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Eyedia;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to the gallery to add diagrams previously saved there.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -463,9 +467,11 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Macro/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Eyedia;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera to recognize text from the pictures you want";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to the gallery to add diagrams previously saved there.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

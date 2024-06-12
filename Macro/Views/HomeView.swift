@@ -175,35 +175,6 @@ struct HomeView: View {
             }.clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                 .padding([.bottom,.leading,.trailing],15)
             Spacer()
-            //            List {
-            //                Section("Select the icon for the new topic"){
-            //                    Picker("Icon", selection: $selectedIcon) {
-            //                        ForEach(iconCatalog, id: \.self) { icon in
-            //                            Image(systemName: icon).tag(icon)
-            //                                .foregroundStyle(Color.primaryColor1)
-            //                        }
-            //                    }
-            //                    .padding()
-            //                }
-            //            }.listStyle(.sidebar)
-            
-            //            Button(action: {
-            //                context.insert(Topics(label: TopicName, iconName: selectedIcon))
-            //                AddTopic = false
-            //            }, label: {
-            //                ZStack{
-            //                    Rectangle()
-            //                        .foregroundStyle(Color.primaryColor1)
-            //                        .frame(maxWidth: .infinity )
-            //                        .frame(height: 35)
-            //                        .padding()
-            //                        .shadow(color: Color.primaryColor2, radius: 10, x: 0, y: 5)
-            //                        .cornerRadius(10)
-            //                    Text("Save")
-            //                        .font(.title)
-            //                        .foregroundStyle(Color.white)
-            //                }
-            //            })
         }
         .background(Color(uiColor: .systemGray6))
     }

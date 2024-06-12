@@ -26,6 +26,7 @@ struct EasyQuizView: View {
             Text(isChecked ? (isAnswerCorrect ?? false ? "Correct" : "Wrong") : "What is this?")
                 .font(.title)
                 .bold()
+                .padding(.bottom, 30)
             if isPhone {
                 // ScrollView para la vista en teléfono
                 ScrollView {
@@ -49,7 +50,7 @@ struct EasyQuizView: View {
                                 .padding(.horizontal)
                                 .background(
                                     buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
-                                        indexSelectedButton == index ? Color.blue : .accentColor
+                                        indexSelectedButton == index ? Color.blue : .buttons
                                 )
                                 .cornerRadius(10)
                                 .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
@@ -80,7 +81,7 @@ struct EasyQuizView: View {
                             .padding(.horizontal)
                             .background(
                                 buttonsActive[index] ? (isAnswerCorrect ?? false ? Color.green.opacity(0.3) : Color.red.opacity(0.3)) :
-                                    indexSelectedButton == index ? Color.blue : .accentColor
+                                    indexSelectedButton == index ? Color.blue : .buttons
                             )
                             .cornerRadius(10)
                             .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 0, y: 3)
@@ -114,10 +115,12 @@ struct EasyQuizView: View {
                     .buttonStyle(PlainButtonStyle())
             }
             .disabled(indexSelectedButton == nil && !isChecked)
+            .padding(.top, 30)
         }
         .frame(width: 780)
-        // La toolbar de la barra de progreso tiene un detalle, tal vez sea bueno descartarla por ahora.
+        /* Toolbar del quizz fácil, tiene algunos detalles a revisar... */
         .toolbar {
+            /*
             ToolbarItem {
                 ProgressView(value: Float(currentIndex), total: Float(diagram.labels.count))
                     .tint(Color.primaryColor1)
@@ -126,7 +129,7 @@ struct EasyQuizView: View {
                     .cornerRadius(20.0)
                     .position(x: UIScreen.main.bounds.width / 5)
                     .padding()
-            }
+            } */
         }
     }
 

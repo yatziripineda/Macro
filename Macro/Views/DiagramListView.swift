@@ -73,29 +73,11 @@ struct DiagramListView: View {
                                 }
                             }
                         }.padding(.horizontal,15)
-                        
                     }
-                    
                 }
                 Spacer()
                     .navigationTitle(selectedTopic == nil ? "All Diagrams" : selectedTopic.label)
                     .toolbar {
-//                        ToolbarItem(placement: .navigationBarTrailing) {
-//                            NavigationLink {
-//                                ImageDiagramView()
-//                            } label: {
-//                                Image(systemName: "plus.square.dashed")
-//                                    .foregroundColor(Color.primaryColor1)
-//                            }
-//                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                /* Missing action for "Select" button */
-                            }) {
-                                Text("Select")
-                                    .foregroundColor(Color.primaryColor1)
-                            }
-                        }
                         ToolbarItem(placement: .navigationBarTrailing) {
                             SearchBar(text: $searchText)
                                 .padding()
@@ -169,7 +151,6 @@ struct DiagramListView: View {
         }
     }
 }
-
 
 struct BottomRoundedRectangle: Shape {
     var cornerRadius: CGFloat
