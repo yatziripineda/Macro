@@ -20,6 +20,8 @@ struct DiagramOverlayedView: View {
     
     // Variable to control the red rectangle
     @Binding var isQuiz: Bool
+    // Variable to control the red rectangle opacity
+    @Binding var isCorrect: Bool?
     
     var body: some View {
         GeometryReader { geometry in
@@ -30,7 +32,7 @@ struct DiagramOverlayedView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex, isQuiz: $isQuiz, overlayVisibility: $overlayVisibility)
+                RectanglesOverlay(labels: scaledLabels(labels: labels, scale: scale, offset: offset), currentIndex: $currentIndex, isQuiz: $isQuiz, overlayVisibility: $overlayVisibility, isCorrect: $isCorrect)
             }
         }
     }

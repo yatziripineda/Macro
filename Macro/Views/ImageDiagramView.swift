@@ -25,7 +25,6 @@ struct ImageDiagramView: View {
     @State private var showWordReview:Bool = false
     @State private var isQuiz: Bool = false
     @State private var showAddNewTopic: Bool = false
-    
     @State private var TopicName:String = ""
     @State private var selectedIcon: String = "figure"
     
@@ -203,13 +202,13 @@ struct ImageDiagramView: View {
                     /* A complete diagram is shown, with DiagramOverlayedView */
                     if receivedInfoType() == "diagram" {
                         ZoomView {
-                            DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                            DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: Binding<Bool?>.constant(nil))
                         }
                     }
                     /* Before saving the diagram, we show a "pre-diagram", with DiagramOverlayedView but different parameters */
                     else if receivedInfoType() == "preDiagram"{
                         ZoomView {
-                            DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                            DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: Binding<Bool?>.constant(nil))
                         }
                     }
                 }
@@ -258,12 +257,12 @@ struct ImageDiagramView: View {
                     Group {
                         if receivedInfoType() == "diagram" {
                             ZoomView {
-                                DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                                DiagramOverlayedView(uiImage: UIImage(data: diagram!.image!)!, labels: diagram!.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: Binding<Bool?>.constant(nil))
                             }
                         }
                         else if receivedInfoType() == "preDiagram"{
                             ZoomView {
-                                DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                                DiagramOverlayedView(uiImage: image!, labels: tuppleToDiagramLabel(rectangles: recognizedData), currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: Binding<Bool?>.constant(nil))
                             }
                         }
                     }

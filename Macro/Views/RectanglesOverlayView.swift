@@ -13,6 +13,7 @@ struct RectanglesOverlay: View {
     @Binding var currentIndex: Int
     @Binding var isQuiz: Bool
     @Binding var overlayVisibility: Bool
+    @Binding var isCorrect: Bool?
     
     var body: some View {
         // Usamos un canvas para dibujar gráficos 2D dentro de una vista SwiftUI.
@@ -21,7 +22,12 @@ struct RectanglesOverlay: View {
                 let rect = label.toCGRect()
                 if isQuiz {
                     if index == currentIndex {
-                        context.fill(Path(rect), with: .color(.red)) // We change the color of the current rectangle
+                        // Agregamos esta condición para mostrar el valor de la etiqueta en caso de que el usuario se equivoque.
+                        if isCorrect ?? true {
+                            context.fill(Path(rect), with: .color(.purple)) // We change the color of the current rectangle
+                        } else {
+                            context.fill(Path(rect), with: .color(.red.opacity(0.1))) // We change the color of the current rectangle
+                        }
                     } else {
                         context.fill(Path(rect), with: .color(.black.opacity(overlayVisibility ? 1.0 : 0.1)))
                     }

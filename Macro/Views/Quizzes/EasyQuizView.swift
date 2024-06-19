@@ -23,7 +23,7 @@ struct EasyQuizView: View {
     
     var body: some View {
         VStack {
-            Text(isChecked ? (isAnswerCorrect ?? false ? "Correct" : "Wrong") : "What is this?")
+            Text(isChecked ? (isAnswerCorrect ?? false ? "Correct!" : "Wrong") : "What is this?")
                 .font(.title)
                 .bold()
                 .padding(.bottom, 30)
@@ -59,7 +59,7 @@ struct EasyQuizView: View {
                     }
                 }
             } else {
-                // LazyVGrid para la vista en no-teléfono
+                // LazyVGrid para la vista en iPad
                 let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 16), count: 3)
                 LazyVGrid(columns: columns, spacing: 40) {
                     ForEach(0..<WordsForQuiz.count, id: \.self) { index in

@@ -123,7 +123,7 @@ struct MainQuizView: View {
                     Group {
                         if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                             ZoomView {
-                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                                DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: $isAnswerCorrect)
                             }
                         }
                     }
@@ -150,7 +150,7 @@ struct MainQuizView: View {
                 Group {
                     if let imageData = diagram.image, let uiImage = UIImage(data: imageData) {
                         ZoomView {
-                            DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz)
+                            DiagramOverlayedView(uiImage: uiImage, labels: diagram.labels, currentIndex: $currentIndex, overlayVisibility: $overlayVisibility, isQuiz: $isQuiz, isCorrect: $isAnswerCorrect)
                         }
                     }
                 }
