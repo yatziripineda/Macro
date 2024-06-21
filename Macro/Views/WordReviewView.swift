@@ -35,19 +35,28 @@ struct WordReviewView: View {
             VStack {
                 ScrollView{
                     ForEach(0..<diagram!.labels.count, id: \.self) { index in
-                        TextField("", text: $str[index])
-                            .padding()
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 16)
-                            )
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 16)
-                            )
-                            .background(.secondaryColor1)
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 16)
-                            )
-                            .padding()
+                        HStack{
+                            TextField("", text: $str[index])
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
+                                .padding()
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
+                                .background(.secondaryColor1)
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 16)
+                                )
+                                .padding()
+                            Button {
+                                print(index)
+                                diagram!.labels.remove(at: index)
+                                str.remove(at: index)
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                        }
                         
                     }
                 }
@@ -70,19 +79,25 @@ struct WordReviewView: View {
                 VStack {
                     ScrollView{
                         ForEach(0..<rectangles.count, id: \.self) { index in
-                            TextField("", text: $str[index])
-                                .clipShape(
-                                    RoundedRectangle(cornerRadius: 16)
-                                )
-                                .padding()
-                                .clipShape(
-                                    RoundedRectangle(cornerRadius: 16)
-                                )
-                                .background(.secondaryColor1)
-                                .clipShape(
-                                    RoundedRectangle(cornerRadius: 16)
-                                )
-                                .padding()
+                            HStack{
+                                TextField("", text: $str[index])
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
+                                    .padding()
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
+                                    .background(.secondaryColor1)
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 16)
+                                    )
+                                    .padding()
+                                Button{
+                                    rectangles.remove(at: index)
+                                    str.remove(at: index)
+                                } label:{Image(systemName: "trash")}
+                            }
                             
                         }
                     }
@@ -93,7 +108,8 @@ struct WordReviewView: View {
                             }
                             let tupleList:[DiagramLabel] = tuppleToDiagramLabel(rectangles: rectangles)
                             let data = image?.pngData()
-                            context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: selectedTopic))
+//                            commented to stop the double save
+//                            context.insert(Diagram(name:"", date: Date.now,labels:tupleList, image: data, score: [], QuizDificulty: .easy, topic: selectedTopic))
                             UIDevice.current.userInterfaceIdiom == .phone ? dismiss() : showWordReviewView.toggle()
                             
                         }) {
