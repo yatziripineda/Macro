@@ -61,26 +61,29 @@ struct HomeView: View {
     func ListSidebarView() -> some View {
         List(selection: $selectedTopic) {
             Section{
-                NavigationLink(
-                    value: Topics(label: "All Diagrams", iconName: "tray.fill"),
+                NavigationLink(value: Topics(label: "All Diagrams", iconName: "tray.fill"),
                     label: {
                         HStack {
                             Image(systemName: "tray.fill")
                                 .foregroundColor(allDiagramsToggle ? .white : Color.primaryColor1)
+                                .padding(.leading, 10)
                             Text("All Diagrams")
                                 .foregroundColor(allDiagramsToggle ? .white : .black)
                         }
-                    }
-                ).background(allDiagramsToggle ? Color.primaryColor1 : nil)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical)
+                        .background(allDiagramsToggle ? Color.primaryColor1 : Color.clear)
+                        .clipShape(RoundedRectangle(cornerRadius: 7.0))
+                })
             }
-            Section("Topics", content: {
+            Divider()
+            Section {
                 ForEach(topics, id: \.self) { topicM in
-                    NavigationLink(
-                        value: topicM,
+                    NavigationLink(value: topicM,
                         label: {
                             HStack {
                                 Image(systemName: "\(topicM.iconName)")
-                                    .foregroundColor(selectedTopic == topicM ? .white : .primaryColor1)
+                                    .foregroundColor(selectedTopic == topicM ? .white : Color.primaryColor1)
                                 Text(topicM.label)
                             }
                         }
@@ -96,16 +99,16 @@ struct HomeView: View {
                         }
                     }
                 }
-            })
+            }
         }
         .onChange(of: selectedTopic, {
-            if selectedTopic == Topics(label: "All Diagrams", iconName: "tray.fill"){
+            if selectedTopic?.label == "All Diagrams" {
                 allDiagramsToggle = true
-            }else{
+            } else{
                 allDiagramsToggle = false
             }
         })
-        .navigationTitle("Topic list")
+        .navigationTitle("Categories")
         .toolbar {
             /* This is the button to add a new Topic in the Topic list */
             ToolbarItem(placement: .navigationBarTrailing) {

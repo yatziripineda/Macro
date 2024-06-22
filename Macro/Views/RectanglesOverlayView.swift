@@ -29,10 +29,10 @@ struct RectanglesOverlay: View {
                             context.fill(Path(rect), with: .color(.red.opacity(0.1))) // We change the color of the current rectangle
                         }
                     } else {
-                        context.fill(Path(rect), with: .color(.black.opacity(overlayVisibility ? 1.0 : 0.1)))
+                        context.fill(Path(rect), with: .color(Color(red: 53/255, green: 28/255, blue: 57/255).opacity(overlayVisibility ? 1.0 : 0.1)))
                     }
                 } else {
-                    context.fill(Path(rect), with: .color(.black.opacity(overlayVisibility ? 1.0 : 0.1)))
+                    context.fill(Path(rect), with: .color(Color(red: 53/255, green: 28/255, blue: 57/255).opacity(overlayVisibility ? 1.0 : 0.1)))
                 }
             }
         }
