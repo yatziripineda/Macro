@@ -289,6 +289,7 @@ struct ImageDiagramView: View {
                     .background(Color(uiColor: .systemGray6))
             }
         }.onDisappear{
+            print(receivedInfoType(),"\n",diagram,"\n",recognizedData)
             if receivedInfoType() == "preDiagram"{
                 let newDiagram:Diagram = Diagram(name:"", date: Date.now,labels:tuppleToDiagramLabel(rectangles: recognizedData), image: image?.pngData(), score: [], QuizDificulty: .easy, topic: selectingTopic)
                 context.insert(newDiagram)
