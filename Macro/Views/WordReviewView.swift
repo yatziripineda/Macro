@@ -49,13 +49,13 @@ struct WordReviewView: View {
                                     RoundedRectangle(cornerRadius: 16)
                                 )
                                 .padding()
-                            Button {
-                                print(index)
-                                diagram!.labels.remove(at: index)
-                                str.remove(at: index)
-                            } label: {
-                                Image(systemName: "trash")
-                            }
+//                            Button {
+//                                print(index)
+//                                diagram!.labels.remove(at: index)
+//                                str.remove(at: index)
+//                            } label: {
+//                                Image(systemName: "trash")
+//                            }
                         }
                         
                     }
@@ -93,10 +93,10 @@ struct WordReviewView: View {
                                         RoundedRectangle(cornerRadius: 16)
                                     )
                                     .padding()
-                                Button{
-                                    rectangles.remove(at: index)
-                                    str.remove(at: index)
-                                } label:{Image(systemName: "trash")}
+//                                Button{
+//                                    rectangles.remove(at: index)
+//                                    str.remove(at: index)
+//                                } label:{Image(systemName: "trash")}
                             }
                             
                         }
