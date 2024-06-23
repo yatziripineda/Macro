@@ -21,8 +21,8 @@ struct DiagramButton: View {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 190, height: 153)
-                            .cornerRadius(20)
+                            .frame(width: 169, height: 136)
+                            .cornerRadius(15)
                             .clipped()
                     }
                     HStack {
@@ -31,7 +31,7 @@ struct DiagramButton: View {
                             .font(.footnote)
                             .bold().padding(.top,7)
                         Spacer()
-                    }.padding(0)
+                    }
 //                    HStack {
 //                        Spacer()
 //                        Text("100%")
@@ -39,11 +39,10 @@ struct DiagramButton: View {
 //                            .foregroundColor(Color.black.opacity(0.2))
 //                    }
                 }
-                .padding()
-                .frame(width: 190)
+                .frame(width: 169)
                 .background {
-                    BottomRoundedRectangle(cornerRadius: 20)
-                        .frame(width: 190, height: 55)
+                    BottomRoundedRectangle(cornerRadius: 15)
+                        .frame(width: 169, height: 55)
                         .foregroundColor(Color.gray.opacity(0.2))
                 }
             .offset(y: 5)
@@ -69,7 +68,7 @@ struct AddDiagramButton: View {
                 .background {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
-                        .frame(width: 190, height: 163)
+                        .frame(width: 169, height: 163)
                         .foregroundColor(Color.primaryColor1)
             }
                 

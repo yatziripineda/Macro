@@ -49,12 +49,12 @@ struct DiagramListView: View {
             VStack {
                 Divider()
                 if diagram.isEmpty{
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 50) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 170))], spacing: 30) {
                         AddDiagramButton().padding(60)
                     }.padding(.horizontal,15)
                 } else {
                     ScrollView {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 190))], spacing: 50) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 170))], spacing: 30) {
                             AddDiagramButton().padding(selectedTopic != nil ? 60 : 50)
                             if selectedTopic != nil{
                                 if selectedTopic.label == "All Diagrams"{
@@ -101,7 +101,7 @@ struct DiagramListView: View {
             } label: {
                 DiagramButton(diagram: diagram)
                     .id(diagram.id)
-                    .padding()
+                    //.padding()
             }
             .contextMenu {
                 Button(role: .destructive) {
@@ -137,7 +137,7 @@ struct DiagramListView: View {
                     } label: {
                         DiagramButton(diagram: diagram)
                             .id(diagram.id)
-                            .padding()
+                            //.padding()
                     }
                     .contextMenu {
                         Button(role: .destructive) {
