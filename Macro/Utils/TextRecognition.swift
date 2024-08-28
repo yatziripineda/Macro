@@ -25,7 +25,6 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
             completion(nil)
             return
         }
-        
         /* We map the observations to an array of tuples containing the recognized text and their bounding rectangles. */
         let recognizedStrings: [(String, CGRect)] = observations.compactMap { observation in
             /* We extract the most likely correct text and its bounding box. */
@@ -39,10 +38,12 @@ func processImage(_ image: UIImage, completion: @escaping ([(String, CGRect)]?) 
             // We return a tuple with the text and its box.
             return (topCandidate.string, imageRect)
         }
+        if recognizedStrings.isEmpty {
+            completion(nil)
+        }
         // We send the obtained observations through the completion.
         completion(recognizedStrings)
     }
-    
     // We configure and execute the text recognition request with Vision.
     let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
     do {

@@ -46,26 +46,43 @@ struct CameraView: UIViewControllerRepresentable {
         init(_ parent: CameraView) {
             self.parent = parent
         }
+        
         /// Handles the event of image selection completion.
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             // We extract the selected original image.
             if let image = info[.originalImage] as? UIImage {
                 // We assign the image to the camera view's binding so it can be used in other views.
-                parent.image = image
-                processImage(image) { recognizedData in
+                
+                processImage(image) { [weak self] recognizedData in
                     // Here we could use Async/Await to ensure linear programming.
                     DispatchQueue.main.async {
                         if let data = recognizedData {
                             /* We update the State variable to get the recognition data */
-                            self.parent.recognizedData = data
+                            self?.parent.recognizedData = data
+                            self?.parent.image = image
+                            self?.parent.isShown = false
                         } else {
                             print("No text was recognized.")
+                            
+                            // Optionally, show an alert to the user indicating that no text was recognized and they should try again.
+                            let alert = UIAlertController(title: "No Text Detected on Picture", message: "Please retake the photo.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                // Dismiss the alert and reset the picker.
+                                picker.dismiss(animated: true, completion: {
+                                    // Dismiss the whole view (This is the best I could do people)
+                                    self?.parent.dismiss()
+                                    
+                                })
+                            }))
+                            
+                            picker.present(alert, animated: true, completion: nil)
                         }
                     }
                 }
+                
             }
             // We close the camera view.
-            parent.isShown = false
+            
         }
     }
 }
